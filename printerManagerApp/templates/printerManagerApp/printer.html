@@ -1,0 +1,368 @@
+{% load static %}
+
+{% include 'printerManagerApp/header.html' %}
+{% include 'printerManagerApp/sidebar.html' %}
+
+
+<!-- ============================================================== -->
+<!-- Page wrapper  -->
+<!-- ============================================================== -->
+<div class="page-wrapper" onload='init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}")'>
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-12 d-flex no-block align-items-center">
+                <h2 class="page-title" style="text-align: center;"> {{PrinterName}}</h2>
+
+
+                <button id={{printerPowerStatus}} style="margin-left: 2%;" onClick="printerPowerOnOff(this.id)"
+                    class="btn btn-success">Encender impresora</button>
+
+
+                <button id="led_status_off" style="margin-left: 2%;" onClick="ledOnOff(this.id)"
+                    class="btn btn-info">Encender luz</button>
+
+
+
+
+
+                <div class="ml-auto text-right">
+                    <nav aria-label="breadcrumb">
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Sales Cards  -->
+        <!-- ============================================================== -->
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h3 style="text-align:left;float:left;">Informacion</h3>
+                        <h3 style="text-align:right;float:right;" id="status">Offline</h3>
+                        <hr style="clear:both;" />
+
+                        <script>
+
+                        </script>
+
+                        <h5 id="info">
+
+                            progress: - <br><br>
+                            archivo: -<br><br>
+                            tiempo de impresion: -<br><br>
+                            tiempo restante: -</h5>
+
+                        <br>
+                        <button id="selectedPrint" style="margin-left: 0%;" onClick="printSelectedFile()"
+                            class="btn btn-success">Print</button>
+                        <button id="stop" style="margin-left: 2%;" onClick="cancel()"
+                            class="btn btn-danger">Cancel</button>
+                        <button id="pause" style="margin-left: 2%;" onClick="toggle(this.id)"
+                            class="btn btn-warning">Pause</button>
+                        <br>
+                        <br><br>
+                        <table class="table ">
+                            <tr>
+                                <th></th>
+                                <th style="vertical-align: middle; text-align: center;">Temperatura actual
+                                </th>
+                                <th style="vertical-align: middle; text-align: center;">Temperatura objetivo
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <td>extrusor: </td>
+                                <td id="toolTemp" style="vertical-align: middle; text-align: center;">-</td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <input onkeypress="pulsarIntroToolTemp(event)"
+                                        style="margin-left:8em; height: 30px; width: 15%; text-align: center;"
+                                        type="number" id="inputTool" placeholder="-" name="Name" />
+                                    <button style="height: 30px; margin-left: 1%;" onclick="setToolTemp()"
+                                        class="btn btn-primary ">&#10003</button>
+                                    <button style="height: 30px; margin-left: 1%;" onclick="coolTool()"
+                                        class="btn btn-primary ">Enfriar</button>
+                                    <div style="width: 5%;" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Cama</td>
+                                <td style="vertical-align: middle; text-align: center;" id="bedTemp">-</td>
+                                <td style="vertical-align: middle; text-align: center;">
+                                    <input onkeypress="pulsarIntroBedTemp(event)"
+                                        style="margin-left:8em; height: 30px; width: 15%; text-align: center;"
+                                        type="number" id="inputBed" placeholder="-" name="Name" />
+                                    <button style="height: 30px; margin-left: 1%;" onclick="setBedtemp()"
+                                        class="btn btn-primary ">&#10003</button>
+                                    <button style="height: 30px; margin-left: 1%;" onclick="coolBed()"
+                                        class="btn btn-primary ">Enfriar</button>
+                                    <div style="width: 5%;" class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br><br>
+
+                        <button id="homePrinter" style="margin-left: 2%;" onClick="homePrinter()"
+                            class="btn btn-success">Home</button>
+
+                        <button id="preheat" style="margin-left: 2%;" onClick="preheat()"
+                            class="btn btn-success">Preheat</button>
+
+                        <button id="extrude" style="margin-left: 2%;" onClick="extrude()"
+                            class="btn btn-success">extrude</button>
+
+
+                        <button id="retract" style="margin-left: 2%;" onClick="retract()"
+                            class="btn btn-success">retract</button>
+
+
+                        <br><br>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Camara</h3>
+                        <hr>
+                        <img src="{{url}}webcam/?action=stream" class="img-fluid">
+                        <div class="progress m-t-15">
+                            <div id="barraProgreso"
+                                class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                style="width:100%"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Archivos</h5>
+                        <div id="tableDiv" class="table-responsive">
+                            <table id="zero_config" class="table table-striped table-bordered">
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Eliminar carpeta
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="nameOfDeleteElement"> Seguro que quieres eliminar la
+                                                    carpeta </p>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-danger" id="deleteItemButton"
+                                                    onClick=deleteFile(this.name) data-dismiss="modal">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </table>
+                            <button type=" button" class='btn btn-info margin-5' data-toggle="modal"
+                                data-target="#Modal2">Crear carpeta</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="Modal2" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Crear carpeta
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            Nombre de la carpeta <br> <br><input class="form-control"
+                                                placeholder="Enter some text" id="folderPathTextBox" />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary" onClick=createFolder()
+                                                data-dismiss="modal">Crear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button type=" button" class='btn btn-info margin-5' onclick="actualPathForUpladFile()"
+                                data-toggle="modal" data-target="#uploadFile">Subir archivo</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Subir archivo
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <input type="text" style="display: none;" id="filePath" name="filePath">
+                                                <br>
+
+                                                <input type="file" name="myfile">
+
+                                                <button class="btn btn-success" type="submit">Subir</button>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br><br>
+                            <!-- INFO POP UP -->
+                            <div class="modal fade" id="fileInfo" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true ">
+                                <div class="modal-dialog" role="document ">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Popup Header
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true ">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            FILE INFO TODO
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- PROGRESS BAR -->
+
+
+
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+            All Rights Reserved by Matrix-admin. Designed and Developed by <a
+                href="https://wrappixel.com">WrapPixel</a>.
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+
+<script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{% static 'assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
+<script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'assets/extra-libs/sparkline/sparkline.js' %}"></script>
+<!--Wave Effects -->
+<script src="{% static 'dist/js/waves.js' %}"></script>
+<!--Menu sidebar -->
+<script src="{% static 'dist/js/sidebarmenu.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static 'dist/js/custom.min.js' %}"></script>
+<!--This page JavaScript -->
+<script src="{% static 'printer_page.js' %}"></script>
+<!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+<!-- Charts js Files -->
+<script src="{% static 'assets/libs/flot/excanvas.js' %}"></script>
+<script src="{% static 'assets/libs/flot/jquery.flot.js' %}"></script>
+<script src="{% static 'assets/libs/flot/jquery.flot.pie.js' %}"></script>
+<script src="{% static 'assets/libs/flot/jquery.flot.time.js' %}"></script>
+<script src="{% static 'assets/libs/flot/jquery.flot.stack.js' %}"></script>
+<script src="{% static 'assets/libs/flot/jquery.flot.crosshair.js' %}"></script>
+<script src="{% static 'assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+<script src="{% static 'dist/js/pages/chart/chart-page-init.js' %}"></script>
+
+<script src="{% static 'assets/extra-libs/multicheck/datatable-checkbox-init.js' %}"></script>
+<script src="{% static 'assets/extra-libs/multicheck/jquery.multicheck.js' %}"></script>
+<script src="{% static 'assets/extra-libs/DataTables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/libs/toastr/build/toastr.min.js' %}"></script>
+
+<script>
+    init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}");
+
+    $(function () {
+        // Success Type
+        $('#ts-success').on('click', function () {            
+            toastr.success('Have fun storming the castle!', 'Miracle Max Says');
+            alert("caca");
+        });
+
+    });
+</script>
+
+</body>
+
+</html>

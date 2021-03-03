@@ -1,0 +1,145 @@
+{% load static %}
+
+{% include 'printerManagerApp/header.html' %}
+
+
+{% include "printerManagerApp/sidebar.html" %}
+
+<!-- Page wrapper  -->
+<!-- ============================================================== -->
+<div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-12 d-flex no-block align-items-center">
+                <h4 class="page-title">Full Width</h4>
+                <div class="ml-auto text-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Library</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+
+        <div class="row">
+            {%for object in my_printer_list%}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{object.name}}</h3>
+                        <hr>
+                        <div style="text-align:left;float:left;">
+                            <h5 id="info">
+
+                                progress: - <br><br>
+                                archivo: -<br><br>
+                                tiempo de impresion: -<br><br>
+                                tiempo restante: -</h5>
+                                <br>
+                            <button id="homePrinter" style="margin-left: 2%;" onClick=""
+                                class="btn btn-danger">Stop</button>
+
+                            <button id="preheat" style="margin-left: 2%;" onClick=""
+                                class="btn btn-info">Light</button>
+                        </div>
+                        <div style="text-align:right;float:right;">
+
+                            <img src="{{object.url}}webcam/?action=stream" style="width: 270;" height="180">
+                            <div class="progress m-t-15">
+                                <div id="barraProgreso"
+                                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                    style="width:100%"></div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<footer class="footer text-center">
+    All Rights Reserved by Matrix-admin. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Page wrapper  -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{% static 'assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
+<script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="{% static 'assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'assets/extra-libs/sparkline/sparkline.js' %}"></script>
+<!--Wave Effects -->
+<script src="{% static 'dist/js/waves.js' %}"></script>
+<!--Menu sidebar -->
+<script src="{% static 'dist/js/sidebarmenu.js' %}"></script>
+<!--This page JavaScript -->
+<script src="{% static 'cameras_page.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static 'dist/js/custom.min.js' %}"></script>
+<!-- this page js -->
+<script src="{% static 'assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/libs/magnific-popup/meg.init.js' %}"></script>
+</body>
+
+</html>
