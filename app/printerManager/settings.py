@@ -17,11 +17,12 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-] 
+APP_DIR = os.path.join(BASE_DIR, 'printerManagerApp')
+STATICFILES_DIRS = (
+    os.path.join(APP_DIR, 'static'),
+)
 
+print(STATICFILES_DIRS)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -30,7 +31,8 @@ STATICFILES_DIRS = [
 SECRET_KEY = '%kvywg-bio#qs5k615lr&ulvr9fdh*blvr-9079utl3asyo=r0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 1)))
+#DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -125,3 +127,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATIC_URL = '/static/'
+
+
+STATIC_ROOT = '/vol/web/static/printerManagerApp'

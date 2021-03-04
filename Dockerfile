@@ -1,25 +1,25 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim-buster
+FROM python:3.8-alpine
+ENV PATH="/scripts:${PATH}"
 
-EXPOSE 8000
+COPY ./requirements.txt /requirements.txt
+RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
+RUN pip install -r /requirements.txt
+RUN apk del .tmp
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
-# Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
-
+RUN mkdir /app
+COPY ./app /app
 WORKDIR /app
-COPY . /app
+COPY ./scripts /scripts
 
-# Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
-RUN useradd appuser && chown -R appuser /app
-USER appuser
+RUN chmod +x /scripts/*
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# File wsgi.py was not found in subfolder: 'Odin'. Please enter the Python path to wsgi file.
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "printerManager.wsgi"]
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/
+
+RUN adduser -D user
+RUN chown -R user:user /vol
+RUN chmod -R 755 /vol/web
+USER user
+
+CMD ["entrypoint.sh"]
