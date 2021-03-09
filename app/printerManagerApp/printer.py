@@ -84,17 +84,45 @@ def main():
 
     
 
-    myobj = {'command': "turnPSUOff"}
+    #myobj = {'command': "turnPSUOff"}
 
-    url = "http://192.168.0.103/api/plugin/psucontrol?apikey=749307BF21154B18BBFD75260CFD356F"
+    #url = "http://192.168.0.103/api/plugin/psucontrol?apikey=749307BF21154B18BBFD75260CFD356F"
 
     #x = requests.post(url, json=myobj)
 
     #url = 'http://192.168.0.103/api/files?apikey=recursive=true'
 
     #r = requests.get(url)
-    p.stuff()
+    #p.stuff()
+
+
+    URL = 'http://localhost:3334/accounts/login/'
+
+    client = requests.session()
+
+    # Retrieve the CSRF token first
+    client.get(URL)  # sets cookie
+    print(client.cookies)
+    if 'csrftoken' in client.cookies:
+        # Django 1.6 and up
+        csrftoken = client.cookies['csrftoken']
+    else:
+        # older versions
+        csrftoken = client.cookies['csrf']
+
+
+    login_data = dict(username="root@example.com", password="supersecret", csrfmiddlewaretoken=csrftoken)
+
+    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "root@example.com", 'password': "supersecret"}
+    headers = {'Referer': URL}
+    response = client.post(URL, data=post_data, headers=headers)
+    
     print("-------------------------------")
+    print(response.text)
+    print("-------------------------------")
+
+    a = client.get("http://localhost:3334/api/v1/printers/1/")
+    print(a.text)
 
 
 if __name__ == "__main__":

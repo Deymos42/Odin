@@ -2,15 +2,15 @@ printerStatus = null;
 ledStatus = null;
 id = null;
 
+tabla = null;
+
 function init(printerPwStatus, printerId, lightPwStatus) {
     printerStatus = printerPwStatus;
     id = printerId;
     ledStatus = lightPwStatus;
 
     enterFolder('local');
-    setTimeout(() => {
-        enterFolder('local');
-    }, 350);
+
 
     if (printerStatus == "printer_power_status_on") {
 
@@ -42,7 +42,7 @@ function printerPowerOnOff(status) {
                 $('#printer_power_status_on').attr('class', 'btn btn-success');
                 $('#printer_power_status_on').attr('id', 'printer_power_status_off');
                 printerStatus = 'printer_status_off'
-               
+
             }
         });
 
@@ -179,7 +179,7 @@ setInterval(function () {
             }
         });
     } else {
-         $(".btn.btn-success").prop('disabled', false);
+        $(".btn.btn-success").prop('disabled', false);
         $("#toolTemp").html("-");
         $("#bedTemp").html("-");
         $("#info").html(" progress: <b>" + "-" + "</b><br>" +
@@ -239,7 +239,7 @@ function printSelectedFile() {
         url: '/printer/' + id + '/printSelectedFile',
         success: function (data) {
             //$('#' + filepath).attr('style', 'background-color:moccasin');                   
-             toastr.success('Imprimiendo archivo seleccionado ' , 'WoW');                               
+            toastr.success('Imprimiendo archivo seleccionado ', 'WoW');
         },
     });
 }
@@ -302,18 +302,21 @@ function retract() {
     });
 }
 
+function destroyDataRable() {
 
-function reloadDataTable() {
-    $('#zero_config').DataTable().clear().destroy();
-    setTimeout(() => {
-        $('#zero_config').DataTable({
-            retrieve: true
-        });
-    }, 150);
+    tabla.clear().destroy();
 }
 
+function loadDataTable() {
+
+    tabla = $('#zero_config').DataTable({
+        retrieve: true
+    });
+}
+
+
 function download(url) {
-    //alert(url);
+
     temp = window.open(url);
     temp.addEventListener('load', function () {
         temp.close();
@@ -430,6 +433,11 @@ function enterFolder(folderId) {
         type: "GET",
         success: function (data) {
 
+            if (tabla != null) {
+                if (tabla.data().count()) {
+                    destroyDataRable();
+                }
+            }
             var FileSystem = new fileSystem(data);
             var content = "";
 
@@ -518,14 +526,13 @@ function enterFolder(folderId) {
                 "<tbody>" +
 
                 content);
+            loadDataTable();
+            actualPath = folderId;
         }
 
     });
 
-    setTimeout(() => {
-        reloadDataTable();
-    }, 150);
-    actualPath = folderId;
+
 }
 
 function passIdToModal(id) {
