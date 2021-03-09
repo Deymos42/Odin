@@ -178,7 +178,8 @@ def get_printer_info(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(ID=printer_pk)        
         #printer_object.connect()
-        info = printer_object.get_printer_info()        
+        info = printer_object.get_printer_info() 
+        info["error"] = printer_object.getError()        
         data = json.dumps(info)    
         return HttpResponse(data, content_type = 'application/json')
     else:

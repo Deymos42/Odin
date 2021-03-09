@@ -1,6 +1,7 @@
 from django.db import models
 from octorest import OctoRest
 import requests
+import ast
 import json
 # Create your models here.
 
@@ -153,7 +154,28 @@ class Printer(models.Model):
         except Exception as e:
             print(e)
 
-    
+    def getError(self):
+        URL = 'http://localhost:3334/accounts/login/'
+        client = requests.session()
+        client.get(URL)  # sets cookie
+       
+        if 'csrftoken' in client.cookies:
+            # Django 1.6 and up
+            csrftoken = client.cookies['csrftoken']
+        else:
+            # older versions
+            csrftoken = client.cookies['csrf']
+
+        login_data = dict(username="root@example.com", password="supersecret", csrfmiddlewaretoken=csrftoken)
+
+        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "root@example.com", 'password': "supersecret"}
+        headers = {'Referer': URL}
+        response = client.post(URL, data=post_data, headers=headers)
+        a = client.get("http://localhost:3334/api/v1/printers/1/")
+        client = None        
+        data = json.loads(a.text)        
+        return data["normalized_p"]
+        
 
     def getAllFilesAndFolders(self):
        

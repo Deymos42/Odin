@@ -4,6 +4,38 @@ id = null;
 
 tabla = null;
 
+var opts = {
+    angle: 0, // The span of the gauge arc
+    lineWidth: 0.44, // The line thickness
+    radiusScale: 1, // Relative radius
+    pointer: {
+        length: 0.68, // // Relative to gauge radius
+        strokeWidth: 0.055, // The thickness
+        color: '#000000' // Fill color
+    },
+    limitMax: false, // If false, max value increases automatically if value > maxValue
+    limitMin: false, // If true, the min value of the gauge will be fixed
+    colorStart: '#6FADCF', // Colors
+    colorStop: '#8FC0DA', // just experiment with them
+    strokeColor: '#E0E0E0', // to see which ones work best for you
+    generateGradient: true,
+    highDpiSupport: true, // High resolution support
+    percentColors: [
+        [0.0, "#67FE1F"],
+        [0.7, "#F46E05"],
+        [1, "#E71B00"]
+    ],
+
+};
+
+var target = document.getElementById('gaugeTest'); // your canvas element
+var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+gauge.maxValue = 100; // set max gauge value
+gauge.setMinValue(0); // Prefer setter over gauge.minValue = 0
+gauge.animationSpeed = 100; // set animation speed (32 is default value)
+gauge.set(0.5); // set actual value
+
+
 function init(printerPwStatus, printerId, lightPwStatus) {
     printerStatus = printerPwStatus;
     id = printerId;
@@ -125,12 +157,19 @@ setInterval(function () {
                     }
                     $("#info").html(" progress: <b>" + completation.toFixed(3) * 100 + "%" + "</b><br>" +
                         "<br> archivo: <b>" + data.job.file.name + "</b><br>" +
-                        "<br> tiempo de impresion: <b>" + printTime + "</b><br>" +
+                        "<br> tiempo de impresion:  " + printTime + "</b><br>" +
                         "<br> tiempo restante: <b>" + timeLeft + "</b><br>");
                     $('#barraProgreso').attr('style', 'width:' + completation + '%');
+                    if (completation % 10 == 0) {
+                        $("#progress").html(completation.toFixed(0) + "%");
+                    } else {
+                        $("#progress").html(completation.toFixed(2) + "%");
+                    }
                 }
 
                 $('#status').html(data.state);
+                $('#displayError').html(data.error);
+                //gauge.set(0.95); 
 
                 if (data.state == "Printing") {
                     $(".btn.btn-success").prop('disabled', true);

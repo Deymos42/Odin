@@ -1,5 +1,6 @@
 from octorest import OctoRest
 import requests
+import ast
 import json
 
 class Printer:
@@ -97,9 +98,7 @@ def main():
 
 
     URL = 'http://localhost:3334/accounts/login/'
-
     client = requests.session()
-
     # Retrieve the CSRF token first
     client.get(URL)  # sets cookie
     print(client.cookies)
@@ -109,7 +108,6 @@ def main():
     else:
         # older versions
         csrftoken = client.cookies['csrf']
-
 
     login_data = dict(username="root@example.com", password="supersecret", csrfmiddlewaretoken=csrftoken)
 
@@ -122,8 +120,10 @@ def main():
     print("-------------------------------")
 
     a = client.get("http://localhost:3334/api/v1/printers/1/")
-    print(a.text)
-
+ 
+    data = json.loads(a.text)
+    print(type(data))
+    print(data["normalized_p"])
 
 if __name__ == "__main__":
     main()

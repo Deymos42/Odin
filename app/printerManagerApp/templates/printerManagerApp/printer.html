@@ -147,13 +147,30 @@
                     <div class="card-body">
                         <h3>Camara</h3>
                         <hr>
-                        <img src="{{url}}webcam/?action=stream" class="img-fluid">
+                        <div style="display: block; margin-left: auto;">
+                            <img src="{{url}}webcam/?action=stream" class="img-fluid">
+                        </div> <br>
+                        <div style="display: block; text-align: center;"><h5 id="progress">-</h5></div>
                         <div class="progress m-t-15">
                             <div id="barraProgreso"
                                 class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                style="width:100%"></div>
+                                style="width:100%;"></div>
+                        </div>        
+                        <hr>
+                        <div style="display: block; text-align: center;"><h3><b>Error</b></h3></div>
+                        <div style="display: block; text-align: center;" class="Gauge">
+                            <canvas width="237" height="93" id="gaugeTest"
+                                style="width: 285px; height: 112;"></canvas>
+                            <div id="preview-textfield" style="font-size: 41px;">1,250</div>
+                        </div>              
+                      
+                          
+                        <div style="margin-left: 7.5%;">
+
+                            <h2 id="displayError"></h2>
+
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -320,11 +337,13 @@
 <!-- All Jquery -->
 <!-- ============================================================== -->
 
+
 <script src="{% static 'printerManagerApp/assets/libs/jquery/dist/jquery.min.js' %}"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="{% static 'printerManagerApp/assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
 <script src="{% static 'printerManagerApp/assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'printerManagerApp/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'printerManagerApp/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}">
+</script>
 <script src="{% static 'printerManagerApp/assets/extra-libs/sparkline/sparkline.js' %}"></script>
 <!--Wave Effects -->
 <script src="{% static 'printerManagerApp/dist/js/waves.js' %}"></script>
@@ -334,6 +353,8 @@
 <script src="{% static 'printerManagerApp/dist/js/custom.min.js' %}"></script>
 <!--This page JavaScript -->
 <script src="{% static 'printerManagerApp/printer_page.js' %}"></script>
+
+
 <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
 <!-- Charts js Files -->
 <script src="{% static 'printerManagerApp/assets/libs/flot/excanvas.js' %}"></script>
@@ -355,7 +376,7 @@
 
     $(function () {
         // Success Type
-        $('#ts-success').on('click', function () {            
+        $('#ts-success').on('click', function () {
             toastr.success('Have fun storming the castle!', 'Miracle Max Says')
         });
 
