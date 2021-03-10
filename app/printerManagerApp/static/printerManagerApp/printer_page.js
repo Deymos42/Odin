@@ -166,10 +166,10 @@ setInterval(function () {
                         $("#progress").html(completation.toFixed(2) + "%");
                     }
                 }
-
+                var formatedError = (data.error * 100).toFixed(2)
                 $('#status').html(data.state);
-                $('#displayError').html(data.error);
-                //gauge.set(0.95); 
+                $('#errorNumber').html(formatedError);
+                gauge.set(formatedError); 
 
                 if (data.state == "Printing") {
                     $(".btn.btn-success").prop('disabled', true);
