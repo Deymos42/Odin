@@ -17,7 +17,9 @@ import time
  # -----------------------------------------------------------------------PAGES---------------------------------------------------------------------------------
 
 def index(request):
-    return render(request, "printerManagerApp/index.html") 
+    allPrinters = Printer.objects.all()
+    context = { 'my_printer_list': allPrinters } 
+    return render(request, "printerManagerApp/index.html", context) 
 
 def test(request):
     return render(request, "static/form-basic.html")
