@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 APP_DIR = os.path.join(BASE_DIR, 'printerManagerApp')
 STATICFILES_DIRS = (
-    os.path.join(APP_DIR, 'static'),
+    os.path.join(APP_DIR, 'static/printerManagerApp'),
 )
 
 print(STATICFILES_DIRS)
