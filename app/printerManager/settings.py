@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 APP_DIR = os.path.join(BASE_DIR, 'printerManagerApp')
 STATICFILES_DIRS = (
-    os.path.join(APP_DIR, 'static/printerManagerApp'),
+    os.path.join(APP_DIR, 'static'), 
 )
 
 print(STATICFILES_DIRS)
@@ -31,7 +31,7 @@ print(STATICFILES_DIRS)
 SECRET_KEY = '%kvywg-bio#qs5k615lr&ulvr9fdh*blvr-9079utl3asyo=r0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 1)))
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 #DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #localApps
-    'printerManagerApp'
+     'printerManagerApp'
+
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-STATIC_ROOT = '/vol/web/static/printerManagerApp'
+STATIC_ROOT = '/static/'

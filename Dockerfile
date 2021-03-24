@@ -14,12 +14,13 @@ COPY ./scripts /scripts
 
 RUN chmod +x /scripts/*
 
-RUN mkdir -p /vol/web/media
-RUN mkdir -p /vol/web/
+
 
 RUN adduser -D user
-RUN chown -R user:user /vol
-RUN chmod -R 755 /vol/web
+RUN chown -R user:user /app
+RUN chmod -R 755 /app/printerManagerApp
+RUN chmod -R 755 /app/printerManagerApp/static
+RUN rm -rf /app/printerManagerApp/static/printerManagerApp
 USER user
 
 CMD ["entrypoint.sh"]
