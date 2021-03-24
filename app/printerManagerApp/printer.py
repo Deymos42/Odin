@@ -91,7 +91,7 @@ def main():
 
     #x = requests.post(url, json=myobj)
 
-    #url = 'http://192.168.0.103/api/files?apikey=recursive=true'
+    #url = 'http://192.168.0.103/api/files?apikey=749307BF21154B18BBFD75260CFD356Frecursive=true'
 
     #r = requests.get(url)
     #p.stuff()
