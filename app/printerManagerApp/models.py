@@ -12,13 +12,30 @@ class Document(models.Model):
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+class TSD_url(models.Model):
+    url = models.CharField(max_length=120)
+    #azumbawe = models.CharField(max_length=120)
+    username = models.CharField(max_length=120)
+    password = models.CharField(max_length=120)
 
 class Printer(models.Model):
     url = models.CharField(max_length=120)
     apikey = models.CharField(max_length=120)
     name = models.CharField(max_length=120)
-    ID = models.CharField(max_length=120)
+    IDa = models.CharField(max_length=120)
+    urlCam = models.CharField(max_length=120)
+
     client = None
+
+    try:
+        TSDurl = TSD_url.objects.get().url
+        TSDuser = TSD_url.objects.get().username 
+        TSDpass = TSD_url.objects.get().password
+    except:
+       TSDurl = None  
+       TSDuser = None
+       TSDpass = None
+    
 
     def connect(self):
         #print("conect")
@@ -100,7 +117,7 @@ class Printer(models.Model):
         return self.name
     
     def getId(self):
-        return self.ID
+        return self.IDa
         
     def getUrl(self):
         return self.url
@@ -155,23 +172,23 @@ class Printer(models.Model):
             print(e)
 
     def getError(self):
-        URL = 'http://localhost:3334/accounts/login/'
+        URL = self.TSDurl + "accounts/login/"
+        
         client = requests.session()
         client.get(URL)  # sets cookie
-       
+        
         if 'csrftoken' in client.cookies:
             # Django 1.6 and up
             csrftoken = client.cookies['csrftoken']
         else:
             # older versions
             csrftoken = client.cookies['csrf']
-
-        login_data = dict(username="root@example.com", password="supersecret", csrfmiddlewaretoken=csrftoken)
-
-        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "root@example.com", 'password': "supersecret"}
+        
+        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
         headers = {'Referer': URL}
-        response = client.post(URL, data=post_data, headers=headers)
-        a = client.get("http://localhost:3334/api/v1/printers/1/")
+        response = client.post(URL, data=post_data, headers=headers)        
+        
+        a = client.get( self.TSDurl + "api/v1/printers/" + self.IDa )
         client = None        
         data = json.loads(a.text)        
         return data["normalized_p"]
@@ -187,9 +204,7 @@ class Printer(models.Model):
         return r.text
 
     def selectFile(self, filePath):
-        path = "local/" + filePath.replace("@","/")
-        print(".--.--.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.")
-        print(path)            
+        path = "local/" + filePath.replace("@","/")                   
         if(self.client == None):
             self.connect()
         r = self.client.select(path)       
@@ -221,9 +236,8 @@ class Printer(models.Model):
             dataForm = {'path': ""}        
         dataFile = {'file': myfile}               
         
-        r = requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = dataForm, files = dataFile)    
+        r = requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = dataForm, files = dataFile)            
         
-        print(r.text)
         return r
 
     def printSelectedFile(self):       
