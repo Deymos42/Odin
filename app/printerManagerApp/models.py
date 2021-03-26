@@ -122,6 +122,9 @@ class Printer(models.Model):
     def getUrl(self):
         return self.url
 
+    def getUrlCam(self):
+        return self.urlCam
+
     def getLedStatus(self):
         r = requests.get(self.url[:-1]+":7125/machine/device_power/status?printer_led")
         dic = json.loads(r.text)

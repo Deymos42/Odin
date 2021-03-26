@@ -43,17 +43,17 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card">
                     <div class="el-card-item">
-                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.ID}}')" src="{{object.url}}webcam/?action=stream"
+                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.IDa}}')" src="{{object.urlCam}}webcam/?action=stream"
                                 alt="user" />
                             <div class="el-overlay">
                                 <ul class="list-style-none el-info">
                                     <li class="el-item"><a
                                             class="btn default btn-outline image-popup-vertical-fit el-link"
-                                            href="{{object.url}}webcam/?action=stream"><i
+                                            href="{{object.urlCam}}webcam/?action=stream"><i
                                                 class="mdi mdi-magnify-plus"></i></a>
                                     </li>
                                     <li class="el-item"><a class="btn default btn-outline el-link"
-                                            href="../printer/{{object.ID}}"><i class="mdi mdi-link"></i></a></li>
+                                            href="../printer/{{object.IDa}}"><i class="mdi mdi-link"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <h4 class="m-b-0">{{ object.name}}</h4>
                           
                             <br>
-                            <button id="{{object.ID}}" name="ledPowerStatus" style="margin-left: 2%;" onClick=" ledOnOff('{{object.ID}}')"
+                            <button id="{{object.ID}}" name="ledPowerStatus" style="margin-left: 2%;" onClick=" ledOnOff('{{object.IDa}}')"
                                 class="btn btn-info">Encender luz</button>
                         </div>
                     </div>

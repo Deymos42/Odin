@@ -33,12 +33,13 @@ def printer(request, printer_pk):
      printer_object = Printer.objects.get(IDa=printer_pk)
      name = printer_object.getName()
      url = printer_object.getUrl()
+     urlCam = printer_object.getUrlCam()
      ledStatus = printer_object.getLedStatus()
      #ledStatus = "led_status_off" # quitar si no
      printerPowerStatus = printer_object.getPrinterPowerStatus()
      #printerPowerStatus = "printer_power_status_off"
      allPrinters = Printer.objects.all()
-     context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'ledStatus': ledStatus, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
+     context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 'ledStatus': ledStatus, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
  
 
      return render(request, "printerManagerApp/printer.html",context)
