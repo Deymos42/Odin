@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from printerManagerApp.printer import *
 from django.views import generic
 from .models import Printer
 from django.http import HttpResponse, Http404
