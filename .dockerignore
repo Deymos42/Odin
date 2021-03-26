@@ -16,6 +16,8 @@
 **/node_modules
 **/npm-debug.log
 **/obj
+**/migrations
+**/printerManagerApp/printer.py
 **/secrets.dev.yaml
 **/values.dev.yaml
 README.md

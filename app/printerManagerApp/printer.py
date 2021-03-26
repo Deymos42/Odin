@@ -109,9 +109,9 @@ def main():
         # older versions
         csrftoken = client.cookies['csrf']
 
-    login_data = dict(username="root@example.com", password="supersecret", csrfmiddlewaretoken=csrftoken)
+    
 
-    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "root@example.com", 'password': "supersecret"}
+    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "admin@gmail.com", 'password': "0203comosiempre"}
     headers = {'Referer': URL}
     response = client.post(URL, data=post_data, headers=headers)
     
@@ -123,7 +123,7 @@ def main():
  
     data = json.loads(a.text)
     print(type(data))
-    print(data["normalized_p"])
+    print(data)
 
 if __name__ == "__main__":
     main()

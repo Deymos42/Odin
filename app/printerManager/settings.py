@@ -17,12 +17,20 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+
 APP_DIR = os.path.join(BASE_DIR, 'printerManagerApp')
-STATICFILES_DIRS = (
-    os.path.join(APP_DIR, 'static'), 
+
+if DEBUG:
+    STATICFILES_DIRS = (    
+        os.path.join(APP_DIR, 'static/printerManagerApp'),
+) 
+else:
+    STATICFILES_DIRS = (  
+        os.path.join(APP_DIR, 'static'),
 )
 
-print(STATICFILES_DIRS)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -30,9 +38,7 @@ print(STATICFILES_DIRS)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '%kvywg-bio#qs5k615lr&ulvr9fdh*blvr-9079utl3asyo=r0'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 0)))
-#DEBUG = True
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -105,7 +111,7 @@ ROOT_URLCONF = 'printerManager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(APP_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,7 +133,7 @@ WSGI_APPLICATION = 'printerManager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
 }
 
