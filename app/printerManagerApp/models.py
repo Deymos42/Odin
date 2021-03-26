@@ -24,6 +24,7 @@ class Printer(models.Model):
     name = models.CharField(max_length=120)
     IDa = models.CharField(max_length=120)
     urlCam = models.CharField(max_length=120)
+    TSDid  = models.CharField(max_length=120)
 
     client = None
 
@@ -191,7 +192,7 @@ class Printer(models.Model):
         headers = {'Referer': URL}
         response = client.post(URL, data=post_data, headers=headers)        
         
-        a = client.get( self.TSDurl + "api/v1/printers/" + self.IDa )
+        a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
         client = None        
         data = json.loads(a.text)        
         return data["normalized_p"]
