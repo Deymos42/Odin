@@ -46,25 +46,15 @@ class Printer(models.Model):
             print("..............Connect error.....................")
             print(ex)
 
-    def restartKlipper(self):
-         r = requests.post(self.url[:-1]+":7125/machine/services/restart?service=klipper")
-         return r.text
-
-    def restartFirmware(self):
-         print(self.url[:-1]+":7125/printer/firmware_restart")
-         r = requests.post(self.url[:-1]+":7125/printer/firmware_restart")
-         print("Firware restarted")
-         return r.text
 
     def waitConnection(self):
         counter = 0
-        if(self.getPrinterPowerStatus() == "printer_power_status_off"):
-            print("printer Off")
+        if(self.getPrinterPowerStatus() == "printer_power_status_off"):           
             return False
         else:            
             self.connect()            
-            self.client.connect(baudrate = 250000)
-            while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
+            self.client.connect(baudrate = 115200)
+            while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 30): #TODO
                 counter = counter + 1
                 print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
             if counter >= 30:
@@ -125,31 +115,25 @@ class Printer(models.Model):
 
     def getUrlCam(self):
         return self.urlCam
-
-    def getLedStatus(self):
-        r = requests.get(self.url[:-1]+":7125/machine/device_power/status?printer_led")
-        dic = json.loads(r.text)
-        #print("led_status_" + dic["result"]["printer_led"])
-        return "led_status_" + dic["result"]["printer_led"]
-
-    def powerLedOn(self):
-       
-        x = requests.post(self.url[:-1]+":7125/machine/device_power/on?printer_led")
-        #print(x.content)
-        return x
-       
+  
         
-    def powerLedOff(self):
-        
-        x = requests.post(self.url[:-1]+":7125/machine/device_power/off?printer_led")
-        print(x.content)
+    def toggleLed(self):
+        myobj = {'pin': 'r1', 'command': 'update'}
+        url = self.url + "api/plugin/octorelay?apikey=" + self.apikey 
+        x = requests.post(url, json=myobj)
         return x
 
     def getPrinterPowerStatus(self):
-        r = requests.get(self.url[:-1]+":7125/machine/device_power/status?printer")
-        dic = json.loads(r.text)
-        
-        return "printer_power_status_" + dic["result"]["printer"]
+        myobj = {'command': 'getPSUState'}
+        url = self.url + "api/plugin/psucontrol?apikey=" + self.apikey 
+        x = requests.post(url, json=myobj)        
+        dic = json.loads(x.text)
+        print(dic['isPSUOn'])
+        if dic['isPSUOn'] == False:
+           return "printer_power_status_off"
+        elif dic['isPSUOn'] == True:
+           return "printer_power_status_on"
+   
 
     def PrinterPowerOn(self):        
         myobj = {'command': "turnPSUOn"}
@@ -203,9 +187,9 @@ class Printer(models.Model):
         r = requests.get(self.url + "api/files?apikey=" + self.apikey + "&recursive=true")          
         return r.text
 
-    def getKlipperStatus(self):
-        r = requests.get(self.url[:-1]+":7125/server/info")      
-        return r.text
+    def getStatus(self):
+        #r = requests.get(self.url[:-1]+":7125/server/info")      
+        return None
 
     def selectFile(self, filePath):
         path = "local/" + filePath.replace("@","/")                   

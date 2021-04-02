@@ -78,52 +78,28 @@ class Printer:
 def main():
 
  
-    p = Printer("http://192.168.0.103/", "749307BF21154B18BBFD75260CFD356F")
+    p = Printer("http://192.168.0.103/", "5EB85BE5D98A481DA12B37A63DB08F87")
     #p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
 
     #r =requests.post('http://192.168.0.103:7125/machine/services/restart?service=klipper')
 
     
 
-    #myobj = {'command': "turnPSUOff"}
+    myobj = { 'command': 'getPSUState'}
 
-    #url = "http://192.168.0.103/api/plugin/psucontrol?apikey=749307BF21154B18BBFD75260CFD356F"
+    url = "http://192.168.0.103/api/plugin/psucontrol?apikey=5EB85BE5D98A481DA12B37A63DB08F87"
 
-    #x = requests.post(url, json=myobj)
-
+    x = requests.post(url, json=myobj)
+    print(x.text)
+    dic = json.loads(x.text)
+    print(dic['isPSUOn'])
     #url = 'http://192.168.0.103/api/files?apikey=749307BF21154B18BBFD75260CFD356Frecursive=true'
 
     #r = requests.get(url)
-    #p.stuff()
+    #p.stuff()   led_status_on
 
 
-    URL = 'http://localhost:3334/accounts/login/'
-    client = requests.session()
-    # Retrieve the CSRF token first
-    client.get(URL)  # sets cookie
-    print(client.cookies)
-    if 'csrftoken' in client.cookies:
-        # Django 1.6 and up
-        csrftoken = client.cookies['csrftoken']
-    else:
-        # older versions
-        csrftoken = client.cookies['csrf']
 
-    
-
-    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "admin@gmail.com", 'password': "0203comosiempre"}
-    headers = {'Referer': URL}
-    response = client.post(URL, data=post_data, headers=headers)
-    
-    print("-------------------------------")
-    print(response.text)
-    print("-------------------------------")
-
-    a = client.get("http://localhost:3334/api/v1/printers/1/")
- 
-    data = json.loads(a.text)
-    print(type(data))
-    print(data)
 
 if __name__ == "__main__":
     main()

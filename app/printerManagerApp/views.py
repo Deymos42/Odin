@@ -11,7 +11,6 @@ import time
 
 # Create your views here.
 
-#printer1 = make_client("http://192.168.0.103/", "153C0B95717643CDABB32A85C6A7F993")
 
  # -----------------------------------------------------------------------PAGES---------------------------------------------------------------------------------
 
@@ -34,8 +33,7 @@ def printer(request, printer_pk):
      name = printer_object.getName()
      url = printer_object.getUrl()
      urlCam = printer_object.getUrlCam()
-     ledStatus = printer_object.getLedStatus()
-     #ledStatus = "led_status_off" # quitar si no
+     ledStatus = "led_status_off" # quitar si no
      printerPowerStatus = printer_object.getPrinterPowerStatus()
      #printerPowerStatus = "printer_power_status_off"
      allPrinters = Printer.objects.all()
@@ -143,29 +141,17 @@ def getPrinterPowerStatus(request, printer_pk):
         response = printer_object.getPrinterPowerStatus()   
         return HttpResponse(response, content_type = 'text/html')
 
-def getLedPowerStatus(request, printer_pk):
+def toggleLed(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)
-        response = printer_object.getLedStatus()   
-        return HttpResponse(response, content_type = 'text/html')
-
-def powerLedOn(request, printer_pk):
-    if request.is_ajax():
-        printer_object = Printer.objects.get(IDa=printer_pk)
-        response = printer_object.powerLedOn()   
+        response = printer_object.toggleLed()   
         return HttpResponse(response, content_type = 'application/json')
 
-def powerLedOff(request, printer_pk):
-     if request.is_ajax():
-        printer_object = Printer.objects.get(IDa=printer_pk)
-        response = printer_object.powerLedOff()       
-        return HttpResponse(response, content_type = 'application/json')
 
 def printerPowerOn(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)
-        response = printer_object.PrinterPowerOn()   
-        printer_object.restartKlipper()    
+        response = printer_object.PrinterPowerOn()             
         printer_object.waitConnection() 
         return HttpResponse(response, content_type = 'text/html')
 
@@ -183,14 +169,15 @@ def get_printer_info(request, printer_pk):
         info = printer_object.get_printer_info() 
         info["error"] = printer_object.getError()        
         data = json.dumps(info)    
+        print(data)
         return HttpResponse(data, content_type = 'application/json')
     else:
         raise Http404
 
-def getKlipperStatus(request, printer_pk):
+def getStatus(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)      
-        info = printer_object.getKlipperStatus()        
+        info = printer_object.getStatus()        
         data = json.dumps(info)    
         return HttpResponse(data, content_type = 'application/json')
     else:

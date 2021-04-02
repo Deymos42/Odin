@@ -27,10 +27,9 @@ urlpatterns = [
     path('cameras', views.allCamerasView.as_view()),
     path('dashboard', views.dashboard),
 
-    #-------------------printer_actions------------------------------------------
-    path('printer/<int:printer_pk>/getLedPowerStatus', views.getLedPowerStatus, name='getLedPowerStatus'),
-    path('printer/<int:printer_pk>/ledOn', views.powerLedOn, name='ledOn'),
-    path('printer/<int:printer_pk>/ledOff', views.powerLedOff, name='ledOff'),
+    #-------------------printer_actions------------------------------------------   
+ 
+    path('printer/<int:printer_pk>/toggleLed', views.toggleLed, name='ledOff'),
     path('printer/<int:printer_pk>/getPrinterPowerStatus', views.getPrinterPowerStatus, name='getPowerStatus'),
     path('printer/<int:printer_pk>/printerPowerOn', views.printerPowerOn, name='printerOn'),
     path('printer/<int:printer_pk>/printerPowerOff', views.printerPowerOff, name='printerOff'),
@@ -44,7 +43,7 @@ urlpatterns = [
     path('printer/<int:printer_pk>/setBedTemp/<int:temp>', views.setBedTemp, name='setbedTemp'),
     path('printer/<int:printer_pk>/getBedTemp', views.getBedTemp, name='getBedTemp'),
     path('printer/<int:printer_pk>/getAllFilesAndFolders', views.getAllFilesAndFolders, name='getAkkfiles'),    
-    path('printer/<int:printer_pk>/getKlipperStatus', views.getKlipperStatus, name='gerKlipperStatys'),
+    path('printer/<int:printer_pk>/getStatus', views.getStatus, name='gerKlipperStatys'),
     path('printer/<int:printer_pk>/select/<str:filename>', views.selectFile, name='select'),
     path('printer/<int:printer_pk>/printSelectedFile', views.printSelectedFile, name='printSelectedFile'),
     path('printer/<int:printer_pk>/deleteFile/<str:filename>', views.deleteFile, name='deleteFile'),
