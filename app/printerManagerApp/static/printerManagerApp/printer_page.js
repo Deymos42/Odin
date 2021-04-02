@@ -56,11 +56,9 @@ function init(printerPwStatus, printerId, lightPwStatus) {
 
     }
 
-    if (ledStatus == "led_status_on") {
-        ledOnOff("led_status_off");
-    } else if (ledStatus == "led_status_off") {
-        ledOnOff("led_status_on");
-    }
+  
+    ledOnOff();
+    
 
 }
 
@@ -96,30 +94,28 @@ function printerPowerOnOff(status) {
     }
 }
 
-function ledOnOff(status) {
+function ledOnOff() {
 
-    if (status == "led_status_on") {
-        $.ajax({
-            url: '/printer/' + id + '/ledOff',
-            type: "GET",
-            success: function (data) {
-                $("#led_status_on").html("Encender luz");
-                $('#led_status_on').attr('class', 'btn btn-info');
-                $('#led_status_on').attr('id', 'led_status_off');
-            }
-        });
+    $.ajax({
+        url: '/printer/' + id + '/toggleLed',
+        type: "GET",
+        success: function (data) {
+            
+        }
+    });
 
-    } else if (status == "led_status_off") {
-        $.ajax({
-            url: '/printer/' + id + '/ledOn',
-            type: "GET",
-            success: function (data) {
-                $("#led_status_off").html("Apagar luz");
-                $('#led_status_off').attr('class', 'btn btn-danger');
-                $('#led_status_off').attr('id', 'led_status_on');
-            }
-        });
+    if (ledStatus == "led_status_on") {
+        $("#led_status_on").html("Encender luz");
+        $('#led_status_on').attr('class', 'btn btn-info');
+        $('#led_status_on').attr('id', 'led_status_off');
+        ledStatus = "led_status_off"
 
+    } else if (ledStatus == "led_status_off") {
+
+        $("#led_status_off").html("Apagar luz");
+        $('#led_status_off').attr('class', 'btn btn-danger');
+        $('#led_status_off').attr('id', 'led_status_on');
+        ledStatus = "led_status_on"
     }
 }
 
@@ -169,7 +165,7 @@ setInterval(function () {
                 var formatedError = (data.error * 100).toFixed(2)
                 $('#status').html(data.state);
                 $('#errorNumber').html(formatedError);
-                gauge.set(formatedError); 
+                gauge.set(formatedError);
 
                 if (data.state == "Printing") {
                     $(".btn.btn-success").prop('disabled', true);
@@ -295,6 +291,10 @@ function cancel() {
     $.ajax({
         type: 'GET',
         url: '/printer/' + id + '//cancel',
+
+        success: function(json) {
+            toastr.success('Cancelando', 'WoW');
+        }
 
     });
 }
