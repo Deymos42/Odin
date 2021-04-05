@@ -17,7 +17,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = bool(int(os.environ.get('DEBUG', 1)))
+DEBUG = bool(int(os.environ.get('DEBUG',0)))
 
 APP_DIR = os.path.join(BASE_DIR, 'printerManagerApp')
 
@@ -41,7 +41,7 @@ SECRET_KEY = '%kvywg-bio#qs5k615lr&ulvr9fdh*blvr-9079utl3asyo=r0'
 
 
 ALLOWED_HOSTS = ['*']
-'''
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -81,7 +81,7 @@ LOGGING = {
         },
     },
 }
-'''
+
 # Application definition
 
 INSTALLED_APPS = [
