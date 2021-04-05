@@ -1,7 +1,7 @@
 printerStatus = null;
 ledStatus = null;
 id = null;
-
+contected = null;
 tabla = null;
 
 var opts = {
@@ -81,8 +81,14 @@ function printerPowerOnOff(status) {
         $.ajax({
             url: "/printer/" + id + "/printerPowerOn",
             type: "GET",
-            success: function () {
-                toastr.success('Impresora conectada!', 'WoW');
+            success: function (data) {                
+                conected = data;                
+                if (conected) {
+                    toastr.success("impresora conectada", 'WoW');
+                } else {
+                    toastr.error("conexion fallida", 'WoW');
+                }
+                
             }
         });
         $('#printer_power_status_off').attr('id', 'printer_power_status_on');
@@ -134,7 +140,8 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
-    if (printerStatus == "printer_power_status_on") {
+   
+    if (conected) {
         $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
@@ -223,6 +230,8 @@ setInterval(function () {
             "<br> tiempo restante: <b>" + "-" + "</b><br>");
         $('#input_tool').attr('placeholder', "off");
         $('#input_bed').attr('placeholder', "off");
+
+        
     }
 }, 1500);
 
