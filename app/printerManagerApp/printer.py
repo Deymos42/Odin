@@ -78,21 +78,28 @@ class Printer:
 def main():
 
  
-    p = Printer("http://192.168.0.103/", "5EB85BE5D98A481DA12B37A63DB08F87")
+    p = Printer("http://10.42.0.165/", "C0C0179A39DE472B9E692E3DF2F6025A")
+    counter = 0
+    print(p.client.connect(baudrate=115200))
+    print(p.client.connection_info()["current"]["state"])
+    while(p.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
+                counter = counter + 1
+                print("conecting..." + p.client.connection_info()["current"]["state"]  + str(counter))
+
     #p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
 
     #r =requests.post('http://192.168.0.103:7125/machine/services/restart?service=klipper')
 
     
 
-    myobj = { 'command': 'getPSUState'}
+    #myobj = { 'command': 'getPSUState'}
 
-    url = "http://192.168.0.103/api/plugin/psucontrol?apikey=5EB85BE5D98A481DA12B37A63DB08F87"
+    #url = "http://192.168.0.103/api/plugin/psucontrol?apikey=5EB85BE5D98A481DA12B37A63DB08F87"
 
-    x = requests.post(url, json=myobj)
-    print(x.text)
-    dic = json.loads(x.text)
-    print(dic['isPSUOn'])
+    #x = requests.post(url, json=myobj)
+    #print(x.text)
+    #dic = json.loads(x.text)
+    #print(dic['isPSUOn'])
     #url = 'http://192.168.0.103/api/files?apikey=749307BF21154B18BBFD75260CFD356Frecursive=true'
 
     #r = requests.get(url)

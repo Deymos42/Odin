@@ -34,7 +34,7 @@ def printer(request, printer_pk):
      url = printer_object.getUrl()
      urlCam = printer_object.getUrlCam()
      ledStatus = "led_status_off" # quitar si no
-     printerPowerStatus = printer_object.getPrinterPowerStatus()
+     printerPowerStatus = printer_object.getPrinterPowerStatus()   
      #printerPowerStatus = "printer_power_status_off"
      allPrinters = Printer.objects.all()
      context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 'ledStatus': ledStatus, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
@@ -152,8 +152,9 @@ def printerPowerOn(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)
         response = printer_object.PrinterPowerOn()             
-        printer_object.waitConnection() 
-        return HttpResponse(response, content_type = 'text/html')
+        conected = printer_object.waitConnection()         
+       
+        return HttpResponse(conected, content_type = 'text/html')
 
 def printerPowerOff(request, printer_pk):
      if request.is_ajax():
