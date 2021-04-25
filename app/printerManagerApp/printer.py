@@ -76,15 +76,32 @@ class Printer:
 
 
 def main():
+    """
+    URL = "http://127.0.0.1:8000/api-auth/"
+        
+    client = requests.session()
+    client.get(URL)  # sets cookie
+    
+    if 'csrftoken' in client.cookies:
+        # Django 1.6 and up
+        csrftoken = client.cookies['csrftoken']
+    else:
+        # older versions
+        csrftoken = client.cookies['csrf']
+    
+    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "admin", 'password': "admin"}
+    headers = {'Referer': URL}
+    response = client.post(URL, data=post_data, headers=headers)        
+    print("----------------------------")
+    print(response.text)
 
- 
-    p = Printer("http://10.42.0.165/", "C0C0179A39DE472B9E692E3DF2F6025A")
-    counter = 0
-    print(p.client.connect(baudrate=115200))
-    print(p.client.connection_info()["current"]["state"])
-    while(p.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
-                counter = counter + 1
-                print("conecting..." + p.client.connection_info()["current"]["state"]  + str(counter))
+    a = client.get( "http://localhost:3334/api/v1/printers/3" )
+
+    print("----------------------------")
+    print(a.text)
+
+    client = None        
+    data = json.loads(a.text)        
 
     #p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
 
@@ -104,7 +121,12 @@ def main():
 
     #r = requests.get(url)
     #p.stuff()   led_status_on
-
+    """
+    myobj = {'pin': 'r1', 'command': 'getStatus'}
+    url = "http://192.168.3.103/" + "api/plugin/octorelay?apikey=" + "5EB85BE5D98A481DA12B37A63DB08F87"
+    #x = requests.post(url, json=myobj)
+    x = requests.get("http://192.168.3.103/downloads/files/local/9_x_sujeta_bridas_UNEX.gcode?apikey=5EB85BE5D98A481DA12B37A63DB08F87")
+    print(x.text)
 
 
 

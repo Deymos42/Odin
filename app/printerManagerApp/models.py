@@ -14,7 +14,6 @@ class Document(models.Model):
 
 class TSD_url(models.Model):
     url = models.CharField(max_length=120)
-    #azumbawe = models.CharField(max_length=120)
     username = models.CharField(max_length=120)
     password = models.CharField(max_length=120)
 
@@ -113,6 +112,9 @@ class Printer(models.Model):
         
     def getUrl(self):
         return self.url
+    
+    def getApiKey(self):
+        return self.apikey
 
     def getUrlCam(self):
         return self.urlCam
@@ -124,12 +126,19 @@ class Printer(models.Model):
         x = requests.post(url, json=myobj)
         return x
 
+    def getLedStatus(self):
+        myobj = {'pin': 'r1', 'command': 'getStatus'}
+        url = self.url + "api/plugin/octorelay?apikey=" + self.apikey 
+        x = requests.post(url, json=myobj)
+        dic = json.loads(x.text)
+        return dic['status']
+
     def getPrinterPowerStatus(self):
         myobj = {'command': 'getPSUState'}
         url = self.url + "api/plugin/psucontrol?apikey=" + self.apikey 
         x = requests.post(url, json=myobj)        
         dic = json.loads(x.text)
-        print(dic['isPSUOn'])
+        #print(dic['isPSUOn'])
         if dic['isPSUOn'] == False:
            return "printer_power_status_off"
         elif dic['isPSUOn'] == True:

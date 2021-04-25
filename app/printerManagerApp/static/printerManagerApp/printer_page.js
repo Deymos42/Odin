@@ -1,8 +1,9 @@
 printerStatus = null;
 ledStatus = null;
 id = null;
-contected = null;
+contected = false;
 tabla = null;
+apikey = "?apikey=";
 
 var opts = {
     angle: 0, // The span of the gauge arc
@@ -36,13 +37,13 @@ gauge.animationSpeed = 100; // set animation speed (32 is default value)
 gauge.set(0.5); // set actual value
 
 
-function init(printerPwStatus, printerId, lightPwStatus) {
+function init(printerPwStatus, printerId, lightPwStatus, key) {
+    apikey = apikey.concat(key);
     printerStatus = printerPwStatus;
     id = printerId;
     ledStatus = lightPwStatus;
-
     enterFolder('local');
-
+    
 
     if (printerStatus == "printer_power_status_on") {
 
@@ -57,7 +58,18 @@ function init(printerPwStatus, printerId, lightPwStatus) {
     }
 
   
-    ledOnOff();
+     if (ledStatus == "False") {
+        $("#led_status_on").html("Encender luz");
+        $('#led_status_on').attr('class', 'btn btn-info');
+        $('#led_status_on').attr('id', 'led_status_off');
+        ledStatus = "True"
+
+    } else if (ledStatus == "True") {
+        $("#led_status_off").html("Apagar luz");
+        $('#led_status_off').attr('class', 'btn btn-danger');
+        $('#led_status_off').attr('id', 'led_status_on');
+        ledStatus = "False"
+    }
     
 
 }
@@ -110,18 +122,17 @@ function ledOnOff() {
         }
     });
 
-    if (ledStatus == "led_status_on") {
+    if (ledStatus == "False") {
         $("#led_status_on").html("Encender luz");
         $('#led_status_on').attr('class', 'btn btn-info');
         $('#led_status_on').attr('id', 'led_status_off');
-        ledStatus = "led_status_off"
+        ledStatus = "True"
 
-    } else if (ledStatus == "led_status_off") {
-
+    } else if (ledStatus == "True") {
         $("#led_status_off").html("Apagar luz");
         $('#led_status_off').attr('class', 'btn btn-danger');
         $('#led_status_off').attr('id', 'led_status_on');
-        ledStatus = "led_status_on"
+        ledStatus = "False"
     }
 }
 
@@ -141,7 +152,7 @@ function secondsToHms(d) {
 
 setInterval(function () {
    
-    if (conected) {
+  if (conected) {
         $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
@@ -158,7 +169,7 @@ setInterval(function () {
                         completation = data.progress.completion;
 
                     }
-                    $("#info").html(" progress: <b>" + completation.toFixed(3) * 100 + "%" + "</b><br>" +
+                    $("#info").html(" progress: <b>" + completation.toFixed(3)  + "%" + "</b><br>" +
                         "<br> archivo: <b>" + data.job.file.name + "</b><br>" +
                         "<br> tiempo de impresion:  " + printTime + "</b><br>" +
                         "<br> tiempo restante: <b>" + timeLeft + "</b><br>");
@@ -231,7 +242,7 @@ setInterval(function () {
         $('#input_tool').attr('placeholder', "off");
         $('#input_bed').attr('placeholder', "off");
 
-        
+
     }
 }, 1500);
 
@@ -409,7 +420,7 @@ class fileSystem {
             } else if (a[i].type == "machinecode") {
                 files.push(a[i].name);
                 filesPath.push(a[i].path); // path witout local 
-                filesLinks.push(a[i].refs.download)
+                filesLinks.push(a[i].refs.download.concat(apikey))
             }
         }
         return [carpets, carpetsPaths, files, filesPath, filesLinks];

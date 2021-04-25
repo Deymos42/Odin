@@ -24,7 +24,7 @@
                 <button id="led_status_off" style="margin-left: 2%;" onClick="ledOnOff(this.id)"
                     class="btn btn-info">Encender luz</button>
 
-
+                
 
 
 
@@ -370,7 +370,7 @@
 <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
 <script>
-    init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}");
+    init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}","{{apikey}}");
 
     $(function () {
         // Success Type
