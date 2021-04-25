@@ -41,7 +41,7 @@ SECRET_KEY = '%kvywg-bio#qs5k615lr&ulvr9fdh*blvr-9079utl3asyo=r0'
 
 
 ALLOWED_HOSTS = ['*']
-
+'''
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -81,7 +81,7 @@ LOGGING = {
         },
     },
 }
-
+'''
 # Application definition
 
 INSTALLED_APPS = [
