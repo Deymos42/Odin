@@ -26,10 +26,12 @@ urlpatterns = [
     path('printer/<int:printer_pk>', views.printer),
     path('cameras', views.allCamerasView.as_view()),
     path('dashboard', views.dashboard),
+     path('printerOffline', views.printerOffline),
 
     #-------------------printer_actions------------------------------------------   
  
     path('printer/<int:printer_pk>/toggleLed', views.toggleLed, name='ledOff'),
+    path('printer/<int:printer_pk>/getLedStatus', views.getLedStatus, name='ledStatus'),
     path('printer/<int:printer_pk>/getPrinterPowerStatus', views.getPrinterPowerStatus, name='getPowerStatus'),
     path('printer/<int:printer_pk>/printerPowerOn', views.printerPowerOn, name='printerOn'),
     path('printer/<int:printer_pk>/printerPowerOff', views.printerPowerOff, name='printerOff'),

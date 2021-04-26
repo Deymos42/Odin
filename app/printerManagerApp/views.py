@@ -4,11 +4,12 @@ from .models import Printer
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.conf import settings
+from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 
 import json
 import time
-
+import requests
 # Create your views here.
 
 
@@ -18,6 +19,19 @@ def index(request):
     allPrinters = Printer.objects.all()
     context = { 'my_printer_list': allPrinters } 
     return render(request, "printerManagerApp/index.html", context) 
+
+def printerOffline(request):
+    allPrinters = Printer.objects.all()
+    printersOffline = list()
+    for printer in allPrinters:
+        try:
+            requests.get(printer.url, timeout=3)        
+        except:
+            printersOffline.append(printer.name)
+    print("printers:")
+    print(printersOffline)
+    context = { 'my_printer_list': allPrinters, 'printersOffline': printersOffline} 
+    return render(request, "printerManagerApp/printerOffline.html", context) 
 
 def test(request):
     return render(request, "static/form-basic.html")
@@ -33,13 +47,27 @@ def printer(request, printer_pk):
      name = printer_object.getName()
      url = printer_object.getUrl()
      urlCam = printer_object.getUrlCam()
-     ledStatus = printer_object.getLedStatus()     
-     printerPowerStatus = printer_object.getPrinterPowerStatus()   
-     apikey = printer_object.getApiKey()
      allPrinters = Printer.objects.all()
-     context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 'ledStatus': ledStatus, 'apikey': apikey, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
+     #verify that raspy is online
+     try:
+        requests.get(url, timeout=3)
+        online = True        
+     except:
+        print("exepct")
+        online = False
+
+     if online:
+        ledStatus = printer_object.getLedStatus()     
+        printerPowerStatus = printer_object.getPrinterPowerStatus()   
+        apikey = printer_object.getApiKey()
+
+        context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 'ledStatus': ledStatus, 'apikey': apikey, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
    
-     return render(request, "printerManagerApp/printer.html",context)
+        return render(request, "printerManagerApp/printer.html",context)
+     else:        
+         return redirect("/printerOffline")
+     
+     
 
 def dashboard(request):   
      ID = list()
@@ -145,6 +173,13 @@ def toggleLed(request, printer_pk):
         printer_object = Printer.objects.get(IDa=printer_pk)
         response = printer_object.toggleLed()   
         return HttpResponse(response, content_type = 'application/json')
+
+def getLedStatus(request, printer_pk):
+    if request.is_ajax():
+        printer_object = Printer.objects.get(IDa=printer_pk)
+        response = printer_object.getLedStatus()   
+        data = json.dumps(response)
+        return HttpResponse(data, content_type = 'application/json')
 
 
 def printerPowerOn(request, printer_pk):
