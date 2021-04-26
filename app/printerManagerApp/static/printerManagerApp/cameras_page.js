@@ -1,6 +1,31 @@
 printerPowerStatus = null;
 ledPowerStatus = null;
 
+function changeButtonStatus(printerId){
+
+     $.ajax({
+        url: "/printer/" + printerId + "/getLedStatus",
+        type: "GET",
+            
+        success: function (data) {
+            ledPowerStatus = data;
+            if (ledPowerStatus) {
+                
+                $('#' + printerId).attr('name', "false");
+                $('#' + printerId).html("Apagar luz");
+                $('#' + printerId).attr('class', 'btn btn-danger');
+
+            } else {
+               
+                $('#' + printerId).attr('name', 'true');
+                $('#' + printerId).html("Encender luz");
+                $('#' + printerId).attr('class', 'btn btn-success');
+            }
+
+        }
+    });
+
+}
 
 function init(printerId) {
     //alert(printerId);
@@ -15,53 +40,22 @@ function init(printerId) {
         }
     });
 
-    $.ajax({
-        url: "/printer/" + printerId + "/getLedPowerStatus",
-        type: "GET",
-        success: function (data) {
 
-            ledPowerStatus = data;
-            if (ledPowerStatus == "led_status_on") {
-                $('#' + printerId).attr('name', "led_status_off");
-                $('#' + printerId).html("Apagar luz");
-                $('#' + printerId).attr('class', 'btn btn-danger');
-
-            } else if (ledPowerStatus == "led_status_off") {
-                $('#' + printerId).attr('name', 'led_status_on');
-                $('#' + printerId).html("Encender luz");
-                $('#' + printerId).attr('class', 'btn btn-success');
-            }
-
-        }
-    });
+   changeButtonStatus(printerId);
 
 }
 
 function ledOnOff(id) {
 
-    if (ledPowerStatus == "led_status_on") {
-        $.ajax({
-            url: '/printer/' + id + '/ledOff',
-            type: "GET",
-            success: function (data) {
-                ledPowerStatus = "led_status_off"
-                $('#' + id).attr('name', 'led_status_on');
-                $('#' + id).html("Encender luz");
-                $('#' + id).attr('class', 'btn btn-success');
-            }
-        });
 
-    } else if (ledPowerStatus == "led_status_off") {
-        $.ajax({
-            url: '/printer/' + id + '/ledOn',
-            type: "GET",
-            success: function (data) {                
-                ledPowerStatus = "led_status_on"
-                $('#' + id).attr('name', "led_status_off");
-                $('#' + id).html("Apagar luz");
-                $('#' + id).attr('class', 'btn btn-danger');
-            }
-        });
+    $.ajax({
+        url: '/printer/' + id + '/toggleLed',
+        type: "GET",
+        success: function (data) {
+           changeButtonStatus(id);
+        }
+    });
 
-    }
+
+
 }

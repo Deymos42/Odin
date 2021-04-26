@@ -122,11 +122,16 @@ def main():
     #r = requests.get(url)
     #p.stuff()   led_status_on
     """
-    myobj = {'pin': 'r1', 'command': 'getStatus'}
-    url = "http://192.168.3.103/" + "api/plugin/octorelay?apikey=" + "5EB85BE5D98A481DA12B37A63DB08F87"
-    #x = requests.post(url, json=myobj)
-    x = requests.get("http://192.168.3.103/downloads/files/local/9_x_sujeta_bridas_UNEX.gcode?apikey=5EB85BE5D98A481DA12B37A63DB08F87")
-    print(x.text)
+
+            
+
+    try:
+        url = "http://10.42.0.128/" 
+        #x = requests.post(url, json=myobj)
+        requests.get(url, timeout=4)
+        print("on")
+    except:
+        print("ofline")
 
 
 
