@@ -124,14 +124,21 @@ def main():
     """
 
             
+    s = requests.session()
+    
+    myobj ={'dni': "admin", 'password': "admin"}
+    url = "http://158.109.74.51:55001/auth/login/" 
+    x = s.post(url, json=myobj)    
+    print(x)
+    print(x.text)
+    print(s.cookies)
+    x = s.get("http://158.109.74.51:55001/patient/")
+    print(x.text)
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    print(~100)
+    print(100 | 15)
+    print(~1)
 
-    try:
-        url = "http://10.42.0.128/" 
-        #x = requests.post(url, json=myobj)
-        requests.get(url, timeout=4)
-        print("on")
-    except:
-        print("ofline")
 
 
 

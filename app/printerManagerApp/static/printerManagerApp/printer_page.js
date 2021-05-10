@@ -43,12 +43,15 @@ function init(printerPwStatus, printerId, lightPwStatus, key) {
     id = printerId;
     ledStatus = lightPwStatus;
     enterFolder('local');
-    
+
 
     if (printerStatus == "printer_power_status_on") {
 
         $("#printer_power_status_on").html("Apagar impresora");
         $('#printer_power_status_on').attr('class', 'btn btn-danger');
+        conected = true;
+        toastr.success("impresora conectada", 'WoW');
+
 
     } else if (printerStatus == "printer_power_status_off") {
 
@@ -57,8 +60,8 @@ function init(printerPwStatus, printerId, lightPwStatus, key) {
 
     }
 
-  
-     if (ledStatus == "False") {
+
+    if (ledStatus == "False") {
         $("#led_status_on").html("Encender luz");
         $('#led_status_on').attr('class', 'btn btn-info');
         $('#led_status_on').attr('id', 'led_status_off');
@@ -70,7 +73,7 @@ function init(printerPwStatus, printerId, lightPwStatus, key) {
         $('#led_status_off').attr('id', 'led_status_on');
         ledStatus = "False"
     }
-    
+
 
 }
 
@@ -93,14 +96,14 @@ function printerPowerOnOff(status) {
         $.ajax({
             url: "/printer/" + id + "/printerPowerOn",
             type: "GET",
-            success: function (data) {                
-                conected = data;                
+            success: function (data) {
+                conected = data;
                 if (conected) {
                     toastr.success("impresora conectada", 'WoW');
                 } else {
                     toastr.error("conexion fallida", 'WoW');
                 }
-                
+
             }
         });
         $('#printer_power_status_off').attr('id', 'printer_power_status_on');
@@ -118,7 +121,7 @@ function ledOnOff() {
         url: '/printer/' + id + '/toggleLed',
         type: "GET",
         success: function (data) {
-            
+
         }
     });
 
@@ -151,8 +154,9 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
-   
-  if (conected) {
+    
+    if (conected) {
+        
         $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
@@ -169,7 +173,7 @@ setInterval(function () {
                         completation = data.progress.completion;
 
                     }
-                    $("#info").html(" progress: <b>" + completation.toFixed(3)  + "%" + "</b><br>" +
+                    $("#info").html(" progress: <b>" + completation.toFixed(3) + "%" + "</b><br>" +
                         "<br> archivo: <b>" + data.job.file.name + "</b><br>" +
                         "<br> tiempo de impresion:  " + printTime + "</b><br>" +
                         "<br> tiempo restante: <b>" + timeLeft + "</b><br>");
@@ -212,10 +216,11 @@ setInterval(function () {
             type: "GET",
             success: function (data) {
                 $("#toolTemp").html(data.actual);
+                
                 if (data.target != 0) {
-                    $('#input_tool').attr('placeholder', data.target);
+                    $('#inputTool').attr('placeholder', data.target);
                 } else {
-                    $('#input_tool').attr('placeholder', "off");
+                    $('#inputTool').attr('placeholder', "off");
                 }
             }
         });
@@ -225,9 +230,9 @@ setInterval(function () {
             success: function (data) {
                 $("#bedTemp").html(data.actual);
                 if (data.target != 0) {
-                    $('#input_bed').attr('placeholder', data.target);
+                    $('#inputBed').attr('placeholder', data.target);
                 } else {
-                    $('#input_bed').attr('placeholder', "off");
+                    $('#inputBed').attr('placeholder', "off");
                 }
             }
         });
@@ -312,7 +317,7 @@ function cancel() {
         type: 'GET',
         url: '/printer/' + id + '//cancel',
 
-        success: function(json) {
+        success: function (json) {
             toastr.success('Cancelando', 'WoW');
         }
 

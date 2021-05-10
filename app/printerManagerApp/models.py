@@ -51,8 +51,7 @@ class Printer(models.Model):
         if(self.getPrinterPowerStatus() == "printer_power_status_off"):           
             return False
         else:            
-            self.connect()            
-            #self.client.connect(baudrate=115200)
+            self.connect()                       
             while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
                 self.client.connect(baudrate=115200)
                 counter = counter + 1
@@ -136,9 +135,10 @@ class Printer(models.Model):
     def getPrinterPowerStatus(self):
         myobj = {'command': 'getPSUState'}
         url = self.url + "api/plugin/psucontrol?apikey=" + self.apikey 
-        x = requests.post(url, json=myobj)        
+        x = requests.post(url, json=myobj)     
+        
         dic = json.loads(x.text)
-        #print(dic['isPSUOn'])
+        print(dic)
         if dic['isPSUOn'] == False:
            return "printer_power_status_off"
         elif dic['isPSUOn'] == True:
@@ -170,27 +170,27 @@ class Printer(models.Model):
             print(e)
 
     def getError(self):
-        URL = self.TSDurl + "accounts/login/"
-        
+        URL = self.TSDurl + "accounts/login/"        
         client = requests.session()
-        client.get(URL)  # sets cookie
-        
-        if 'csrftoken' in client.cookies:
-            # Django 1.6 and up
-            csrftoken = client.cookies['csrftoken']
+        errorTSD = False
+        try:
+            client.get(URL, timeout=3)  # sets cookie      
+        except:
+            errorTSD = True
+            
+        if(errorTSD):
+           return "TSDerror"
         else:
-            # older versions
-            csrftoken = client.cookies['csrf']
+            csrftoken = client.cookies['csrftoken']       
+            post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
+            headers = {'Referer': URL}
+            response = client.post(URL, data=post_data, headers=headers)          
+           
+            a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
+            client = None        
+            data = json.loads(a.text)        
+            return data["normalized_p"]
         
-        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
-        headers = {'Referer': URL}
-        response = client.post(URL, data=post_data, headers=headers)        
-        print("----------------------------")
-        print(post_data)
-        a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
-        client = None        
-        data = json.loads(a.text)        
-        return data["normalized_p"]
         
 
     def getAllFilesAndFolders(self):

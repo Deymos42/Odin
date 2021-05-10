@@ -16,9 +16,9 @@ import requests
  # -----------------------------------------------------------------------PAGES---------------------------------------------------------------------------------
 
 def index(request):
-    allPrinters = Printer.objects.all()
-    context = { 'my_printer_list': allPrinters } 
-    return render(request, "printerManagerApp/index.html", context) 
+    #allPrinters = Printer.objects.all()
+    #context = { 'my_printer_list': allPrinters } 
+    return render(request, "printerManagerApp/login.html") 
 
 def printerOffline(request):
     allPrinters = Printer.objects.all()
@@ -145,6 +145,7 @@ def getToolTemp(request, printer_pk):
   
         info = printer_object.getToolTemp()
         data = json.dumps(info)
+        print(info)
         return HttpResponse(data, content_type = 'application/json')
 
 def setBedTemp(request, printer_pk, temp):
@@ -200,11 +201,11 @@ def printerPowerOff(request, printer_pk):
 def get_printer_info(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)        
-        #printer_object.connect()
         info = printer_object.get_printer_info() 
-        info["error"] = printer_object.getError()        
+    
+        info["error"] = printer_object.getError()      
+        #print(info)  
         data = json.dumps(info)    
-        print(data)
         return HttpResponse(data, content_type = 'application/json')
     else:
         raise Http404
