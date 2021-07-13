@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
 
 from printerManagerApp import views
 
@@ -22,7 +23,8 @@ urlpatterns = [
     #-------------------general_links------------------------------------------
     path('admin/', admin.site.urls),
     path('', views.index),
-    path('test', views.test), 
+    path('test', views.test),
+    path('accounts/', include('django.contrib.auth.urls')), 
     path('printer/<int:printer_pk>', views.printer),
     path('cameras', views.allCamerasView.as_view()),
     path('dashboard', views.dashboard),
@@ -35,15 +37,13 @@ urlpatterns = [
     path('printer/<int:printer_pk>/getPrinterPowerStatus', views.getPrinterPowerStatus, name='getPowerStatus'),
     path('printer/<int:printer_pk>/printerPowerOn', views.printerPowerOn, name='printerOn'),
     path('printer/<int:printer_pk>/printerPowerOff', views.printerPowerOff, name='printerOff'),
-    path('printer/<int:printer_pk>/getInfo', views.get_printer_info, name='ajax_test'),
+    path('printer/<int:printer_pk>/getInfo', views.getPrinterInfo, name='ajax_test'),
     path('printer/<int:printer_pk>/homePrinter', views.homePrinter, name='homePrinter'),
     path('printer/<int:printer_pk>/preheat', views.preheat, name='preheat'),
     path('printer/<int:printer_pk>/extrude', views.extrude, name='extrude'),
     path('printer/<int:printer_pk>/retract', views.retract, name='retract'),
     path('printer/<int:printer_pk>/setToolTemp/<int:temp>', views.setToolTemp, name='setToolTemp'),
-    path('printer/<int:printer_pk>/getToolTemp', views.getToolTemp, name='setToolTemp'),
     path('printer/<int:printer_pk>/setBedTemp/<int:temp>', views.setBedTemp, name='setbedTemp'),
-    path('printer/<int:printer_pk>/getBedTemp', views.getBedTemp, name='getBedTemp'),
     path('printer/<int:printer_pk>/getAllFilesAndFolders', views.getAllFilesAndFolders, name='getAkkfiles'),    
     path('printer/<int:printer_pk>/getStatus', views.getStatus, name='gerKlipperStatys'),
     path('printer/<int:printer_pk>/select/<str:filename>', views.selectFile, name='select'),

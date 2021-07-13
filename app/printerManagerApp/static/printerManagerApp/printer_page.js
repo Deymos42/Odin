@@ -1,9 +1,12 @@
 printerStatus = null;
 ledStatus = null;
 id = null;
-contected = false;
+conected = false;
 tabla = null;
 apikey = "?apikey=";
+username = "";
+
+LIMITED_USER = "alumnes";
 
 var opts = {
     angle: 0, // The span of the gauge arc
@@ -37,13 +40,14 @@ gauge.animationSpeed = 100; // set animation speed (32 is default value)
 gauge.set(0.5); // set actual value
 
 
-function init(printerPwStatus, printerId, lightPwStatus, key) {
+function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
+
     apikey = apikey.concat(key);
     printerStatus = printerPwStatus;
     id = printerId;
     ledStatus = lightPwStatus;
+    username = Username;
     enterFolder('local');
-
 
     if (printerStatus == "printer_power_status_on") {
 
@@ -78,64 +82,71 @@ function init(printerPwStatus, printerId, lightPwStatus, key) {
 }
 
 function printerPowerOnOff(status) {
-    if (status == "printer_power_status_on") {
-        $.ajax({
-            url: "/printer/" + id + "/printerPowerOff",
-            type: "GET",
-            success: function () {
-                $("#printer_power_status_on").html("Encender impresora");
-                $('#printer_power_status_on').attr('class', 'btn btn-success');
-                $('#printer_power_status_on').attr('id', 'printer_power_status_off');
-                printerStatus = 'printer_status_off'
+    if (username != LIMITED_USER) {
+        if (status == "printer_power_status_on") {
+            $.ajax({
+                url: "/printer/" + id + "/printerPowerOff",
+                type: "GET",
+                success: function () {
+                    $("#printer_power_status_on").html("Encender impresora");
+                    $('#printer_power_status_on').attr('class', 'btn btn-success');
+                    $('#printer_power_status_on').attr('id', 'printer_power_status_off');
+                    printerStatus = 'printer_status_off'
 
-            }
-        });
-
-
-    } else if (status == "printer_power_status_off") {
-        $.ajax({
-            url: "/printer/" + id + "/printerPowerOn",
-            type: "GET",
-            success: function (data) {
-                conected = data;
-                if (conected) {
-                    toastr.success("impresora conectada", 'WoW');
-                } else {
-                    toastr.error("conexion fallida", 'WoW');
                 }
+            });
 
-            }
-        });
-        $('#printer_power_status_off').attr('id', 'printer_power_status_on');
-        $("#printer_power_status_on").html("Apagar impresora");
-        $('#printer_power_status_on').attr('class', 'btn btn-danger');
-        $('#status').html("Online");
-        printerStatus = 'printer_power_status_on'
 
+        } else if (status == "printer_power_status_off") {
+            $.ajax({
+                url: "/printer/" + id + "/printerPowerOn",
+                type: "GET",
+                success: function (data) {
+                    conected = data;
+                    if (conected) {
+                        toastr.success("impresora conectada", 'WoW');
+                    } else {
+                        toastr.error("conexion fallida", 'WoW');
+                    }
+
+                }
+            });
+            $('#printer_power_status_off').attr('id', 'printer_power_status_on');
+            $("#printer_power_status_on").html("Apagar impresora");
+            $('#printer_power_status_on').attr('class', 'btn btn-danger');
+            $('#status').html("Online");
+            printerStatus = 'printer_power_status_on'
+
+        }
+    } else {
+        toastr.error('No tienes permisos', 'Error');
     }
 }
 
 function ledOnOff() {
+    if (username != LIMITED_USER) {
+        $.ajax({
+            url: '/printer/' + id + '/toggleLed',
+            type: "GET",
+            success: function (data) {
 
-    $.ajax({
-        url: '/printer/' + id + '/toggleLed',
-        type: "GET",
-        success: function (data) {
+            }
+        });
 
+        if (ledStatus == "False") {
+            $("#led_status_on").html("Encender luz");
+            $('#led_status_on').attr('class', 'btn btn-info');
+            $('#led_status_on').attr('id', 'led_status_off');
+            ledStatus = "True"
+
+        } else if (ledStatus == "True") {
+            $("#led_status_off").html("Apagar luz");
+            $('#led_status_off').attr('class', 'btn btn-danger');
+            $('#led_status_off').attr('id', 'led_status_on');
+            ledStatus = "False"
         }
-    });
-
-    if (ledStatus == "False") {
-        $("#led_status_on").html("Encender luz");
-        $('#led_status_on').attr('class', 'btn btn-info');
-        $('#led_status_on').attr('id', 'led_status_off');
-        ledStatus = "True"
-
-    } else if (ledStatus == "True") {
-        $("#led_status_off").html("Apagar luz");
-        $('#led_status_off').attr('class', 'btn btn-danger');
-        $('#led_status_off').attr('id', 'led_status_on');
-        ledStatus = "False"
+    } else {
+        toastr.error('No tienes permisos', 'Error');
     }
 }
 
@@ -154,9 +165,9 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
-    
+
     if (conected) {
-        
+
         $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
@@ -173,7 +184,7 @@ setInterval(function () {
                         completation = data.progress.completion;
 
                     }
-                    $("#info").html(" progress: <b>" + completation.toFixed(3) + "%" + "</b><br>" +
+                    $("#info").html(" progress: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
                         "<br> archivo: <b>" + data.job.file.name + "</b><br>" +
                         "<br> tiempo de impresion:  " + printTime + "</b><br>" +
                         "<br> tiempo restante: <b>" + timeLeft + "</b><br>");
@@ -208,34 +219,24 @@ setInterval(function () {
                     $('#resume').attr('id', 'pause');
                 }
 
+                $("#toolTemp").html(data.toolTemp.actual);
 
-            }
-        });
-        $.ajax({
-            url: '/printer/' + id + '/getToolTemp',
-            type: "GET",
-            success: function (data) {
-                $("#toolTemp").html(data.actual);
-                
-                if (data.target != 0) {
-                    $('#inputTool').attr('placeholder', data.target);
+                if (data.toolTemp.target != 0) {
+                    $('#inputTool').attr('placeholder', data.toolTemp.target);
                 } else {
                     $('#inputTool').attr('placeholder', "off");
                 }
-            }
-        });
-        $.ajax({
-            url: '/printer/' + id + '/getBedTemp',
-            type: "GET",
-            success: function (data) {
-                $("#bedTemp").html(data.actual);
-                if (data.target != 0) {
-                    $('#inputBed').attr('placeholder', data.target);
+
+                $("#bedTemp").html(data.bedTemp.actual);
+                if (data.bedTemp.target != 0) {
+                    $('#inputBed').attr('placeholder', data.bedTemp.target);
                 } else {
                     $('#inputBed').attr('placeholder', "off");
                 }
             }
         });
+
+
     } else {
         $(".btn.btn-success").prop('disabled', false);
         $("#toolTemp").html("-");
@@ -249,121 +250,165 @@ setInterval(function () {
 
 
     }
-}, 1500);
+}, 2000);
 
 function setBedtemp() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/setBedTemp/' + $('#inputBed').val(),
-        success: function (json) {
-            $("#inputBed").attr('placeholder', $('#inputBed').val());
-        },
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/setBedTemp/' + $('#inputBed').val(),
+            success: function (json) {
+                $("#inputBed").attr('placeholder', $('#inputBed').val());
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function coolBed() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/setBedTemp/' + 0,
-        success: function (json) {
-            toastr.success('Enfriando cama', 'WoW');
-            $("#inputBed").attr('placeholder', '-');
-        },
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/setBedTemp/' + 0,
+            success: function (json) {
+                toastr.success('Enfriando cama', 'WoW');
+                $("#inputBed").attr('placeholder', '-');
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function setToolTemp() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/setToolTemp/' + $('#inputTool').val(),
-        success: function (json) {
-            $("#inputTool").attr('placeholder', $('#inputTool').val());
-        },
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/setToolTemp/' + $('#inputTool').val(),
+            success: function (json) {
+                $("#inputTool").attr('placeholder', $('#inputTool').val());
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function coolTool() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/setToolTemp/' + 0,
-        success: function (json) {
-            toastr.success('Enfriando extrusor!', 'WoW');
-            $("#inputTool").attr('placeholder', '-');
-        },
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/setToolTemp/' + 0,
+            success: function (json) {
+                toastr.success('Enfriando extrusor!', 'WoW');
+                $("#inputTool").attr('placeholder', '-');
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function printSelectedFile() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/printSelectedFile',
-        success: function (data) {
-            //$('#' + filepath).attr('style', 'background-color:moccasin');                   
-            toastr.success('Imprimiendo archivo seleccionado ', 'WoW');
-        },
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/printSelectedFile',
+            success: function (data) {
+                //$('#' + filepath).attr('style', 'background-color:moccasin');                   
+                toastr.success('Imprimiendo archivo seleccionado ', 'WoW');
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function toggle(id) {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/toggle',
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/toggle',
 
-    });
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function cancel() {
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '//cancel',
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/cancel',
 
-        success: function (json) {
-            toastr.success('Cancelando', 'WoW');
-        }
+            success: function (json) {
+                toastr.success('Cancelando', 'WoW');
+            }
 
-    });
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function homePrinter() {
-    $.ajax({
-        url: '/printer/' + id + '/homePrinter',
-        type: "GET",
-    });
+    if (username != LIMITED_USER) {
+        $.ajax({
+            url: '/printer/' + id + '/homePrinter',
+            type: "GET",
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function preheat() {
-    $.ajax({
-        url: '/printer/' + id + '/preheat',
+    if (username != LIMITED_USER) {
+        $.ajax({
+            url: '/printer/' + id + '/preheat',
 
-        success: function (json) {
-            toastr.success('Calentando', 'WoW');
-            $("#inputBed").attr('placeholder', '60');
-            $("#inputTool").attr('placeholder', '205');
-        },
-    });
+            success: function (json) {
+                toastr.success('Calentando', 'WoW');
+                $("#inputBed").attr('placeholder', '60');
+                $("#inputTool").attr('placeholder', '205');
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function extrude() {
-    $.ajax({
-        url: '/printer/' + id + '/extrude',
+    if (username != LIMITED_USER) {
+        $.ajax({
+            url: '/printer/' + id + '/extrude',
 
-        success: function (json) {
-            toastr.success('extruyendo', 'WoW');
+            success: function (json) {
+                toastr.success('extruyendo', 'WoW');
 
-        },
-    });
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 
 function retract() {
-    $.ajax({
-        url: '/printer/' + id + '/retract',
+    if (username != LIMITED_USER) {
+        $.ajax({
+            url: '/printer/' + id + '/retract',
 
-        success: function (json) {
-            toastr.success('retrayendo', 'WoW');
+            success: function (json) {
+                toastr.success('retrayendo', 'WoW');
 
-        },
-    });
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function destroyDataRable() {
@@ -388,15 +433,19 @@ function download(url) {
 }
 
 function deleteFile(filepath) {
+    if (username != LIMITED_USER) {
 
-    var newFilepath = filepath.replaceAll("/", "@");
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/deleteFile/' + newFilepath,
-        success: function (json) {
-            enterFolder(actualPath)
-        },
-    });
+        var newFilepath = filepath.replaceAll("/", "@");
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/deleteFile/' + newFilepath,
+            success: function (json) {
+                enterFolder(actualPath)
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 class fileSystem {
 
@@ -610,56 +659,69 @@ function passIdToModal(id) {
 }
 
 function print(filepath) {
-    var newFilepath = filepath.replaceAll("/", "@");
+    if (username != LIMITED_USER) {
 
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/print/' + newFilepath,
+        var newFilepath = filepath.replaceAll("/", "@");
 
-        success: function (json) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/print/' + newFilepath,
 
-            $('#' + filepath).attr('style', 'background-color:moccasin');
-            $('#' + filepath).attr('onClick', 'none'); //TODO make alert
-            toastr.success('Imprimiendo ' + filepath, 'WoW');
-        },
+            success: function (json) {
 
-    });
+                $('#' + filepath).attr('style', 'background-color:moccasin');
+                $('#' + filepath).attr('onClick', 'none'); //TODO make alert
+                toastr.success('Imprimiendo ' + filepath, 'WoW');
+            },
+
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 
 }
 
 
 
 function selectFile(filepath) {
-    var newFilepath = filepath.replaceAll("/", "@");
+    if (username != LIMITED_USER) {
+        var newFilepath = filepath.replaceAll("/", "@");
 
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/select/' + newFilepath,
-        success: function (data) {
-            toastr.success('archivo seleccionado para imprimir ', 'WoW');
-            $('#' + filepath).attr('style', 'background-color:red');
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/select/' + newFilepath,
+            success: function (data) {
+                toastr.success('archivo seleccionado para imprimir ', 'WoW');
+                $('#' + filepath).attr('style', 'background-color:red');
 
-        },
-    });
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function createFolder() {
-    if (actualPath != "local") {
-        var folderPath = actualPath.slice(0, -1) + "/" + $('#folderPathTextBox').val();
-    } else {
-        var folderPath = $('#folderPathTextBox').val();
-    }
-    $('#folderPathTextBox').val("");
-    var newFilepath = folderPath.replaceAll("/", "@");
+    if (username != LIMITED_USER) {
+        if (actualPath != "local") {
+            var folderPath = actualPath.slice(0, -1) + "/" + $('#folderPathTextBox').val();
+        } else {
+            var folderPath = $('#folderPathTextBox').val();
+        }
+        $('#folderPathTextBox').val("");
+        var newFilepath = folderPath.replaceAll("/", "@");
 
-    $.ajax({
-        type: 'GET',
-        url: '/printer/' + id + '/createFolder/' + newFilepath,
-        success: function (data) {
-            toastr.success('Carpeta creada correctamente', 'WoW');
-            enterFolder(actualPath)
-        },
-    });
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/createFolder/' + newFilepath,
+            success: function (data) {
+                toastr.success('Carpeta creada correctamente', 'WoW');
+                enterFolder(actualPath)
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
 }
 
 function pulsarIntroToolTemp(e) {

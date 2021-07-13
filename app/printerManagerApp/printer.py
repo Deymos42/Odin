@@ -62,7 +62,7 @@ class Printer:
     def waitConnection(self):
         counter = 0
         self.client.connect(baudrate = 250000)
-        while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
+        while(self.client.connection_info()["current"]["state"] != "Paused" and counter < 30):
             counter = counter + 1
             print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
 
@@ -76,6 +76,14 @@ class Printer:
 
 
 def main():
+
+    p2 = Printer("http://10.42.0.43/", "74384C92105B40408B8F59CF0B452167")
+
+    p2.waitConnection()
+
+    print(p2.client.cancel())
+
+
     """
     URL = "http://127.0.0.1:8000/api-auth/"
         
@@ -103,7 +111,7 @@ def main():
     client = None        
     data = json.loads(a.text)        
 
-    #p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
+    p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
 
     #r =requests.post('http://192.168.0.103:7125/machine/services/restart?service=klipper')
 
@@ -123,22 +131,7 @@ def main():
     #p.stuff()   led_status_on
     """
 
-            
-    s = requests.session()
     
-    myobj ={'dni': "admin", 'password': "admin"}
-    url = "http://158.109.74.51:55001/auth/login/" 
-    x = s.post(url, json=myobj)    
-    print(x)
-    print(x.text)
-    print(s.cookies)
-    x = s.get("http://158.109.74.51:55001/patient/")
-    print(x.text)
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    print(~100)
-    print(100 | 15)
-    print(~1)
-
 
 
 

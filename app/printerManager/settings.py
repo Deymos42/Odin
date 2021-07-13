@@ -30,7 +30,8 @@ else:
         os.path.join(APP_DIR, 'static'),
 )
 
-
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/

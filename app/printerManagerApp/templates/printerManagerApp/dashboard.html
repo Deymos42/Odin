@@ -5,6 +5,9 @@
 
 {% include "printerManagerApp/sidebar.html" %}
 
+<!--This page JavaScript -->
+<script src="{% static '/dashboard_page.js' %}"></script>
+
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
 <div class="page-wrapper">
@@ -14,9 +17,9 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Dashboard</h4>
+                <h3 id="test" class="page-title">Dashboard</h3>
                 <div class="ml-auto text-right">
-                   
+
                 </div>
             </div>
         </div>
@@ -37,37 +40,54 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">{{object.name}}</h3>
+                        <h3 class="card-title">{{object.name}}
+
+                            <button id="led{{object.getId}}" style="margin-left: 2%;"
+                                onClick="ledOnOff('{{object.getLedStatus}}','{{object.getId}}')"
+                                class="btn btn-info">Luz</button>
+                            <button id={{object.getPrinterPowerStatus}}{{object.getId}}
+                                onClick="printerPowerOnOff('{{object.getPrinterPowerStatus}}','{{object.getId}}')"
+                                class="btn btn-success float-right">{{object.getPrinterPowerStatus}}{{object.getId}}</button>
+                        </h3>
+
+
+
                         <hr>
                         <div style="text-align:left;float:left;">
-                            <h5 id="info">
+                            <h5 id="info{{object.getId}}">
+                                Status: <br><br>
+                                Progress: - <br><br>
+                                Archivo: - <br><br>
+                                Tiempo de impresion: -<br><br>
+                                Tiempo restante: -</h5>
+                            <br>
 
-                                progress: - <br><br>
-                                archivo: -<br><br>
-                                tiempo de impresion: -<br><br>
-                                tiempo restante: -</h5>
-                                <br>
-                            <button id="homePrinter" style="margin-left: 2%;" onClick=""
-                                class="btn btn-danger">Stop</button>
 
-                            <button id="preheat" style="margin-left: 2%;" onClick=""
-                                class="btn btn-info">Light</button>
                         </div>
                         <div style="text-align:right;float:right;">
-
-                            <img src="{{object.url}}webcam/?action=stream" style="width: 270;" height="180">
+                            <a href="../printer/{{object.getId}}">
+                                <img src="{{object.urlCam}}webcam/?action=stream" style="width: 270;" height="180">
+                            </a>
                             <div class="progress m-t-15">
                                 <div id="barraProgreso"
                                     class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    style="width:100%"></div>
+                                    style="width:43"></div>
                             </div>
-                            
+                            <div style="display: block; text-align: center;">
+                                <h5 id="progress" style="margin-top: 5px;">-</h5>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                initPrinter("{{object.getPrinterPowerStatus}}", "{{object.getId}}", "{{object.getLedStatus}}", "{{username}}");
+            </script>
             {% endfor %}
+
         </div>
+
         <!-- ============================================================== -->
         <!-- End PAge Content -->
         <!-- ============================================================== -->
@@ -101,7 +121,7 @@
 <!-- footer -->
 <!-- ============================================================== -->
 <footer class="footer text-center">
-   EsplaiTech
+    EsplaiTech
 </footer>
 <!-- ============================================================== -->
 <!-- End footer -->
@@ -129,12 +149,19 @@
 <!--Menu sidebar -->
 <script src="{% static 'dist/js/sidebarmenu.js' %}"></script>
 <!--This page JavaScript -->
-<script src="{% static 'cameras_page.js' %}"></script>
+
 <!--Custom JavaScript -->
 <script src="{% static 'dist/js/custom.min.js' %}"></script>
 <!-- this page js -->
 <script src="{% static 'assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js' %}"></script>
 <script src="{% static 'assets/libs/magnific-popup/meg.init.js' %}"></script>
+<script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
+
+<script>
+    updateStatus();
+</script>
+
+
 </body>
 
 </html>

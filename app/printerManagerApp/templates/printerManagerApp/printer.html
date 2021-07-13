@@ -7,11 +7,11 @@
 <!-- ============================================================== -->
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
-<div class="page-wrapper" onload='init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}")'>
+<div class="page-wrapper">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
-    <div class="page-breadcrumb">
+    <div class="page-breadcrumb" onload='test("{{username}}")'>
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
                 <h2 class="page-title" style="text-align: center;"> {{PrinterName}}</h2>
@@ -241,9 +241,11 @@
                                 </div>
                             </div>
 
+                            {% ifnotequal request.user.username "alumnes" %}
 
                             <button type=" button" class='btn btn-info margin-5' onclick="actualPathForUpladFile()"
                                 data-toggle="modal" data-target="#uploadFile">Subir archivo</button>
+                           {% endifnotequal %}
                             <!-- Modal -->
                             <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -369,7 +371,7 @@
 <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
 <script>
-    init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}","{{apikey}}");
+    init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}","{{apikey}}","{{username}}");
 
     $(function () {
         // Success Type

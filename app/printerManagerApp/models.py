@@ -159,7 +159,7 @@ class Printer(models.Model):
         return x
         
 
-    def get_printer_info(self):
+    def getPrinterInfo(self):
         if self.client == None:
             self.connect()
         try:             
