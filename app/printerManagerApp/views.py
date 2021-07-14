@@ -142,11 +142,11 @@ def action_to_do_printer(request, printer_pk, *args, **kwargs):
     printer_object.get_printer_info()
     return HttpResponse(status=201)
 
-def homePrinter(request, printer_pk):
+def homePrinter(request, printer_pk, axes):
     if request.user.username != LIMITED_USER:
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)
-            data = printer_object.home()             
+            data = printer_object.home(axes)             
             return HttpResponse(data, content_type = 'application/json')
 
 def extrude(request, printer_pk):
@@ -297,6 +297,16 @@ def printFile(request, printer_pk, filename):
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.print(filename)      
+            
+            return HttpResponse(jsonObject, content_type = 'text/html')
+        else:
+            raise Http404
+
+def jog(request, printer_pk, x, y, z):
+    if request.user.username != LIMITED_USER:
+        if request.is_ajax():
+            printer_object = Printer.objects.get(IDa=printer_pk)
+            jsonObject = printer_object.jog(int(x), int(y), int(z))     
             
             return HttpResponse(jsonObject, content_type = 'text/html')
         else:

@@ -77,11 +77,11 @@ class Printer:
 
 def main():
 
-    p2 = Printer("http://10.42.0.43/", "74384C92105B40408B8F59CF0B452167")
+    p2 = Printer("http://192.168.3.103:5001/", "5EB85BE5D98A481DA12B37A63DB08F87")
 
-    p2.waitConnection()
+    #p2.waitConnection()
 
-    print(p2.client.cancel())
+    print(p2.client.home(''))
 
 
     """

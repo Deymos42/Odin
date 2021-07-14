@@ -62,10 +62,10 @@ class Printer(models.Model):
                 return True
 
 
-    def home(self):
+    def home(self, axes):
         if self.client == None:
             self.connect()
-        return self.client.home()
+        return self.client.home(axes)
 
     def extrude(self):
         if self.client == None:
@@ -122,8 +122,8 @@ class Printer(models.Model):
     def toggleLed(self):
         myobj = {'pin': 'r1', 'command': 'update'}
         url = self.url + "api/plugin/octorelay?apikey=" + self.apikey 
-        x = requests.post(url, json=myobj)
-        return x
+        return requests.post(url, json=myobj)
+    
 
     def getLedStatus(self):
         myobj = {'pin': 'r1', 'command': 'getStatus'}
@@ -148,15 +148,14 @@ class Printer(models.Model):
     def PrinterPowerOn(self):        
         myobj = {'command': "turnPSUOn"}
         url = self.url + "api/plugin/psucontrol?apikey=" + self.apikey 
-        x = requests.post(url, json=myobj)
-        return x
-       
+        return requests.post(url, json=myobj)
+      
         
     def printerPowerOFf(self):
         myobj = {'command': "turnPSUOff"}
         url = self.url + "api/plugin/psucontrol?apikey=" + self.apikey 
-        x = requests.post(url, json=myobj)
-        return x
+        return requests.post(url, json=myobj)
+        
         
 
     def getPrinterInfo(self):
@@ -206,7 +205,7 @@ class Printer(models.Model):
         path = "local/" + filePath.replace("@","/")                   
         if(self.client == None):
             self.connect()
-        r = self.client.select(path)       
+        self.client.select(path)       
         return "done"
 
     def deleteFile(self, filePath):
@@ -222,8 +221,8 @@ class Printer(models.Model):
             self.connect()            
         path = folderPath.replace("@","/")         
         data = {'foldername': path}
-        r = requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = data)    
-        return r
+        return requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = data)    
+        
 
     def uploadFile(self, filePath, myfile):  
         if(self.client == None):
@@ -235,37 +234,42 @@ class Printer(models.Model):
             dataForm = {'path': ""}        
         dataFile = {'file': myfile}               
         
-        r = requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = dataForm, files = dataFile)            
+        return requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = dataForm, files = dataFile)            
         
-        return r
+         
 
     def printSelectedFile(self):       
         
         if(self.client == None):
             self.connect()       
-        r = self.client.start()
+        return  self.client.start()
     
-        return r
+        
        
     def print(self, filePath):          
         if(self.client == None):
             self.connect()
         self.selectFile(filePath)
-        r = self.client.start()
+        return self.client.start()
     
-        return r
+        
         
     def toggle(self):          
         if(self.client == None):
             self.connect()       
-        r = self.client.toggle()
+        return self.client.toggle()
     
-        return r
+        
 
     def cancel(self):          
         if(self.client == None):
             self.connect()       
-        r = self.client.cancel()
+        return self.client.cancel()
     
-        return r
+         
    
+    def jog(self, x, y, z):
+        if(self.client == None):
+            self.connect()       
+            self.client.jog(x, y, z)
+        return "done"

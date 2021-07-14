@@ -38,7 +38,7 @@ urlpatterns = [
     path('printer/<int:printer_pk>/printerPowerOn', views.printerPowerOn, name='printerOn'),
     path('printer/<int:printer_pk>/printerPowerOff', views.printerPowerOff, name='printerOff'),
     path('printer/<int:printer_pk>/getInfo', views.getPrinterInfo, name='ajax_test'),
-    path('printer/<int:printer_pk>/homePrinter', views.homePrinter, name='homePrinter'),
+    path('printer/<int:printer_pk>/homePrinter/<str:axes>', views.homePrinter, name='homePrinter'),
     path('printer/<int:printer_pk>/preheat', views.preheat, name='preheat'),
     path('printer/<int:printer_pk>/extrude', views.extrude, name='extrude'),
     path('printer/<int:printer_pk>/retract', views.retract, name='retract'),
@@ -52,7 +52,8 @@ urlpatterns = [
     path('printer/<int:printer_pk>/toggle', views.toggle, name='toggle'),
     path('printer/<int:printer_pk>/cancel', views.cancel, name='cancel'),
     path('printer/<int:printer_pk>/print/<str:filename>', views.printFile, name='print'),
-    path('printer/<int:printer_pk>/createFolder/<str:folderPath>', views.createFolder, name='print'),  
+    path('printer/<int:printer_pk>/createFolder/<str:folderPath>', views.createFolder, name='print'), 
+    path('printer/<int:printer_pk>/jog/<str:x>/<str:y>/<str:z>', views.jog, name='jog'), 
 
     #-------------------camera_actions------------------------------------------
 

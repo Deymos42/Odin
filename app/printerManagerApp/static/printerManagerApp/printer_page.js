@@ -353,10 +353,10 @@ function cancel() {
     }
 }
 
-function homePrinter() {
+function homePrinter(axes) {
     if (username != LIMITED_USER) {
         $.ajax({
-            url: '/printer/' + id + '/homePrinter',
+            url: '/printer/' + id + '/homePrinter/' + axes,
             type: "GET",
         });
     } else {
@@ -681,8 +681,6 @@ function print(filepath) {
 
 }
 
-
-
 function selectFile(filepath) {
     if (username != LIMITED_USER) {
         var newFilepath = filepath.replaceAll("/", "@");
@@ -717,6 +715,21 @@ function createFolder() {
             success: function (data) {
                 toastr.success('Carpeta creada correctamente', 'WoW');
                 enterFolder(actualPath)
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
+}
+
+function jog(x, y, z) {
+    if (username != LIMITED_USER) {
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/jog/' + x + '/' + y + '/' + z,
+            success: function (data) {
+                //toastr.success('Moving 5mm', 'WoW');  
+
             },
         });
     } else {
