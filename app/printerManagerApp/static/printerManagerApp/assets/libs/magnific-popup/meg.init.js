@@ -6,7 +6,9 @@ $(function() {
 		closeOnContentClick: true,
 		mainClass: 'mfp-img-mobile',
 		image: {
-			verticalFit: true
+			verticalFit: true,
+			 width: "1080px",
+			 height: "720px"
 		}
 		
 	});

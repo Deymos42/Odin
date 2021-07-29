@@ -5,7 +5,8 @@ conected = false;
 tabla = null;
 apikey = "?apikey=";
 username = "";
-
+resolved = true
+var allFolders = []
 LIMITED_USER = "alumnes";
 
 var opts = {
@@ -92,7 +93,8 @@ function printerPowerOnOff(status) {
                     $('#printer_power_status_on').attr('class', 'btn btn-success');
                     $('#printer_power_status_on').attr('id', 'printer_power_status_off');
                     printerStatus = 'printer_status_off'
-
+                    conected = false
+                    $('#status').html("Offline");
                 }
             });
 
@@ -165,13 +167,15 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
+    var caca = $('#newFileName').find(":selected").text();
 
-    if (conected) {
-
+    if (conected && resolved) {
+        resolved = false
         $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
             success: function (data) {
+                resolved = true
                 if (data.job.file.name != null) {
                     if (data.progress.printTimeLeft == null) {
                         timeLeft = secondsToHms(data.job.estimatedPrintTime) + " aprox"
@@ -250,7 +254,7 @@ setInterval(function () {
 
 
     }
-}, 2000);
+}, 2500);
 
 function setBedtemp() {
     if (username != LIMITED_USER) {
@@ -441,6 +445,7 @@ function deleteFile(filepath) {
             url: '/printer/' + id + '/deleteFile/' + newFilepath,
             success: function (json) {
                 enterFolder(actualPath)
+                toastr.success("Archivo eliminado", 'WoW');
             },
         });
     } else {
@@ -454,7 +459,7 @@ class fileSystem {
         this.isLocal = true;
     }
 
-    getLocal(obj) {
+    getLocal(obj) { // get all files and folders of an folder (obj) in json format
         let carpets = [];
         let carpetsPaths = [];
         let files = [];
@@ -463,6 +468,7 @@ class fileSystem {
         var a;
         if (obj == this) {
             a = obj.files;
+
         } else {
             a = obj.children;
         }
@@ -483,28 +489,29 @@ class fileSystem {
 
 
     recu(objFolder, path) {
+
         for (var i = 0; i < objFolder.children.length; i++) {
             if (objFolder.children[i].type == "folder") {
                 if (objFolder.children[i].path == path) {
-                    return this.getLocal(objFolder.children[i]);
+                    return this.getLocal(objFolder.children[i]); // search content if folder is in 1rt call
                 } else {
-                    recu(objFolder.children[i], path);
+                    return this.recu(objFolder.children[i], path); //search recursive (sub/sub/foler)
                 }
             }
         }
-        return false
+        return true
     }
 
-    getFolder(path) {
-
+    getFolder(path) { //return content of a concret folder
+        var ret;
         for (var i = 0; i < this.files.length; i++) {
 
             if (this.files[i].type == "folder") {
                 if (this.files[i].path == path) {
-                    return this.getLocal(this.files[i]);
+                    return this.getLocal(this.files[i]); // search content if folder is in local
                 } else {
-                    var ret = this.recu(this.files[i], path);
-                    if (ret != false) {
+                    ret = this.recu(this.files[i], path); //search folder inside other folder         
+                    if (ret != true) {
                         return ret;
                     }
                 }
@@ -528,6 +535,26 @@ class fileSystem {
         }
     }
 
+    getAllFolders(obj) {
+        var folders = []
+        var a
+        if (obj == this) {
+            a = obj.files;
+        } else {
+            a = obj.children;
+        }
+        for (var i = 0; i < a.length; i++) {
+            if (a[i].type == "folder") {
+                if (a[i].children != null && a[i].children.length != 0) {
+                    folders.push(a[i].path)
+                    folders = folders.concat(this.getAllFolders(a[i]))
+                } else {
+                    folders.push(a[i].path)
+                }
+            }
+        }
+        return folders
+    }
 };
 
 
@@ -545,7 +572,7 @@ function enterFolder(folderId) {
         url: '/printer/' + id + '/getAllFilesAndFolders',
         type: "GET",
         success: function (data) {
-
+        
             if (tabla != null) {
                 if (tabla.data().count()) {
                     destroyDataRable();
@@ -554,13 +581,15 @@ function enterFolder(folderId) {
             var FileSystem = new fileSystem(data);
             var content = "";
 
-            if (folderId == "local") {
+            allFolders = FileSystem.getAllFolders(FileSystem)
 
-                let folders = FileSystem.getLocal(FileSystem)[0];
-                let foldersPath = FileSystem.getLocal(FileSystem)[1];
-                let files = FileSystem.getLocal(FileSystem)[2];
-                let filesPath = FileSystem.getLocal(FileSystem)[3];
-                let filesLink = FileSystem.getLocal(FileSystem)[4];
+            if (folderId == "local") {
+                data = FileSystem.getLocal(FileSystem);
+                let folders = data[0];
+                let foldersPath = data[1];
+                let files = data[2];
+                let filesPath = data[3];
+                let filesLink = data[4];
 
                 for (var i = 0; i < folders.length; i++) {
 
@@ -577,24 +606,27 @@ function enterFolder(folderId) {
                     content += "<tr>" +
                         "<<td id='" + filesPath[i] + " ' style='cursor: pointer; ' onClick='selectFile(this.id)'><i class='m-r-10 mdi mdi-file'></i><code class='m-r-10'></i></code>" + filesPath[i] + "</td>" +
                         "<td align='center'><button id='" + filesPath[i] + " 'onClick='print(this.id)' class='btn btn-success'>print</button></td>" +
-                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#fileInfo'>Info</button></td>" +
+                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile'>Mover</button></td>" +
                         "<td  align='center'><button id='" + filesPath[i] + " 'onClick='deleteFile(this.id)' class='btn btn-danger'>eliminar</button></td>" +
                         "<td  align='center'><button id='" + filesLink[i] + " 'onClick='download(this.id)' class='btn btn-info'>descargar</button></td>" +
                         "</tr>"
                 }
 
             } else {
+
+                var data = FileSystem.getFolder(folderId.slice(0, -1));
+
                 var backPath = FileSystem.getBackPath(folderId.slice(0, -1));
 
-                let folders = FileSystem.getFolder(folderId.slice(0, -1))[0];
+                let folders = data[0];
 
-                let foldersPath = FileSystem.getFolder(folderId.slice(0, -1))[1];
+                let foldersPath = data[1];
 
-                let files = FileSystem.getFolder(folderId.slice(0, -1))[2];
+                let files = data[2];
 
-                let filesPath = FileSystem.getFolder(folderId.slice(0, -1))[3];
+                let filesPath = data[3];
 
-                let filesLink = FileSystem.getFolder(folderId.slice(0, -1))[4];
+                let filesLink = data[4];
 
                 content += "<tr>" +
                     "<td id='" + backPath + "'  style='cursor: pointer;' onClick='enterFolder(this.id)'><i class='m-r-10 mdi mdi-arrow-left'></i>" + "  " + "  Back" + "<br>" + "<small> Carpeta: " + actualPath + "</small>" + "</td>" +
@@ -618,7 +650,7 @@ function enterFolder(folderId) {
                     content += "<tr>" +
                         "<<td id='" + filesPath[i] + " '  style='cursor: pointer;' onClick='selectFile(this.id)'><i class='m-r-10 mdi mdi-file'></i><code class='m-r-10'></i></code>" + files[i] + "</td>" +
                         "<td align='center'><button id='" + filesPath[i] + " 'onClick='print(this.id)' class='btn btn-success'>print</button></td>" +
-                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#fileInfo'>Info</button></td>" +
+                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile'>Mover</button></td>" +
                         "<td  align='center'><button id='" + filesPath[i] + " 'onClick='deleteFile(this.id)' class='btn btn-danger'>eliminar</button></td>" +
                         "<td  align='center'><button id='" + filesLink[i] + " 'onClick='download(this.id)' class='btn btn-info'>descargar</button></td>" +
                         "</tr>"
@@ -631,7 +663,7 @@ function enterFolder(folderId) {
                 "<tr>" +
                 "<th style='vertical-align: middle; text-align: center;'>Name</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Imprimir</th>" +
-                "<th style='vertical-align: middle; text-align: center;'>Informacion</th>" +
+                "<th style='vertical-align: middle; text-align: center;'>Mover</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Eliminar</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Descargar</th>" +
                 "</tr>" +
@@ -642,11 +674,9 @@ function enterFolder(folderId) {
             loadDataTable();
             actualPath = folderId;
         }
-
     });
-
-
 }
+
 
 function passIdToModal(id) {
     $("#deleteItemButton").attr('name', id);
@@ -748,3 +778,53 @@ function pulsarIntroBedTemp(e) {
         setBedTemp();
     }
 }
+
+function showLoading() {
+    $("#waitUpload").attr('style', "display: flex; justify-content: center; align-content: center;")
+}
+
+
+const input = document.getElementById('input')
+const csrf = document.getElementsByName('csrfmiddlewaretoken')
+
+
+input.addEventListener('change', () => {
+        $("#submit").attr('style', '');
+        $('#uploadForm').append("<div class='progress m-t-15'><div id='uploadProgress' class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width:0%;'></div></div>");
+        const fd = new FormData()
+        const data = input.files[0]
+        const bar = document.getElementById('uploadProgress')
+
+        fd.append('csrfmiddlewaretoken', csrf[0].value)
+        fd.append('file', data)
+
+        $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            data: input.files[0],
+            xhr: function () {
+                const xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', e => {
+
+                    if (e.lengthComputable) {
+                        const percent = e.loaded / e.total * 100
+
+                        bar.style["width"] = percent + "%"
+                        //$("uploadProgress").attr('style', 'width:' + percent + '%');
+                    }
+                })
+                return xhr
+            },
+            success: function (response) {
+
+            },
+            error: function (error) {
+
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    }
+
+)

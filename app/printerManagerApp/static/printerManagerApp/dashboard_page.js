@@ -111,6 +111,7 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
+    
     for (var i = 0; i < printersStatus.length; i++) {
         if (conected[i]) {
             $.ajax({
@@ -134,12 +135,14 @@ setInterval(function () {
                             " Archivo: <b>" + data.job.file.name + "</b><br><br>" +
                             " Tiempo de impresion:  " + printTime + "</b><br><br>" +
                             " Tiempo restante: <b>" + timeLeft + "</b>");
-                        $('#barraProgreso').attr('style', 'width:' + completation + '%');
+                        $('#barraProgreso'+ data.id).attr('style', 'width:' + completation + '%');
+                        
                         if (completation % 10 == 0) {
-                            $("#progress").html(completation.toFixed(0) + "%");
+                            $("#progress" + data.id).html(completation.toFixed(0) + "%");
                         } else {
-                            $("#progress").html(completation.toFixed(2) + "%");
+                            $("#progress" + data.id).html(completation.toFixed(2) + "%");
                         }
+                        
                     } else {
 
                         $("#info" + data.id).html(

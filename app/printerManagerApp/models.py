@@ -6,11 +6,45 @@ import json
 # Create your models here.
 
 
+CATEGORYS = [ ('---', '---------'),
+    ('music', 'music '),
+    ('science', 'science '),
+    ('social science', 'social science '),
+    ('math', 'math '),
+    ('tecnology', 'tecnology '),
+    ('physics', 'physics '),
+    ('chemistry', 'chemistry '),
+     ('Crafts', 'Crafts '),
+     ('Art history', 'Art history '),
+]
 
-class Document(models.Model):
-    description = models.CharField(max_length=255, blank=True)
-    document = models.FileField(upload_to='documents/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Project(models.Model):
+    category = models.CharField(
+        max_length = 20,
+        choices = CATEGORYS,
+        default = '1'
+        )
+    name = models.CharField(max_length=120)
+    description = models.TextField()
+    imgPath = models.CharField(max_length=120)
+    ID = models.IntegerField()
+
+    def getId(self):
+        return self.ID
+
+    def getName(self):
+        return self.name
+
+    def getDescription(self):
+        return self.description
+    
+    def getImgPath(self):
+        return self.imgPath
+    
+    def getCategory(self):
+        return self.category
+
 
 class TSD_url(models.Model):
     url = models.CharField(max_length=120)
@@ -194,7 +228,8 @@ class Printer(models.Model):
 
     def getAllFilesAndFolders(self):
        
-        r = requests.get(self.url + "api/files?apikey=" + self.apikey + "&recursive=true")          
+        r = requests.get(self.url + "api/files?apikey=" + self.apikey + "&recursive=true")   
+        print(self.url + "api/files?apikey=" + self.apikey + "&recursive=true")
         return r.text
 
     def getStatus(self):
@@ -273,3 +308,10 @@ class Printer(models.Model):
             self.connect()       
             self.client.jog(x, y, z)
         return "done"
+
+    def moveFile(self, name, path):
+        if(self.client == None):
+            self.connect()
+
+        return self.client.move(name, path)
+     

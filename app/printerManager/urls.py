@@ -27,8 +27,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), 
     path('printer/<int:printer_pk>', views.printer),
     path('cameras', views.allCamerasView.as_view()),
+    path('projects', views.projects),
     path('dashboard', views.dashboard),
-     path('printerOffline', views.printerOffline),
+    path('printerOffline', views.printerOffline),
 
     #-------------------printer_actions------------------------------------------   
  
@@ -54,10 +55,12 @@ urlpatterns = [
     path('printer/<int:printer_pk>/print/<str:filename>', views.printFile, name='print'),
     path('printer/<int:printer_pk>/createFolder/<str:folderPath>', views.createFolder, name='print'), 
     path('printer/<int:printer_pk>/jog/<str:x>/<str:y>/<str:z>', views.jog, name='jog'), 
+    path('printer/<int:printer_pk>/moveFile/<str:name>/<str:path>', views.moveFile, name='moveFile'), 
 
-    #-------------------camera_actions------------------------------------------
 
-
+    #-------------------projects------------------------------------------
+     path('projects/category/<str:id>', views.projectCategory),
+     path('projects/category/<str:idCat>/<str:idProj>', views.viewProject),
     
 ] 
  

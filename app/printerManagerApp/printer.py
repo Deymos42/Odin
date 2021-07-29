@@ -77,12 +77,13 @@ class Printer:
 
 def main():
 
-    p2 = Printer("http://192.168.3.103:5001/", "5EB85BE5D98A481DA12B37A63DB08F87")
+    p2 = Printer("http://10.42.0.165/", "C0C0179A39DE472B9E692E3DF2F6025A")
 
     #p2.waitConnection()
 
-    print(p2.client.home(''))
+    print(p2.client.move("Letra_pedro.gcode","/DEMO/Letra_p.gcode"))
 
+    
 
     """
     URL = "http://127.0.0.1:8000/api-auth/"

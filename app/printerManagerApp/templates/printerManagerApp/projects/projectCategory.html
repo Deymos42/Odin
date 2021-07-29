@@ -6,7 +6,8 @@
 {% include "printerManagerApp/sidebar.html" %}
 
 <!--This page JavaScript -->
-<script src="{% static '/dashboard_page.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+
 
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
@@ -17,7 +18,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h3 id="test" class="page-title">Dashboard</h3>
+                <h3 id="test" class="page-title">CATEGORIA(TODO)</h3>
                 <div class="ml-auto text-right">
 
                 </div>
@@ -34,60 +35,47 @@
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
+        <div class="row el-element-overlay" data-masonry='{"percentPosition": true }'>
 
-        <div class="row">
-            {%for object in my_printer_list%}
-            <div class="col-md-6">
+            {%for p in projects%}
+
+            <div class="col-lg-4 col-md-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">{{object.name}}
+                    <div class="el-card-item" data-toggle="modal" data-target="#showProject_{{p.getId}}">
 
-                            <button id="led{{object.getId}}" style="margin-left: 2%;"
-                                onClick="ledOnOff('{{object.getLedStatus}}','{{object.getId}}')"
-                                class="btn btn-info">Luz</button>
-                            <button id={{object.getPrinterPowerStatus}}{{object.getId}}
-                                onClick="printerPowerOnOff('{{object.getPrinterPowerStatus}}','{{object.getId}}')"
-                                class="btn btn-success float-right">{{object.getPrinterPowerStatus}}{{object.getId}}</button>
-                        </h3>
-
-
-
-                        <hr>
-                        <div style="text-align:left;float:left;">
-                            <h5 id="info{{object.getId}}">
-                                Status: <br><br>
-                                Progress: - <br><br>
-                                Archivo: - <br><br>
-                                Tiempo de impresion: -<br><br>
-                                Tiempo restante: -</h5>
-                            <br>
-
+                        <div class="el-card-avatar el-overlay-1"> <img
+                                src="{% get_static_prefix  %}assets/images/projects{{p.getImgPath}}" />
 
                         </div>
-                        <div style="text-align:right;float:right;">
-                            <a href="../printer/{{object.getId}}">
-                                <img src="{{object.urlCam}}webcam/?action=stream" style="width: 270;" height="180">
-                            </a>
-                            <div class="progress m-t-15">
-                                <div id="barraProgreso{{object.getId}}"
-                                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    style="width:43"></div> 
-                            </div>
-                            
-                            <div style="display: block; text-align: center;">
-                                <h5 id="progress{{object.getId}}" style="margin-top: 5px;">-</h5>
-                            </div>
-
+                        <div class="el-card-content">
+                            <h4 class="m-b-0">{{p.getName}}</h4> <span class="text-muted"></span>
                         </div>
                     </div>
                 </div>
             </div>
-            <script>
-                initPrinter("{{object.getPrinterPowerStatus}}", "{{object.getId}}", "{{object.getLedStatus}}", "{{username}}");
-            </script>
             {% endfor %}
 
         </div>
+        {%for p in projects%}
+        <div class="modal fade" id="showProject_{{p.getId}}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="width: 1140;" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">{{p.getName}}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <!-- {{p.getDescription|safe}}  -->
+                        {% include 'printerManagerApp/projects/PROJECT_TEST.html' %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
 
         <!-- ============================================================== -->
         <!-- End PAge Content -->
@@ -103,30 +91,17 @@
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
-
-    <!-- ============================================================== -->
-    <!-- End PAge Content -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
-    <!-- Right sidebar -->
     <!-- ============================================================== -->
-    <!-- .right-sidebar -->
+    <!-- footer -->
     <!-- ============================================================== -->
-    <!-- End Right sidebar -->
+    <footer class="footer text-center">
+        EsplaiTech
+    </footer>
     <!-- ============================================================== -->
-</div>
-<!-- ============================================================== -->
-<!-- End Container fluid  -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- footer -->
-<!-- ============================================================== -->
-<footer class="footer text-center">
-    EsplaiTech
-</footer>
-<!-- ============================================================== -->
-<!-- End footer -->
-<!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
 </div>
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->

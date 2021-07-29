@@ -9,7 +9,7 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="../dashboard" aria-expanded="false"><i
+                                href="/dashboard" aria-expanded="false"><i
                                     class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
 
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
@@ -17,24 +17,20 @@
                                     class="hide-menu">Impresoras </span></a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {%for object in my_printer_list%}
-                                <li class="sidebar-item"><a href="../printer/{{object.IDa}}" class="sidebar-link"><i
+                                <li class="sidebar-item"><a href="/printer/{{object.IDa}}" class="sidebar-link"><i
                                             class="mdi mdi-note-outline"></i><span class="hide-menu">  {{object.name}}
                                         </span></a></li>
                                   {% endfor %}
                             </ul>
                         </li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="../cameras" aria-expanded="false"><i
+                                href="/cameras" aria-expanded="false"><i
                                     class="mdi mdi-chart-bar"></i><span class="hide-menu">Camaras</span></a></li>
                         
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{% static 'tables.html' %}" aria-expanded="false"><i
-                                    class="mdi mdi-border-inside"></i><span class="hide-menu">Archivos</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{% static 'pages-buttons.html' %}" aria-expanded="false"><i
-                                    class="mdi mdi-relative-scale"></i><span class="hide-menu">Reportar
-                                    incide</span></a></li>
-
+                                href="/projects" aria-expanded="false"><i
+                                    class="mdi mdi-border-inside"></i><span class="hide-menu">Proyectos</span></a></li>
+                    
 
 
                 </nav>

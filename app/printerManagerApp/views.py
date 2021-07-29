@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
-from .models import Printer
+from .models import Printer, Project
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.conf import settings
@@ -67,19 +67,8 @@ def printerOffline(request):
         return redirect("/accounts/login")
 
 def test(request):
-    if request.user.username == "notAdmin":
-        context = {
-            "first_name": "YES",
-            "last_name": "Batta",
-            "address": "Hyderabad, India"
-        }
-    else:
-        context = {
-            "first_name": "NOT",
-            "last_name": "Batta",
-            "address": "Hyderabad, India"
-        }
-    return render(request, "printerManagerApp/printerOffline.html", context)
+   
+    return render(request, "printerManagerApp/printerOffline.html")
 
 def printer(request, printer_pk):
     if request.user.is_authenticated:
@@ -107,16 +96,16 @@ def printer(request, printer_pk):
             printerPowerStatus = printer_object.getPrinterPowerStatus()   
             apikey = printer_object.getApiKey()
 
-            context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 'ledStatus': ledStatus, 'apikey': apikey, 'username': request.user.username, 'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
+            context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 
+                       'ledStatus': ledStatus, 'apikey': apikey, 'username': request.user.username, 
+                       'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
     
             return render(request, "printerManagerApp/printer.html",context)
         else:        
             return redirect("/printerOffline")
     else:
         return redirect("/accounts/login")
-
-     
-     
+    
 
 def dashboard(request):   
     if request.user.is_authenticated:      
@@ -126,12 +115,33 @@ def dashboard(request):
     else:
         return redirect("/accounts/login")
 
-
 class allCamerasView(generic.ListView):
     model = Printer
     context_object_name = 'my_printer_list'
     queryset = Printer.objects.all()
     template_name = "printerManagerApp/cameras.html"
+
+
+ # --------------------------------------------------------------------------projects------------------------------------------------------------------------------------
+def projects(request):   
+    if request.user.is_authenticated:   
+        allPrinters = Printer.objects.all()        
+        context = {'my_printer_list': allPrinters,'username': request.user.username }              
+        return render(request, "printerManagerApp/projects/projects.html",context)
+    else:
+        return redirect("/accounts/login")
+
+def projectCategory(request, id):
+    allPrinters = Printer.objects.all()        
+    projects = Project.objects.filter(category=id)
+    context = { 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects }       
+   
+    return render(request,"printerManagerApp/projects/projectCategory.html",context)
+
+
+def viewProject(request,idCat, idProj):
+    print("printerManagerApp/projects/" + idCat + "/" + idProj + ".html")
+    return render(request,"printerManagerApp/projects/" + idCat + "/" + idProj + ".html")
   
 
  # -----------------------------------------------------------------------Printer_ACTIONS---------------------------------------------------------------------------------
@@ -340,5 +350,17 @@ def createFolder(request, printer_pk, folderPath):
             return HttpResponse(jsonObject, content_type = 'application/json')
         else:
             raise Http404
+
+def moveFile(request, printer_pk, name, path):
+     if request.user.username != LIMITED_USER:
+        if request.is_ajax():
+            printer_object = Printer.objects.get(IDa=printer_pk)        
+            jsonObject = printer_object.moveFile(name, path)
+            
+            return HttpResponse(jsonObject, content_type = 'application/json')
+        else:
+            raise Http404
+
+
 
  # -----------------------------------------------------------------------camera_actions---------------------------------------------------------------------------------
