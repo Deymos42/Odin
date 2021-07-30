@@ -2865,6 +2865,7 @@ select.form-control-lg:not([size]):not([multiple]) {
 }
 
 .btn {
+
     display: inline-block;
     font-weight: 400;
     text-align: center;

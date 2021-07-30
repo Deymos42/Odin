@@ -55,8 +55,7 @@ urlpatterns = [
     path('printer/<int:printer_pk>/print/<str:filename>', views.printFile, name='print'),
     path('printer/<int:printer_pk>/createFolder/<str:folderPath>', views.createFolder, name='print'), 
     path('printer/<int:printer_pk>/jog/<str:x>/<str:y>/<str:z>', views.jog, name='jog'), 
-    path('printer/<int:printer_pk>/moveFile/<str:name>/<str:path>', views.moveFile, name='moveFile'), 
-
+    path('printer/<int:printer_pk>/moveFile/<str:actualPath>/<str:newPath>', views.moveFile, name='moveFile'), 
 
     #-------------------projects------------------------------------------
      path('projects/category/<str:id>', views.projectCategory),

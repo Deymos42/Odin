@@ -1,4 +1,11 @@
  {% load static %}
+
+ <style>
+    .btn {
+        border-radius: 40px;
+    }
+</style>
+
  <div class="card">
      <!-- Nav tabs -->
      <ul class="nav nav-tabs" role="tablist">
@@ -8,10 +15,41 @@
                      class="hidden-sm-up"></span> <span class="hidden-xs-down">Tab2</span></a> </li>
          <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#messages" role="tab"><span
                      class="hidden-sm-up"></span> <span class="hidden-xs-down">Tab3</span></a> </li>
+         <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tab4" role="tab"><span
+                     class="hidden-sm-up"></span> <span class="hidden-xs-down">Tab3</span></a> </li>
      </ul>
      <!-- Tab panes -->
      <div class="tab-content tabcontent-border">
          <div class="tab-pane active" id="home" role="tabpanel">
+             <div class="p-20">
+                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rhoncus ex eu sem dignissim
+                     posuere. Praesent vestibulum dapibus massa, vel tempus dolor bibendum quis. Vestibulum ante ipsum
+                     primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus mattis pharetra sem at
+                     eleifend. Duis in dui quis ex molestie porttitor. Donec pretium nunc a libero imperdiet hendrerit.
+                     Nullam non venenatis eros, sit amet blandit arcu. Cras ultrices, nisl et laoreet lacinia, dui sem
+                     ultrices ante, ut fermentum mauris lorem ac quam. Donec vel orci ac ligula accumsan porta.
+                     Curabitur dictum nibh sit amet mauris varius bibendum ac a leo. Donec ultrices odio lectus, sit
+                     amet commodo diam pharetra et. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit
+                     amet urna vitae nunc convallis facilisis sed eu mauris.
+
+                     Duis justo ante, maximus nec libero sed, elementum porta lorem. Vivamus at neque consectetur,
+                     tempor dolor semper, ornare urna. Nunc mattis diam vel dui volutpat, vitae mollis dolor finibus.
+                     Maecenas sed finibus sem. Cras sollicitudin tellus libero. Sed vehicula lorem nec magna rutrum,
+                     tempus congue nisi blandit. Mauris sollicitudin imperdiet nibh, tincidunt posuere nisi fringilla
+                     eu. Mauris suscipit ante a nulla maximus mattis. Integer justo ipsum, sagittis consequat interdum
+                     sit amet, gravida eget eros. Nullam sit amet ipsum iaculis, vestibulum nibh ac, vulputate leo.
+                     Mauris nec nulla a diam interdum viverra nec quis nunc. Aenean dictum id odio in efficitur.
+
+                     Vivamus vulputate rutrum iaculis. Proin quis nunc risus. Praesent non libero quis erat congue
+                     aliquet. Nulla accumsan vestibulum erat vel tincidunt. Morbi tristique, mi et maximus pulvinar,
+                     enim arcu tempor felis, sit amet consectetur ligula lorem aliquet diam. Duis quis sollicitudin
+                     erat. Donec in quam nibh. In ante ipsum, dignissim nec quam ac, feugiat efficitur dolor.</p>
+                 <div><img
+                         src="data:image/png;base64,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"
+                         class="img-fluid"></div>
+             </div>
+         </div>
+         <div class="tab-pane active" id="tab4" role="tabpanel">
              <div class="p-20">
                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rhoncus ex eu sem dignissim
                      posuere. Praesent vestibulum dapibus massa, vel tempus dolor bibendum quis. Vestibulum ante ipsum
@@ -77,7 +115,9 @@
          <div class="tab-pane p-20" id="messages" role="tabpanel">
              <div class="p-20">
                  <div style="text-align: center;">
-                        <b><h2>TITULO</h2></b> 
+                     <b>
+                         <h2>TITULO</h2>
+                     </b>
                      <hr> <!-- salto de linea dibujando linea separadora -->
                      <br><!-- salto de linea normal -->
                  </div>

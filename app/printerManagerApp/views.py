@@ -59,8 +59,6 @@ def printerOffline(request):
                 requests.get(printer.url, timeout=3)        
             except:
                 printersOffline.append(printer.name)
-        print("printers:")
-        print(printersOffline)
         context = { 'my_printer_list': allPrinters, 'printersOffline': printersOffline} 
         return render(request, "printerManagerApp/printerOffline.html", context) 
     else:
@@ -74,9 +72,10 @@ def printer(request, printer_pk):
     if request.user.is_authenticated:
         if request.method == 'POST' and request.FILES['myfile']:
             myfile = request.FILES['myfile']
-            path = request.POST['filePath']
+            path = request.POST['filePath']            
             printer_object = Printer.objects.get(IDa=printer_pk)
             printer_object.uploadFile(path, myfile)
+           
         
         printer_object = Printer.objects.get(IDa=printer_pk)
         name = printer_object.getName()
@@ -108,12 +107,24 @@ def printer(request, printer_pk):
     
 
 def dashboard(request):   
+    onlinePrinters = list()  
+    offlinePrinters = list()   
     if request.user.is_authenticated:      
         allPrinters = Printer.objects.all()        
-        context = {'my_printer_list': allPrinters,'username': request.user.username }     
+        for printer in allPrinters:
+            try: 
+                requests.get(printer.url, timeout=3) 
+                onlinePrinters.append(printer)
+            except:
+                offlinePrinters.append(printer)   
+       
+        context = { 'my_printer_list': allPrinters, 'onlinePrinters': onlinePrinters,'offlinePrinters': offlinePrinters,'username': request.user.username }          
+            
         return render(request, "printerManagerApp/dashboard.html",context)
     else:
         return redirect("/accounts/login")
+
+
 
 class allCamerasView(generic.ListView):
     model = Printer
@@ -351,13 +362,15 @@ def createFolder(request, printer_pk, folderPath):
         else:
             raise Http404
 
-def moveFile(request, printer_pk, name, path):
+def moveFile(request, printer_pk, actualPath, newPath):
      if request.user.username != LIMITED_USER:
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)        
-            jsonObject = printer_object.moveFile(name, path)
-            
-            return HttpResponse(jsonObject, content_type = 'application/json')
+            try:
+                jsonObject = printer_object.moveFile(actualPath, newPath)
+            except:
+                 jsonObject = "Archivo duplicado en destino o nombre incorrecto"
+            return HttpResponse(json.dumps(jsonObject), content_type = 'application/json')
         else:
             raise Http404
 

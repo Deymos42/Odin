@@ -221,8 +221,12 @@ class Printer(models.Model):
            
             a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
             client = None        
-            data = json.loads(a.text)        
-            return data["normalized_p"]
+            data = json.loads(a.text)     
+            try:   
+                return data["normalized_p"]
+            except:
+                return "TSDERROR"
+            
         
         
 
@@ -310,6 +314,8 @@ class Printer(models.Model):
         return "done"
 
     def moveFile(self, name, path):
+        name = name.replace("@","/")  
+        path = path.replace("@","/")               
         if(self.client == None):
             self.connect()
 

@@ -5,6 +5,12 @@
 
 {% include "printerManagerApp/sidebar.html" %}
 
+<style>
+    .btn {
+        border-radius: 40px;
+    }
+</style>
+
 <!--This page JavaScript -->
 <script src="{% static '/dashboard_page.js' %}"></script>
 
@@ -40,7 +46,7 @@
                 <div class="card">
                     <div class="el-card-item">
                         <div class="el-card-avatar el-overlay-1"> <img src="{% static 'assets/images/MUSIC.jpg' %}"
-                                alt="user" />
+                                alt="user" href="projects/category/music" />
                             <div class="el-overlay">
                                 <ul class="list-style-none el-info">
                                    

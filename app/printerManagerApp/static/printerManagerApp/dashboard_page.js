@@ -26,12 +26,12 @@ function updateStatus() {
 
         if (printersStatus[i] == "printer_power_status_on") {
 
-            $("#printer_power_status_on" + ids[i]).html("Apagar impresora");
+           // $("#printer_power_status_on" + ids[i]).html("Apagar impresora");
             $('#printer_power_status_on' + ids[i]).attr('class', 'btn btn-danger float-right');
 
         } else if (printersStatus[i] == "printer_power_status_off") {
 
-            $("#printer_power_status_off" + ids[i]).html("Encender impresora");
+            //$("#printer_power_status_off" + ids[i]).html("Encender impresora");
             $('#printer_power_status_off' + ids[i]).attr('class', 'btn btn-success float-right');
 
         }
@@ -55,9 +55,10 @@ function printerPowerOnOff(status, id) {
                     conected[id - 1] = false;
                 }
             });
-            $("#printer_power_status_on" + id).html("Encender impresora");
+           // $("#printer_power_status_on" + id).html("Encender impresora");
             $('#printer_power_status_on' + id).attr('class', 'btn btn-success float-right');
             $('#printer_power_status_on' + id).attr('id', 'printer_power_status_off' + id);
+            $('#printer_power_status_off' + id).attr('onclick', "printerPowerOnOff('printer_power_status_off','"+ id +"')" );
 
         } else if (status == "printer_power_status_off") {
 
@@ -71,8 +72,9 @@ function printerPowerOnOff(status, id) {
                 }
             });
             $('#printer_power_status_off' + id).attr('id', 'printer_power_status_on' + id);
-            $("#printer_power_status_on" + id).html("Apagar impresora");
+            //$("#printer_power_status_on" + id).html("Apagar impresora");
             $('#printer_power_status_on' + id).attr('class', 'btn btn-danger float-right');
+            $('#printer_power_status_on' + id).attr('onclick', "printerPowerOnOff('printer_power_status_on','"+ id +"')" );
         }
     } else {
         toastr.error('No tienes permisos', 'Error');

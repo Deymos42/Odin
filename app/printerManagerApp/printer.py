@@ -81,7 +81,7 @@ def main():
 
     #p2.waitConnection()
 
-    print(p2.client.move("Letra_pedro.gcode","/DEMO/Letra_p.gcode"))
+    print(p2.client.move("3DBenchy_0.2mm_PLA_ENDER3BLTOUCH_2h17m.gcode","/DEMO/cacacaca.gcode"))
 
     
 

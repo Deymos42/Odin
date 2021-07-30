@@ -5,6 +5,12 @@
 
 {% include "printerManagerApp/sidebar.html" %}
 
+<style>
+    .btn {
+        border-radius: 40px;
+    }
+</style>
+
 <!--This page JavaScript -->
 <script src="{% static '/dashboard_page.js' %}"></script>
 
@@ -36,7 +42,7 @@
         <!-- ============================================================== -->
 
         <div class="row">
-            {%for object in my_printer_list%}
+            {%for object in onlinePrinters%}
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -44,15 +50,16 @@
 
                             <button id="led{{object.getId}}" style="margin-left: 2%;"
                                 onClick="ledOnOff('{{object.getLedStatus}}','{{object.getId}}')"
-                                class="btn btn-info">Luz</button>
+                                class="btn btn-info"><i id="bulb" class=" far fa-lightbulb"></i></button>
                             <button id={{object.getPrinterPowerStatus}}{{object.getId}}
                                 onClick="printerPowerOnOff('{{object.getPrinterPowerStatus}}','{{object.getId}}')"
-                                class="btn btn-success float-right">{{object.getPrinterPowerStatus}}{{object.getId}}</button>
+                                class="btn btn-success float-right"><i class=" fas fa-power-off"></i></button>
                         </h3>
 
 
 
                         <hr>
+                        
                         <div style="text-align:left;float:left;">
                             <h5 id="info{{object.getId}}">
                                 Status: <br><br>
@@ -71,9 +78,9 @@
                             <div class="progress m-t-15">
                                 <div id="barraProgreso{{object.getId}}"
                                     class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    style="width:43"></div> 
+                                    style="width:43"></div>
                             </div>
-                            
+
                             <div style="display: block; text-align: center;">
                                 <h5 id="progress{{object.getId}}" style="margin-top: 5px;">-</h5>
                             </div>
@@ -83,8 +90,29 @@
                 </div>
             </div>
             <script>
-                initPrinter("{{object.getPrinterPowerStatus}}", "{{object.getId}}", "{{object.getLedStatus}}", "{{username}}");
+                initPrinter("{{object.getPrinterPowerStatus}}", "{{object.getId}}", "{{object.getLedStatus}}",
+                    "{{username}}");
             </script>
+            {% endfor %}
+
+            {%for object in offlinePrinters%}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{object.name}}
+                        </h3>
+                        <hr>
+
+                        <div style="text-align:center;float:center;">
+                            <h2>Impresora apagada</h2>
+                        </div>
+                        <div style="text-align:right;float:right;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% endfor %}
 
         </div>

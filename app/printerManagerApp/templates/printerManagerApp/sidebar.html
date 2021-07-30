@@ -1,4 +1,10 @@
 {% load static %}
+
+<style>
+    .btn {
+        border-radius: 40px;
+    }
+</style>
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -13,23 +19,23 @@
                                     class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
 
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                                href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span
+                                href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-group"></i><span
                                     class="hide-menu">Impresoras </span></a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 {%for object in my_printer_list%}
                                 <li class="sidebar-item"><a href="/printer/{{object.IDa}}" class="sidebar-link"><i
-                                            class="mdi mdi-note-outline"></i><span class="hide-menu">  {{object.name}}
+                                            class="mdi mdi-printer"></i><span class="hide-menu">  {{object.name}}
                                         </span></a></li>
                                   {% endfor %}
                             </ul>
                         </li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="/cameras" aria-expanded="false"><i
-                                    class="mdi mdi-chart-bar"></i><span class="hide-menu">Camaras</span></a></li>
+                                    class="mdi mdi-camera"></i><span class="hide-menu">Camaras</span></a></li>
                         
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="/projects" aria-expanded="false"><i
-                                    class="mdi mdi-border-inside"></i><span class="hide-menu">Proyectos</span></a></li>
+                                    class="mdi mdi-file"></i><span class="hide-menu">Proyectos</span></a></li>
                     
 
 

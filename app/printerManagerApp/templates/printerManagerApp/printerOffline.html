@@ -5,6 +5,11 @@
 
 {% include "printerManagerApp/sidebar.html" %}
 
+<style>
+    .btn {
+        border-radius: 40px;
+    }
+</style>
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
 <div class="page-wrapper">
@@ -13,16 +18,11 @@
     <!-- ============================================================== -->
     <div class="page-breadcrumb">
         <div class="row">
-            <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Full Width</h4>
-                <div class="ml-auto text-right">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Library</li>
-                        </ol>
-                    </nav>
-                </div>
+            <div class="col-12 d-flex no-block align-items-center"
+                style="display: flex;  justify-content: center;  text-align: center;">
+                <h2 class="page-title" style="display: flex;  justify-content: center;  text-align: center;">Odin a
+                    detectado un error</h2>
+
             </div>
         </div>
     </div>
@@ -33,23 +33,25 @@
     <!-- Container fluid  -->
     <!-- ============================================================== -->
     <div class="container-fluid">
+
         {%for printer in printersOffline%}
 
-        <div class="col-lg-3 col-md-6">
-            La impresora {{printer}} esta offline
-        </div>
-        {% endfor %}
-    </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    La impresora {{printer}} esta offline
+                </div>
+            </div>
 
-    <h1>{{first_name }}</h1>
-    <!-- ============================================================== -->
+        </div> {% endfor %} </div>
+    <!--==============================================================-->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer text-center">
-      EsplaiTech
+        Dama 3D
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->

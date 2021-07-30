@@ -52,7 +52,7 @@ function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
 
     if (printerStatus == "printer_power_status_on") {
 
-        $("#printer_power_status_on").html("Apagar impresora");
+        //$("#printer_power_status_on").html("Apagar impresora");
         $('#printer_power_status_on').attr('class', 'btn btn-danger');
         conected = true;
         toastr.success("impresora conectada", 'WoW');
@@ -60,20 +60,22 @@ function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
 
     } else if (printerStatus == "printer_power_status_off") {
 
-        $("#printer_power_status_off").html("Encender impresora");
+        // $("#printer_power_status_off").html("Encender impresora");
         $('#printer_power_status_off').attr('class', 'btn btn-success');
 
     }
 
 
     if (ledStatus == "False") {
-        $("#led_status_on").html("Encender luz");
+        //$("#led_status_on").html("Encender luz");
+        $('#bulb').attr('class', 'far fa-lightbulb');
         $('#led_status_on').attr('class', 'btn btn-info');
         $('#led_status_on').attr('id', 'led_status_off');
         ledStatus = "True"
 
     } else if (ledStatus == "True") {
-        $("#led_status_off").html("Apagar luz");
+        // $("#led_status_off").html("Apagar luz");
+        $('#bulb').attr('class', 'fas fa-lightbulb');
         $('#led_status_off').attr('class', 'btn btn-danger');
         $('#led_status_off').attr('id', 'led_status_on');
         ledStatus = "False"
@@ -89,7 +91,7 @@ function printerPowerOnOff(status) {
                 url: "/printer/" + id + "/printerPowerOff",
                 type: "GET",
                 success: function () {
-                    $("#printer_power_status_on").html("Encender impresora");
+                   // $("#printer_power_status_on").html("Encender impresora");
                     $('#printer_power_status_on').attr('class', 'btn btn-success');
                     $('#printer_power_status_on').attr('id', 'printer_power_status_off');
                     printerStatus = 'printer_status_off'
@@ -114,7 +116,7 @@ function printerPowerOnOff(status) {
                 }
             });
             $('#printer_power_status_off').attr('id', 'printer_power_status_on');
-            $("#printer_power_status_on").html("Apagar impresora");
+            //($("#printer_power_status_on").html("Apagar impresora");
             $('#printer_power_status_on').attr('class', 'btn btn-danger');
             $('#status').html("Online");
             printerStatus = 'printer_power_status_on'
@@ -136,13 +138,15 @@ function ledOnOff() {
         });
 
         if (ledStatus == "False") {
-            $("#led_status_on").html("Encender luz");
+            //$("#led_status_on").html("Encender luz");
+            $('#bulb').attr('class', 'far fa-lightbulb');
             $('#led_status_on').attr('class', 'btn btn-info');
             $('#led_status_on').attr('id', 'led_status_off');
             ledStatus = "True"
 
         } else if (ledStatus == "True") {
-            $("#led_status_off").html("Apagar luz");
+            //$("#led_status_off").html("Apagar luz");
+            $('#bulb').attr('class', 'fas fa-lightbulb');
             $('#led_status_off').attr('class', 'btn btn-danger');
             $('#led_status_off').attr('id', 'led_status_on');
             ledStatus = "False"
@@ -214,7 +218,7 @@ setInterval(function () {
                 if (data.state == "Paused") {
 
                     $("#pause").html("resume");
-                    $('#pause').attr('class', 'btn btn-success');
+                    $('#pause').attr('class', 'btn btn-info');
                     $('#pause').attr('id', 'resume');
                 } else {
 
@@ -329,7 +333,7 @@ function printSelectedFile() {
     }
 }
 
-function toggle(id) {
+function toggle() {
     if (username != LIMITED_USER) {
         $.ajax({
             type: 'GET',
@@ -572,7 +576,7 @@ function enterFolder(folderId) {
         url: '/printer/' + id + '/getAllFilesAndFolders',
         type: "GET",
         success: function (data) {
-        
+
             if (tabla != null) {
                 if (tabla.data().count()) {
                     destroyDataRable();
@@ -606,7 +610,7 @@ function enterFolder(folderId) {
                     content += "<tr>" +
                         "<<td id='" + filesPath[i] + " ' style='cursor: pointer; ' onClick='selectFile(this.id)'><i class='m-r-10 mdi mdi-file'></i><code class='m-r-10'></i></code>" + filesPath[i] + "</td>" +
                         "<td align='center'><button id='" + filesPath[i] + " 'onClick='print(this.id)' class='btn btn-success'>print</button></td>" +
-                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile'>Mover</button></td>" +
+                        "<td align='center'><button  type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile' id='" + filesPath[i] + " 'onClick='showCarpetsInMove(this.id)'>Mover</button></td>" +
                         "<td  align='center'><button id='" + filesPath[i] + " 'onClick='deleteFile(this.id)' class='btn btn-danger'>eliminar</button></td>" +
                         "<td  align='center'><button id='" + filesLink[i] + " 'onClick='download(this.id)' class='btn btn-info'>descargar</button></td>" +
                         "</tr>"
@@ -650,7 +654,7 @@ function enterFolder(folderId) {
                     content += "<tr>" +
                         "<<td id='" + filesPath[i] + " '  style='cursor: pointer;' onClick='selectFile(this.id)'><i class='m-r-10 mdi mdi-file'></i><code class='m-r-10'></i></code>" + files[i] + "</td>" +
                         "<td align='center'><button id='" + filesPath[i] + " 'onClick='print(this.id)' class='btn btn-success'>print</button></td>" +
-                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile'>Mover</button></td>" +
+                        "<td align='center'><button type='button' class='btn btn-info margin-5' data-toggle='modal' data-target='#moveFile' id='" + filesPath[i] + " 'onClick='showCarpetsInMove(this.id)'>Mover</button></td>" +
                         "<td  align='center'><button id='" + filesPath[i] + " 'onClick='deleteFile(this.id)' class='btn btn-danger'>eliminar</button></td>" +
                         "<td  align='center'><button id='" + filesLink[i] + " 'onClick='download(this.id)' class='btn btn-info'>descargar</button></td>" +
                         "</tr>"
@@ -784,12 +788,62 @@ function showLoading() {
 }
 
 
+function showCarpetsInMove(fileName) {
+    let substrings = fileName.split('/');
+    var name = (substrings[substrings.length - 1])
+
+    $("#newFileName").attr('class', fileName)
+    $("#newFileName").attr('value', name)
+    select = document.getElementById('newPath');
+
+    for (var i = 0; i < allFolders.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = allFolders[i];
+        opt.innerHTML = allFolders[i];
+        select.appendChild(opt);
+    }
+}
+
+function moveFile() {
+    newPath = document.getElementById('newPath').value;
+    newName = document.getElementById('newFileName').value;
+    if (!newName.includes(".gcode")) {
+        newName = newName + ".gcode"
+    }
+    actualFile = $("#newFileName").attr('class')
+    newFile = newPath + "/" + newName
+
+    if (username != LIMITED_USER) {
+        actualFile = actualFile.replaceAll("/", "@");
+        newFile = newFile.replaceAll("/", "@");
+
+        $.ajax({
+            type: 'GET',
+            url: '/printer/' + id + '/moveFile/' + actualFile + '/' + newFile,
+            success: function (data) {
+                if (data != null) {
+                    toastr.error(data, 'ooh');
+
+                } else {
+                    toastr.success('Archivo movido', 'WoW');
+                }
+
+            },
+        });
+    } else {
+        toastr.error('No tienes permisos', 'Error');
+    }
+
+
+}
+
+
 const input = document.getElementById('input')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
 
 input.addEventListener('change', () => {
-        $("#submit").attr('style', '');
+        $("#submitFile").attr('style', '');       
         $('#uploadForm').append("<div class='progress m-t-15'><div id='uploadProgress' class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width:0%;'></div></div>");
         const fd = new FormData()
         const data = input.files[0]
@@ -797,34 +851,38 @@ input.addEventListener('change', () => {
 
         fd.append('csrfmiddlewaretoken', csrf[0].value)
         fd.append('file', data)
+        if (data.name.includes(".gcode")) {
+            $.ajax({
+                type: 'POST',
+                enctype: 'multipart/form-data',
+                data: input.files[0],
+                xhr: function () {
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', e => {
 
-        $.ajax({
-            type: 'POST',
-            enctype: 'multipart/form-data',
-            data: input.files[0],
-            xhr: function () {
-                const xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress', e => {
+                        if (e.lengthComputable) {
+                            const percent = e.loaded / e.total * 100
 
-                    if (e.lengthComputable) {
-                        const percent = e.loaded / e.total * 100
+                            bar.style["width"] = percent + "%"
+                            //$("uploadProgress").attr('style', 'width:' + percent + '%');
+                        }
+                    })
+                    return xhr
+                },
+                success: function (response) {
 
-                        bar.style["width"] = percent + "%"
-                        //$("uploadProgress").attr('style', 'width:' + percent + '%');
-                    }
-                })
-                return xhr
-            },
-            success: function (response) {
 
-            },
-            error: function (error) {
+                },
+                error: function (error) {
 
-            },
-            cache: false,
-            contentType: false,
-            processData: false,
-        })
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+            })
+        } else {
+            toastr.error("Archivo no valido para subir", 'WoW');
+        }
     }
 
 )
