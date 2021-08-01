@@ -125,12 +125,14 @@ def dashboard(request):
         return redirect("/accounts/login")
 
 
+def allCamerasView(request):   
+    if request.user.is_authenticated:   
+        allPrinters = Printer.objects.all()        
+        context = {'my_printer_list': allPrinters,'username': request.user.username }              
+        return render(request, "printerManagerApp/cameras.html",context)
+    else:
+        return redirect("/accounts/login")
 
-class allCamerasView(generic.ListView):
-    model = Printer
-    context_object_name = 'my_printer_list'
-    queryset = Printer.objects.all()
-    template_name = "printerManagerApp/cameras.html"
 
 
  # --------------------------------------------------------------------------projects------------------------------------------------------------------------------------
@@ -145,6 +147,8 @@ def projects(request):
 def projectCategory(request, id):
     allPrinters = Printer.objects.all()        
     projects = Project.objects.filter(category=id)
+    print(id)
+    print(projects)
     context = { 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects }       
    
     return render(request,"printerManagerApp/projects/projectCategory.html",context)

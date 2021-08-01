@@ -1,5 +1,7 @@
 printerPowerStatus = null;
 ledPowerStatus = null;
+username = "";
+LIMITED_USER = "alumnes";
 
 function changeButtonStatus(printerId){
 
@@ -12,13 +14,13 @@ function changeButtonStatus(printerId){
             if (ledPowerStatus) {
                 
                 $('#' + printerId).attr('name', "false");
-                $('#' + printerId).html("Apagar luz");
+                $('#bulb' + printerId).attr('class', 'fas fa-lightbulb');
                 $('#' + printerId).attr('class', 'btn btn-danger');
 
             } else {
                
                 $('#' + printerId).attr('name', 'true');
-                $('#' + printerId).html("Encender luz");
+                $('#bulb' + printerId).attr('class', 'far fa-lightbulb');
                 $('#' + printerId).attr('class', 'btn btn-success');
             }
 
@@ -27,10 +29,8 @@ function changeButtonStatus(printerId){
 
 }
 
-function init(printerId) {
-    //alert(printerId);
-
-
+function init(printerId, Username) {   
+    username = Username;
     $.ajax({
         url: "/printer/" + printerId + "/getPrinterPowerStatus",
         type: "GET",
@@ -46,7 +46,7 @@ function init(printerId) {
 }
 
 function ledOnOff(id) {
-
+    if (username != LIMITED_USER) {
 
     $.ajax({
         url: '/printer/' + id + '/toggleLed',
@@ -55,6 +55,9 @@ function ledOnOff(id) {
            changeButtonStatus(id);
         }
     });
+    }else {
+         toastr.error('No tienes permisos', 'Error');
+    }
 
 
 

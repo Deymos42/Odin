@@ -192,10 +192,10 @@ setInterval(function () {
                         completation = data.progress.completion;
 
                     }
-                    $("#info").html(" progress: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
-                        "<br> archivo: <b>" + data.job.file.name + "</b><br>" +
-                        "<br> tiempo de impresion:  " + printTime + "</b><br>" +
-                        "<br> tiempo restante: <b>" + timeLeft + "</b><br>");
+                    $("#info").html(" Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
+                        "<br> Archivo: <b>" + data.job.file.name + "</b><br>" +
+                        "<br> Tiempo de impresion:  " + printTime + "</b><br>" +
+                        "<br> Tiempo restante: <b>" + timeLeft + "</b><br>");
                     $('#barraProgreso').attr('style', 'width:' + completation + '%');
                     if (completation % 10 == 0) {
                         $("#progress").html(completation.toFixed(0) + "%");
@@ -249,10 +249,10 @@ setInterval(function () {
         $(".btn.btn-success").prop('disabled', false);
         $("#toolTemp").html("-");
         $("#bedTemp").html("-");
-        $("#info").html(" progress: <b>" + "-" + "</b><br>" +
-            "<br> archivo: <b>" + "-" + "</b><br>" +
-            "<br> tiempo de impresion: <b>" + "-" + "</b><br>" +
-            "<br> tiempo restante: <b>" + "-" + "</b><br>");
+        $("#info").html(" progreso: <b>" + "-" + "</b><br>" +
+            "<br> Archivo: <b>" + "-" + "</b><br>" +
+            "<br> Tiempo de impresion: <b>" + "-" + "</b><br>" +
+            "<br> Tiempo restante: <b>" + "-" + "</b><br>");
         $('#input_tool').attr('placeholder', "off");
         $('#input_bed').attr('placeholder', "off");
 
@@ -665,7 +665,7 @@ function enterFolder(folderId) {
 
             $("#zero_config").html("<thead>" +
                 "<tr>" +
-                "<th style='vertical-align: middle; text-align: center;'>Name</th>" +
+                "<th style='vertical-align: middle; text-align: center;'>Nombre</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Imprimir</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Mover</th>" +
                 "<th style='vertical-align: middle; text-align: center;'>Eliminar</th>" +

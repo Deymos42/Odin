@@ -32,7 +32,6 @@
         </div>
     </div>
 
-
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
@@ -48,7 +47,7 @@
             <div class="col-lg-4 col-md-12">
                 <div class="card">
                     <div class="el-card-item">
-                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.IDa}}, {{username}}')" src="{{object.urlCam}}webcam/?action=stream"
+                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.IDa}}', '{{username}}')" src="{{object.urlCam}}webcam/?action=stream"
                                 alt="user" />
                             <div class="el-overlay">
                                 <ul class="list-style-none el-info">
@@ -67,7 +66,7 @@
                           
                             <br>
                             <button id="{{object.IDa}}" name="ledPowerStatus" style="margin-left: 2%;" onClick=" ledOnOff('{{object.IDa}}')"
-                                class="btn btn-info">Encender luz</button>
+                                class="btn btn-info"><i id="bulb{{object.IDa}}" class=" far fa-lightbulb"></i></button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +101,7 @@
 </div>
 
    <footer class="footer text-center">
-           EsplaiTech
+           DAMA 3D
         </footer>
 <!-- ============================================================== -->
 <!-- End Wrapper -->
@@ -128,6 +127,7 @@
 <!-- this page js -->
 <script src="{% static '/assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js' %}"></script>
 <script src="{% static '/assets/libs/magnific-popup/meg.init.js' %}"></script>
+<script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 </body>
 
 </html>

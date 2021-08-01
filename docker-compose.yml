@@ -9,6 +9,7 @@ services:
       - static_data:/vol/web   
     environment: 
       - DEBUG=0
+    restart: always
    
   proxy:
     build: 
@@ -18,6 +19,7 @@ services:
       - static_data:/vol/static
     depends_on: 
       - app
+    restart: always
 
 volumes: 
   static_data:

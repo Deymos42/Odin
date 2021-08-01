@@ -73,8 +73,8 @@
                         <h3 class="modal-title" id="exampleModalLabel">{{p.getName}}</h3>
                     </div>
                     <div class="modal-body">
-                        <!-- {{p.getDescription|safe}}  -->
-                        {% include 'printerManagerApp/projects/PROJECT_TEST.html' %}
+                        {{p.getDescription|safe}}
+                        {# % include 'printerManagerApp/projects/PROJECT_TEST.html' % #}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -105,7 +105,7 @@
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer text-center">
-        EsplaiTech
+        DAMA 3D
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->
@@ -142,9 +142,11 @@
 <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
 <script>
-    updateStatus();
+    var container = document.getElementsByClassName("modal fade");
+    var content = container.innerHTML;
+    container.innerHTML = content;
+    
 </script>
-
 
 </body>
 

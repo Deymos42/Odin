@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'livereload',
+    #'livereload',
     #localApps
      'printerManagerApp'
 
@@ -107,7 +107,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'livereload.middleware.LiveReloadScript',
+    #'livereload.middleware.LiveReloadScript',
 ]
 
 ROOT_URLCONF = 'printerManager.urls'
