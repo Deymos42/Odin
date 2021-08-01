@@ -12,6 +12,7 @@
     .btn {
         border-radius: 40px;
     }
+
     .loader {
         border: 9px solid #f3f3f3;
         border-radius: 50%;
@@ -64,7 +65,7 @@
 
 
                     <button id={{printerPowerStatus}} style="margin-left: 2%; " onClick="printerPowerOnOff(this.id)"
-                        class="btn btn-success "> <i class=" fas fa-power-off"></i>   </button>
+                        class="btn btn-success "> <i class=" fas fa-power-off"></i> </button>
 
 
                     <button id="led_status_off" style="margin-left: 2%;" onClick="ledOnOff(this.id)"
@@ -129,13 +130,13 @@
                             <div class="card-title">
                                 <h3 style="text-align: center; display:inline-block;">Temperatura</h3><button
                                     id="preheat" onClick="preheat()" style="float:right; position:relative; "
-                                    class="btn btn-success">  <i class="fab fa-hotjar"></i></button>
+                                    class="btn btn-success"> <i class="fab fa-hotjar"></i></button>
                             </div>
                             <div>
                                 <table class="card-table table ">
                                     <tr>
                                         <th></th>
-                                        
+
                                         <th style="vertical-align: middle; text-align: center;"> Actual
                                         </th>
                                         <th style="vertical-align: middle; text-align: center;"> Objetivo
@@ -182,399 +183,399 @@
                                             </div>
                                         </td>
                             </div>
+
+
+                            </tr>
+                            </table>
                         </div>
-
-                        </tr>
-                        </table>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <h3 style="text-align: center; display:inline-block;">Control XYZ</h3> <button
-                                    id="homePrinter" style="float:right; position:relative; "
-                                    onClick="homePrinter('xyz')" class="btn btn-success "><i class="fas fa-home"></i></button>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <br>
-                                    <div class="card">
-                                        <div class="card-body"
-                                            style="display: flex; justify-content: center; margin-top: -30px; margin-bottom: -31px;">
-                                            <div id="control-jog-xy" class="jog-panel center" style="float: left; ">
-                                                <div>
-                                                    <div
-                                                        style="display: flex; justify-content: center; margin-bottom: 4px;">
-                                                        <button onclick="jog(0,10,0)" id="control-yinc"
-                                                            class="btn btn-primary box"><i
-                                                                class="fas fa-arrow-up"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <button onclick="jog(-10,0,0)" id="control-xdec"
-                                                        class="btn  btn-primary  box pull-left"><i
-                                                            class="fas fa-arrow-left"></i></button>
-                                                    <button id="control-xyhome" class="btn  btn-primary  box pull-left"
-                                                        onclick="homePrinter('xy')"><i class="fas fa-home"></i></button>
-                                                    <button onclick="jog(10,0,0)" id="control-xinc"
-                                                        class="btn  btn-primary  box pull-left"><i
-                                                            class="fas fa-arrow-right"></i></button>
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        style="display: flex; justify-content: center; margin-top: 4px;">
-                                                        <button onclick="jog(0,-10,0)" id="control-ydec"
-                                                            class="btn  btn-primary  box"><i
-                                                                class="fas fa-arrow-down"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h3 style="text-align: center; display:inline-block;">Control XYZ</h3> <button
+                                        id="homePrinter" style="float:right; position:relative; "
+                                        onClick="homePrinter('xyz')" class="btn btn-success "><i
+                                            class="fas fa-home"></i></button>
                                 </div>
-                                <div class="col-md-6">
-                                    <br>
-                                    <div class="card">
-                                        <div class="card-body"
-                                            style=" display: flex; justify-content: center; margin-top: -30px; margin-bottom: -31px;">
-                                            <div id="control-jog-xy" class="jog-panel center" style="float: left;">
-                                                <div>
-                                                    <div
-                                                        style="display: flex; justify-content: center; margin-bottom: 4px;">
-                                                        <button onclick="jog(0,0,5)" id="control-yinc"
-                                                            class="btn btn-primary box"><i
-                                                                class="fas fa-arrow-up"></i></button>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <button onclick="homePrinter('z')" id="control-zhome"
-                                                        class="btn  btn-primary  box pull-left"><i
-                                                            class="fas fa-home"></i></button>
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        style="display: flex; justify-content: center; margin-top: 4px;">
-                                                        <button onclick="jog(0,0,-5)" id="control-ydec"
-                                                            class="btn  btn-primary  box"><i
-                                                                class="fas fa-arrow-down"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Camara</h3>
-                            <hr>
-                            <div style="display: flex; justify-content: center;">
-                                <img src="{{urlCam}}webcam/?action=stream" class="img-fluid">
-                            </div> <br>
-                            <div style="display: block; text-align: center;">
-                                <h5 id="progress">-</h5>
-                            </div>
-                            <div class="progress m-t-15">
-                                <div id="barraProgreso"
-                                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    style="width:100%;"></div>
-                            </div>
-                            <br><br>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" style="justify-content: center;">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Filamento</h3>
-                                    <hr>
-                                    <div style="display: block; text-align: center; justify-content: center">
-                                        <div id="control-jog-xy" class="jog-panel center" style="float: center;">
-                                            <div>
-                                                <div
-                                                    style="display: flex; justify-content: center; margin-bottom: 10%; ">
-                                                    <button onclick="extrude()" id="control-yinc"
-                                                        class="btn btn-primary box"><i
-                                                            class="fas fa-arrow-up"></i></button>
-                                                </div>
-                                            </div>
-                                            <div> <br>
-                                                <img src="{% static '/assets/images/nozzle_icon.png' %}" alt=""
-                                                    style="margin-top: -9%; margin-bottom: -34%;">
-                                            </div><br>
-                                            <div>
-                                                <div style="display: flex; justify-content: center; margin-top: 5%;">
-                                                    <button onclick="retract()" id="control-ydec"
-                                                        class="btn  btn-primary  box"><i
-                                                            class="fas fa-arrow-down"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="margin-left: 7.5%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6" style="justify-content: center;">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Error</h3>
-                                    <hr>
-                                    <div style="display: block; text-align: center; justify-content: center"
-                                        class="Gauge">
-                                        <canvas width="230" height="93" id="gaugeTest"
-                                            style="display: inline;"></canvas>
-                                        <div id="errorNumber" style="font-size: 30px;">0</div>
-                                    </div>
-                                    <div style="margin-left: 7.5%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Archivos</h3>
-                            <div id="tableDiv" class="table-responsive">
-                                <table id="zero_config" class="table table-striped table-bordered">
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar
-                                                        carpeta
-                                                    </h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p id="nameOfDeleteElement"> Seguro que quieres eliminar la carpeta
-                                                    </p>
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Cancelar</button>
-                                                    <button type="button" class="btn btn-danger" id="deleteItemButton"
-                                                        onClick=deleteFile(this.name)
-                                                        data-dismiss="modal">Eliminar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </table>
-                                <button type=" button" class='btn btn-info margin-5' data-toggle="modal"
-                                    data-target="#Modal2">Crear
-                                    carpeta</button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="Modal2" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Crear carpeta
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                Nombre de la carpeta <br> <br><input class="form-control"
-                                                    placeholder="Enter some text" id="folderPathTextBox" />
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cerrar</button>
-                                                <button type="button" class="btn btn-primary" onClick=createFolder()
-                                                    data-dismiss="modal">Crear</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <button type=" button" class='btn btn-info margin-5' onclick="actualPathForUpladFile()"
-                                    data-toggle="modal" data-target="#uploadFile">Subir archivo</button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Subir archivo
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                <form id="uploadForm" method="post" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <input type="text" style="display: none;" id="filePath"
-                                                        name="filePath">
-                                                    <br>
-
-                                                    <input id="input" type="file" name="myfile">
-
-                                                    <button id="submitFile" class="btn btn-info" type="submit"
-                                                        style="display: none;" onClick="showLoading()">Subir</button>
-                                                    <br><br>
-                                                    <div id="waitUpload"
-                                                        style="display: none; justify-content: center; align-content: center;">
-                                                        <div>
-                                                            <h4 style="margin-top: 7px;">Subiendo archivo a impresora
-                                                                espere...
-                                                                &nbsp&nbsp</h4>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <br>
+                                        <div class="card">
+                                            <div class="card-body"
+                                                style="display: flex; justify-content: center; margin-top: -30px; margin-bottom: -31px;">
+                                                <div id="control-jog-xy" class="jog-panel center" style="float: left; ">
+                                                    <div>
+                                                        <div
+                                                            style="display: flex; justify-content: center; margin-bottom: 4px;">
+                                                            <button onclick="jog(0,10,0)" id="control-yinc"
+                                                                class="btn btn-primary box"><i
+                                                                    class="fas fa-arrow-up"></i></button>
                                                         </div>
-                                                        <div class="loader"></div>
                                                     </div>
-
-
-                                                </form>
-
+                                                    <div>
+                                                        <button onclick="jog(-10,0,0)" id="control-xdec"
+                                                            class="btn  btn-primary  box pull-left"><i
+                                                                class="fas fa-arrow-left"></i></button>
+                                                        <button id="control-xyhome"
+                                                            class="btn  btn-primary  box pull-left"
+                                                            onclick="homePrinter('xy')"><i
+                                                                class="fas fa-home"></i></button>
+                                                        <button onclick="jog(10,0,0)" id="control-xinc"
+                                                            class="btn  btn-primary  box pull-left"><i
+                                                                class="fas fa-arrow-right"></i></button>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            style="display: flex; justify-content: center; margin-top: 4px;">
+                                                            <button onclick="jog(0,-10,0)" id="control-ydec"
+                                                                class="btn  btn-primary  box"><i
+                                                                    class="fas fa-arrow-down"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <br>
+                                        <div class="card">
+                                            <div class="card-body"
+                                                style=" display: flex; justify-content: center; margin-top: -30px; margin-bottom: -31px;">
+                                                <div id="control-jog-xy" class="jog-panel center" style="float: left;">
+                                                    <div>
+                                                        <div
+                                                            style="display: flex; justify-content: center; margin-bottom: 4px;">
+                                                            <button onclick="jog(0,0,5)" id="control-yinc"
+                                                                class="btn btn-primary box"><i
+                                                                    class="fas fa-arrow-up"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button onclick="homePrinter('z')" id="control-zhome"
+                                                            class="btn  btn-primary  box pull-left"><i
+                                                                class="fas fa-home"></i></button>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            style="display: flex; justify-content: center; margin-top: 4px;">
+                                                            <button onclick="jog(0,0,-5)" id="control-ydec"
+                                                                class="btn  btn-primary  box"><i
+                                                                    class="fas fa-arrow-down"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <br><br>
-                                <!-- INFO POP UP -->
-                                <div class="modal fade" id="moveFile" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true ">
-                                    <div class="modal-dialog" role="document ">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Mover archivos
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true ">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" id="moveFileBody">
-                                                Nuevo nombre del archivo: <br> <br><input type="text" maxlength="61"
-                                                    size="61" placeholder='' id='newFileName' /><br><br>
-                                                Nueva ruta del archivo: <br> <br>
-                                                <select id='newPath' class='select2 form-control custom-select'>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cerrar</button>
-                                                <button type="button" class="btn btn-primary" onClick=moveFile()
-                                                    data-dismiss="modal">Mover</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Camara</h3>
+                        <hr>
+                        <div style="display: flex; justify-content: center;">
+                            <img src="{{urlCam}}webcam/?action=stream" class="img-fluid">
+                        </div> <br>
+                        <div style="display: block; text-align: center;">
+                            <h5 id="progress">-</h5>
+                        </div>
+                        <div class="progress m-t-15">
+                            <div id="barraProgreso"
+                                class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                style="width:100%;"></div>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" style="justify-content: center;">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Filamento</h3>
+                                <hr>
+                                <div style="display: block; text-align: center; justify-content: center">
+                                    <div id="control-jog-xy" class="jog-panel center" style="float: center;">
+                                        <div>
+                                            <div style="display: flex; justify-content: center; margin-bottom: 10%; ">
+                                                <button onclick="extrude()" id="control-yinc"
+                                                    class="btn btn-primary box"><i class="fas fa-arrow-up"></i></button>
+                                            </div>
+                                        </div>
+                                        <div> <br>
+                                            <img src="{% static '/assets/images/nozzle_icon.png' %}" alt=""
+                                                style="margin-top: -9%; margin-bottom: -34%;">
+                                        </div><br>
+                                        <div>
+                                            <div style="display: flex; justify-content: center; margin-top: 5%;">
+                                                <button onclick="retract()" id="control-ydec"
+                                                    class="btn  btn-primary  box"><i
+                                                        class="fas fa-arrow-down"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 7.5%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="justify-content: center;">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Error</h3>
+                                <hr>
+                                <div style="display: block; text-align: center; justify-content: center" class="Gauge">
+                                    <canvas width="230" height="93" id="gaugeTest" style="display: inline;"></canvas>
+                                    <div id="errorNumber" style="font-size: 30px;">0</div>
+                                </div>
+                                <div style="margin-left: 7.5%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Archivos</h3>
+                        <div id="tableDiv" class="table-responsive">
+                            <table id="zero_config" class="table table-striped table-bordered">
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Eliminar
+                                                    carpeta
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="nameOfDeleteElement"> Seguro que quieres eliminar la
+                                                    carpeta
+                                                </p>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-danger" id="deleteItemButton"
+                                                    onClick=deleteFile(this.name) data-dismiss="modal">Eliminar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </table>
+                            <button type=" button" class='btn btn-info margin-5' data-toggle="modal"
+                                data-target="#Modal2">Crear
+                                carpeta</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="Modal2" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Crear carpeta
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            Nombre de la carpeta <br> <br><input class="form-control"
+                                                placeholder="Enter some text" id="folderPathTextBox" />
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary" onClick=createFolder()
+                                                data-dismiss="modal">Crear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-            <!-- PROGRESS BAR -->
+                            <button type=" button" class='btn btn-info margin-5' onclick="actualPathForUpladFile()"
+                                data-toggle="modal" data-target="#uploadFile">Subir archivo</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="uploadFile" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Subir archivo
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <input type="text" style="display: none;" id="filePath" name="filePath">
+                                                <br>
+
+                                                <input id="input" type="file" name="myfile">
+
+                                                <button id="submitFile" class="btn btn-info" type="submit"
+                                                    style="display: none;" onClick="showLoading()">Subir</button>
+                                                <br><br>
+                                                <div id="waitUpload"
+                                                    style="display: none; justify-content: center; align-content: center;">
+                                                    <div>
+                                                        <h4 style="margin-top: 7px;">Subiendo archivo a
+                                                            impresora
+                                                            espere...
+                                                            &nbsp&nbsp</h4>
+                                                    </div>
+                                                    <div class="loader"></div>
+                                                </div>
 
 
+                                            </form>
 
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                DAMA 3D
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
 
-            <!-- ============================================================== -->
-            <!-- End Page wrapper  -->
-            <!-- ============================================================== -->
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br><br>
+                            <!-- INFO POP UP -->
+                            <div class="modal fade" id="moveFile" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true ">
+                                <div class="modal-dialog" role="document ">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Mover archivos
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true ">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body" id="moveFileBody">
+                                            Nuevo nombre del archivo: <br> <br><input type="text" maxlength="61"
+                                                size="61" placeholder='' id='newFileName' /><br><br>
+                                            Nueva ruta del archivo: <br> <br>
+                                            <select id='newPath' class='select2 form-control custom-select'>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary" onClick=moveFile()
+                                                data-dismiss="modal">Mover</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Wrapper -->
-        <!-- ============================================================== -->
-
-        <!-- ============================================================== -->
-        <!-- All Jquery -->
-        <!-- ============================================================== -->
 
 
-        <script src="{% static '/assets/libs/jquery/dist/jquery.min.js' %}"></script>
-        <!-- Bootstrap tether Core JavaScript -->
-        <script src="{% static '/assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
-        <script src="{% static '/assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-        <script src="{% static '/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}">
-        </script>
-        <script src="{% static '/assets/extra-libs/sparkline/sparkline.js' %}"></script>
-        <!--Wave Effects -->
-        <script src="{% static '/dist/js/waves.js' %}"></script>
-        <!--Menu sidebar -->
-        <script src="{% static '/dist/js/sidebarmenu.js' %}"></script>
-        <!--Custom JavaScript -->
-        <script src="{% static '/dist/js/custom.min.js' %}"></script>
-        <!--This page JavaScript -->
-        <script src="{% static '/printer_page.js' %}"></script>
 
-        <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
-        <!-- Charts js Files -->
-        <script src="{% static '/assets/libs/flot/excanvas.js' %}"></script>
-        <script src="{% static '/assets/libs/flot/jquery.flot.js' %}"></script>
-        <script src="{% static '/assets/libs/flot/jquery.flot.pie.js' %}"></script>
-        <script src="{% static '/assets/libs/flot/jquery.flot.time.js' %}"></script>
-        <script src="{% static '/assets/libs/flot/jquery.flot.stack.js' %}"></script>
-        <script src="{% static '/assets/libs/flot/jquery.flot.crosshair.js' %}"></script>
+    </div>
 
-        <script src="{% static '/assets/extra-libs/multicheck/datatable-checkbox-init.js' %}"></script>
-        <script src="{% static '/assets/extra-libs/multicheck/jquery.multicheck.js' %}"></script>
-        <script src="{% static '/assets/extra-libs/DataTables/datatables.min.js' %}"></script>
-        <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
-        <script>
-            init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}", "{{apikey}}", "{{username}}");
 
-            $(function () {
-                // Success Type
-                $('#ts-success').on('click', function () {
-                    toastr.success('Have fun storming the castle!', 'Miracle Max Says')
-                });
+    <!-- PROGRESS BAR -->
 
+
+
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer text-center">
+        DAMA 3D
+    </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+
+
+    <script src="{% static '/assets/libs/jquery/dist/jquery.min.js' %}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static '/assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static '/assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}">
+    </script>
+    <script src="{% static '/assets/extra-libs/sparkline/sparkline.js' %}"></script>
+    <!--Wave Effects -->
+    <script src="{% static '/dist/js/waves.js' %}"></script>
+    <!--Menu sidebar -->
+    <script src="{% static '/dist/js/sidebarmenu.js' %}"></script>
+    <!--Custom JavaScript -->
+    <script src="{% static '/dist/js/custom.min.js' %}"></script>
+    <!--This page JavaScript -->
+    <script src="{% static '/printer_page.js' %}"></script>
+
+    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+    <!-- Charts js Files -->
+    <script src="{% static '/assets/libs/flot/excanvas.js' %}"></script>
+    <script src="{% static '/assets/libs/flot/jquery.flot.js' %}"></script>
+    <script src="{% static '/assets/libs/flot/jquery.flot.pie.js' %}"></script>
+    <script src="{% static '/assets/libs/flot/jquery.flot.time.js' %}"></script>
+    <script src="{% static '/assets/libs/flot/jquery.flot.stack.js' %}"></script>
+    <script src="{% static '/assets/libs/flot/jquery.flot.crosshair.js' %}"></script>
+
+    <script src="{% static '/assets/extra-libs/multicheck/datatable-checkbox-init.js' %}"></script>
+    <script src="{% static '/assets/extra-libs/multicheck/jquery.multicheck.js' %}"></script>
+    <script src="{% static '/assets/extra-libs/DataTables/datatables.min.js' %}"></script>
+    <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
+
+    <script>
+        init("{{printerPowerStatus}}", "{{id}}", "{{ledStatus}}", "{{apikey}}", "{{username}}");
+
+        $(function () {
+            // Success Type
+            $('#ts-success').on('click', function () {
+                toastr.success('Have fun storming the castle!', 'Miracle Max Says')
             });
-        </script>
+
+        });
+    </script>
 
 </body>
 
