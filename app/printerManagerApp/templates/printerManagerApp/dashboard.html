@@ -49,42 +49,45 @@
                         <h3 class="card-title">{{object.name}}
 
                             <button id="led{{object.getId}}" style="margin-left: 2%;"
-                                onClick="ledOnOff('{{object.getLedStatus}}','{{object.getId}}')"
-                                class="btn btn-info"><i id="bulb" class=" far fa-lightbulb"></i></button>
+                                onClick="ledOnOff('{{object.getLedStatus}}','{{object.getId}}')" class="btn btn-info"><i
+                                    id="bulb" class=" far fa-lightbulb"></i></button>
                             <button id={{object.getPrinterPowerStatus}}{{object.getId}}
                                 onClick="printerPowerOnOff('{{object.getPrinterPowerStatus}}','{{object.getId}}')"
                                 class="btn btn-success float-right"><i class=" fas fa-power-off"></i></button>
                         </h3>
-
-
-
                         <hr>
-                        
-                        <div style="text-align:left;float:left;">
-                            <h5 id="info{{object.getId}}">
-                                Status: <br><br>
-                                Progress: - <br><br>
-                                Archivo: - <br><br>
-                                Tiempo de impresion: -<br><br>
-                                Tiempo restante: -</h5>
-                            <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="text-align:left;float:left;">
+                                    <h5 id="info{{object.getId}}">
+                                        Status: <br><br>
+                                        Error: - <br><br>
+                                        Archivo: - <br><br>
+                                        Tiempo de impresion: -<br><br>
+                                        Tiempo restante: -</h5>
+                                    <br>
 
 
-                        </div>
-                        <div style="text-align:right;float:right;">
-                            <a href="../printer/{{object.getId}}">
-                                <img src="{{object.urlCam}}webcam/?action=stream" style="width: 270;" height="180">
-                            </a>
-                            <div class="progress m-t-15">
-                                <div id="barraProgreso{{object.getId}}"
-                                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    style="width:43"></div>
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <div style="text-align:right;float:right;">
+                                    <a href="../printer/{{object.getId}}">
+                                        <img src="{{object.urlCam}}webcam/?action=stream" style="width: 270;"
+                                            height="180">
+                                    </a>
+                                    <div class="progress m-t-15">
+                                        <div id="barraProgreso{{object.getId}}"
+                                            class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                            style="width:43"></div>
+                                    </div>
 
-                            <div style="display: block; text-align: center;">
-                                <h5 id="progress{{object.getId}}" style="margin-top: 5px;">-</h5>
+                                    <div style="display: block; text-align: center;">
+                                        <h5 id="progress{{object.getId}}" style="margin-top: 5px;">-</h5>
+                                    </div>
+
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

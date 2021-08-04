@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from .models import Printer, Project
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
 from django.shortcuts import redirect
@@ -75,6 +75,7 @@ def printer(request, printer_pk):
             path = request.POST['filePath']            
             printer_object = Printer.objects.get(IDa=printer_pk)
             printer_object.uploadFile(path, myfile)
+            return HttpResponseRedirect("/printer/"+str(printer_pk))
            
         
         printer_object = Printer.objects.get(IDa=printer_pk)
@@ -370,10 +371,9 @@ def moveFile(request, printer_pk, actualPath, newPath):
      if request.user.username != LIMITED_USER:
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)        
-            try:
-                jsonObject = printer_object.moveFile(actualPath, newPath)
-            except:
-                 jsonObject = "Archivo duplicado en destino o nombre incorrecto"
+                          
+            jsonObject = printer_object.moveFile(actualPath, newPath)
+            
             return HttpResponse(json.dumps(jsonObject), content_type = 'application/json')
         else:
             raise Http404

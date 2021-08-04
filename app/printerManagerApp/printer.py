@@ -77,11 +77,12 @@ class Printer:
 
 def main():
 
-    p2 = Printer("http://10.42.0.165/", "C0C0179A39DE472B9E692E3DF2F6025A")
+    p2 = Printer("http://10.42.0.223/", "C0C0179A39DE472B9E692E3DF2F6025A")
 
     #p2.waitConnection()
 
-    print(p2.client.move("3DBenchy_0.2mm_PLA_ENDER3BLTOUCH_2h17m.gcode","/DEMO/cacacaca.gcode"))
+    print(p2.client.move("a/Sample.gcode","/caca.gcode"))
+   
 
     
 

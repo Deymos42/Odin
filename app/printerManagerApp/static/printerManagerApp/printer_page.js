@@ -795,7 +795,10 @@ function showCarpetsInMove(fileName) {
     $("#newFileName").attr('class', fileName)
     $("#newFileName").attr('value', name)
     select = document.getElementById('newPath');
-
+    var opt = document.createElement('option');
+        opt.value = "/";
+        opt.innerHTML = "/";
+        select.appendChild(opt);
     for (var i = 0; i < allFolders.length; i++) {
         var opt = document.createElement('option');
         opt.value = allFolders[i];
@@ -811,6 +814,7 @@ function moveFile() {
         newName = newName + ".gcode"
     }
     actualFile = $("#newFileName").attr('class')
+    actualFile = actualFile.slice(0, -1)
     newFile = newPath + "/" + newName
 
     if (username != LIMITED_USER) {

@@ -133,7 +133,7 @@ setInterval(function () {
                         }
                         $("#info" + data.id).html(
                             " Status: <b>" + data.state + "</b><br><br>" +
-                            " Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br><br>" +
+                            " Error: <b>" + (data.error.toFixed(2) *100) + "%" + "</b><br><br>" +
                             " Archivo: <b>" + data.job.file.name + "</b><br><br>" +
                             " Tiempo de impresion:  " + printTime + "</b><br><br>" +
                             " Tiempo restante: <b>" + timeLeft + "</b>");
@@ -149,7 +149,7 @@ setInterval(function () {
 
                         $("#info" + data.id).html(
                             " Status: <b>" + data.state + "</b> <br><br>" +
-                            " Progreso: <b>" + "-" + "</b> <br><br>" +
+                            " Error: <b>" + "-" + "</b> <br><br>" +
                             " Archivo: <b>" + "-" + "</b> <br><br>" +
                             " Tiempo de impresion: <b>" + "-" + "</b> <br><br>" +
                             " Tiempo restante: <b>" + "-" + "</b>");
@@ -160,7 +160,7 @@ setInterval(function () {
         } else {
             $("#info" + ids[i]).html(
                 " Status: <b>" + "Offline" + "</b> <br><br>" +
-                " Progreso: <b>" + "-" + "</b> <br><br>" +
+                " Error: <b>" + "-" + "</b> <br><br>" +
                 " Archivo: <b>" + "-" + "</b> <br><br>" +
                 " Tiempo de impresion: <b>" + "-" + "</b> <br><br>" +
                 " Tiempo restante: <b>" + "-" + "</b>");

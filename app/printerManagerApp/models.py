@@ -315,9 +315,13 @@ class Printer(models.Model):
 
     def moveFile(self, name, path):
         name = name.replace("@","/")  
-        path = path.replace("@","/")               
+        path = path.replace("@","/")     
         if(self.client == None):
-            self.connect()
+            self.connect()       
+            return self.client.move(name, path)        
+        return self.client.move(name, path)  
+       
+      
 
-        return self.client.move(name, path)
+   
      

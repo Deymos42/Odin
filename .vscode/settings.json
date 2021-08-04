@@ -1,5 +1,5 @@
 {
     "python.pythonPath": "d:\\ESCRITORIO\\ESPLAITECH\\PROYECTOS\\Portal_web\\env\\venv\\Scripts\\python.exe",
     "git.ignoreLimitWarning": true,
-    "python.formatting.provider": "autopep8"
+    "python.formatting.provider": "black"
 }
