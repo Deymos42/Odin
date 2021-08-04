@@ -19,6 +19,7 @@ CATEGORYS = [ ('---', '---------'),
 ]
 
 
+
 class Project(models.Model):
     category = models.CharField(
         max_length = 20,
@@ -27,23 +28,55 @@ class Project(models.Model):
         )
     name = models.CharField(max_length=120)
     description = models.TextField()
-    imgPath = models.CharField(max_length=120)
-    ID = models.IntegerField()
+    uniqueId = models.IntegerField()
 
     def getId(self):
-        return self.ID
+        return self.uniqueId
 
     def getName(self):
         return self.name
 
     def getDescription(self):
-        return self.description
-    
-    def getImgPath(self):
-        return self.imgPath
+        return self.description   
+
     
     def getCategory(self):
-        return self.category
+        if self.category == "music":
+	        return "Música"
+
+        elif self.category == "science":
+	        return "Ciencias naturales"
+
+        elif self.category == "social science":
+	        return "Ciencias sociales"
+
+        elif self.category == "math":
+            return "Matemáticas"
+
+        elif self.category == "tecnology":
+            return "Tecnologia"
+
+        elif self.category == "physics":
+            return "Física"
+
+        elif self.category == "chemistry":
+            return "Química"
+
+        elif self.category == "Crafts":
+            return "Visual y plástica"
+
+        elif self.category == "Art history":
+            return "Historia del arte"          
+        else:
+            return "failed"
+
+    def __str__(self):
+        return str(self.uniqueId)
+
+class Images(models.Model):
+    img = models.ImageField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
 
 
 class TSD_url(models.Model):

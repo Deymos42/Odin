@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
-from .models import Printer, Project
+from .models import Images, Printer, Project
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
@@ -148,16 +148,13 @@ def projects(request):
 def projectCategory(request, id):
     allPrinters = Printer.objects.all()        
     projects = Project.objects.filter(category=id)
-    print(id)
-    print(projects)
-    context = { 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects }       
+    allImages = Images.objects.filter(project__category = id)
+    
+
+    context = { 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
    
     return render(request,"printerManagerApp/projects/projectCategory.html",context)
 
-
-def viewProject(request,idCat, idProj):
-    print("printerManagerApp/projects/" + idCat + "/" + idProj + ".html")
-    return render(request,"printerManagerApp/projects/" + idCat + "/" + idProj + ".html")
   
 
  # -----------------------------------------------------------------------Printer_ACTIONS---------------------------------------------------------------------------------
