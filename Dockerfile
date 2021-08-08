@@ -4,6 +4,7 @@ ENV PATH="/scripts:${PATH}"
 
 COPY ./requirements.txt /requirements.txt
 RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
+RUN apk add --no-cache jpeg-dev zlib-dev
 RUN pip install -r /requirements.txt
 RUN apk del .tmp
 
@@ -24,6 +25,6 @@ RUN chmod -R 755 /app/printerManagerApp
 RUN chmod -R 755 /app/printerManagerApp/static
 
 
-USER user
+USER root
 
 CMD ["entrypoint.sh"]
