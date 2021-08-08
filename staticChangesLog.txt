@@ -1,4 +1,0 @@
-style.min.css
-style.css
-printer_page.js
-cameras_page.js
