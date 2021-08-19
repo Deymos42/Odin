@@ -6,8 +6,8 @@ services:
       context: .   
     network_mode: host
     volumes: 
-      - static_data:/vol/web   
-      - media_data:/vol/web   
+      - static_data:/vol/web/static  
+      - media_data:/vol/web/media
     environment: 
       - DEBUG=0
     restart: always
@@ -17,8 +17,8 @@ services:
       context: ./proxy
     network_mode: host  
     volumes: 
-      - static_data:/vol
-      - media_data:/vol
+      - static_data:/vol/static
+      - media_data:/vol/media
     depends_on: 
       - app
     restart: always
