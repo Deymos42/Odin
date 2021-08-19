@@ -23,6 +23,7 @@ RUN chown -R user:user /app
 RUN chmod -R 777 /var/log/django/myapp.log
 RUN chmod -R 755 /app/printerManagerApp
 RUN chmod -R 755 /app/printerManagerApp/static
+RUN chmod -R 755 /app/printerManagerApp/media
 
 
 USER root
