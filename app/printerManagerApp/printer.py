@@ -77,14 +77,39 @@ class Printer:
 
 def main():
 
-    p2 = Printer("http://10.42.0.223/", "C0C0179A39DE472B9E692E3DF2F6025A")
-
-    #p2.waitConnection()
-
-    print(p2.client.move("a/Sample.gcode","/caca.gcode"))
    
+    #p2.waitConnection()
+    TSDurl = "http://10.42.0.1:3334/"
+    TSDuser = "root@example.com"
+    TSDpass = "supersecret"
+    URL = TSDurl + "accounts/login/" 
 
-    
+    print(URL)
+
+    client = requests.session()
+    errorTSD = False
+    try:
+        client.get(URL, timeout=3)  # sets cookie      
+    except:
+        errorTSD = True
+        print("error")
+        
+    if(errorTSD):
+        return "TSDerror"
+    else:
+        csrftoken = client.cookies['csrftoken']       
+        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': TSDuser, 'password': TSDpass}
+        print(post_data)
+        headers = {'Referer': URL}
+        response = client.post(URL, data=post_data, headers=headers)          
+        
+        a = client.get( TSDurl + "api/v1/printers/4" )
+        client = None        
+        data = json.loads(a.text)     
+        print(data)
+  
+
+
 
     """
     URL = "http://127.0.0.1:8000/api-auth/"

@@ -95,9 +95,10 @@ class Printer(models.Model):
     client = None
 
     try:
-        TSDurl = TSD_url.objects.get().url
+        TSDurl = TSD_url.objects.get().url     
         TSDuser = TSD_url.objects.get().username 
         TSDpass = TSD_url.objects.get().password
+      
     except:
        TSDurl = None  
        TSDuser = None
@@ -247,6 +248,7 @@ class Printer(models.Model):
         if(errorTSD):
            return "TSDerror"
         else:
+                   
             csrftoken = client.cookies['csrftoken']       
             post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
             headers = {'Referer': URL}

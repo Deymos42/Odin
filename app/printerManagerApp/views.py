@@ -85,7 +85,7 @@ def printer(request, printer_pk):
         allPrinters = Printer.objects.all()
         #verify that raspy is online
         try:
-            requests.get(url, timeout=3)
+            requests.get(url, timeout=5)
             online = True        
         except:
             print("exepct")

@@ -179,6 +179,7 @@ setInterval(function () {
             url: '/printer/' + id + '/getInfo',
             type: "GET",
             success: function (data) {
+                console.log(data)
                 resolved = true
                 if (data.job.file.name != null) {
                     if (data.progress.printTimeLeft == null) {

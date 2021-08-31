@@ -2,7 +2,7 @@
 
 set -e
 
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput -c
 #django-admin.py collectstatic
 
 
