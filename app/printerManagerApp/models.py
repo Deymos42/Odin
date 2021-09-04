@@ -253,8 +253,9 @@ class Printer(models.Model):
             post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
             headers = {'Referer': URL}
             response = client.post(URL, data=post_data, headers=headers)          
-           
+            #print(response)
             a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
+            #print(a.text)
             client = None        
             data = json.loads(a.text)     
             try:   

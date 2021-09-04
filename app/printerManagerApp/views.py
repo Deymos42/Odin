@@ -254,6 +254,8 @@ def printerPowerOn(request, printer_pk):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.PrinterPowerOn()             
             conected = printer_object.waitConnection()       
+            print("connected=")
+            print(conected)
             return HttpResponse(conected, content_type = 'text/html')
 
 def printerPowerOff(request, printer_pk):

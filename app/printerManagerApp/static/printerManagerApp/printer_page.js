@@ -90,7 +90,7 @@ function printerPowerOnOff(status) {
             $.ajax({
                 url: "/printer/" + id + "/printerPowerOff",
                 type: "GET",
-                success: function () {
+                success: function (data) {
                    // $("#printer_power_status_on").html("Encender impresora");
                     $('#printer_power_status_on').attr('class', 'btn btn-success');
                     $('#printer_power_status_on').attr('id', 'printer_power_status_off');
@@ -106,13 +106,14 @@ function printerPowerOnOff(status) {
                 url: "/printer/" + id + "/printerPowerOn",
                 type: "GET",
                 success: function (data) {
-                    conected = data;
-                    if (conected) {
+                    
+                    conected = data;   
+                    if (conected == true) {
                         toastr.success("impresora conectada", 'WoW');
                     } else {
                         toastr.error("conexion fallida", 'WoW');
                     }
-
+                   
                 }
             });
             $('#printer_power_status_off').attr('id', 'printer_power_status_on');
@@ -173,7 +174,7 @@ function secondsToHms(d) {
 setInterval(function () {
     var caca = $('#newFileName').find(":selected").text();
 
-    if (conected && resolved) {
+    if (conected == true && resolved == true) {
         resolved = false
         $.ajax({
             url: '/printer/' + id + '/getInfo',

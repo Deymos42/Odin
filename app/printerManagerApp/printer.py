@@ -81,7 +81,7 @@ def main():
     #p2.waitConnection()
     TSDurl = "http://10.42.0.1:3334/"
     TSDuser = "root@example.com"
-    TSDpass = "supersecret"
+    TSDpass = "0203comosiempre"
     URL = TSDurl + "accounts/login/" 
 
     print(URL)
@@ -103,7 +103,7 @@ def main():
         headers = {'Referer': URL}
         response = client.post(URL, data=post_data, headers=headers)          
         
-        a = client.get( TSDurl + "api/v1/printers/4" )
+        a = client.get( TSDurl + "api/v1/printers/1" )
         client = None        
         data = json.loads(a.text)     
         print(data)
