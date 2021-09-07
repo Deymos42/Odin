@@ -24,13 +24,13 @@ urlpatterns = [
     #-------------------general_links------------------------------------------
     path('admin/', admin.site.urls),
     path('', views.index),
-    path('test', views.test),
     path('accounts/', include('django.contrib.auth.urls')), 
     path('printer/<int:printer_pk>', views.printer),
     path('cameras', views.allCamerasView),
     path('projects', views.projects),
     path('dashboard', views.dashboard),
     path('printerOffline', views.printerOffline),
+     path('support', views.support),
 
     #-------------------printer_actions------------------------------------------   
  

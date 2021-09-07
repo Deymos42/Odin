@@ -11,21 +11,17 @@
     }
 </style>
 
-<!--This page JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-    integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async>
-</script>
 <script>
     let images = []
     let ProjectIdImgaes = []
     let projects = []
 </script>
-    {% for img in images %}
-    <script>
-        images.push("{{img.img}}")
-        ProjectIdImgaes.push("{{img.project}}")
-    </script>
-    {% endfor %}
+{% for img in images %}
+<script>
+    images.push("{{img.img}}")
+    ProjectIdImgaes.push("{{img.project}}")
+</script>
+{% endfor %}
 
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
@@ -58,12 +54,12 @@
 
             {%for p in projects%}
 
-            <div class="col-lg-4 col-md-12">
-                <div class="card">
+            <div class="col-lg-3 col-md-4" >
+                <div class="card" style="">
                     <div class="el-card-item" data-toggle="modal" data-target="#showProject_{{p.getId}}">
+                        
 
-                        <div class="el-card-avatar el-overlay-1"> <img id ="P{{p.getId}}img0"
-                                src="" />
+                        <div class="el-card-avatar el-overlay-1 "> <img id="P{{p.getId}}img0" src="" />
 
                         </div>
                         <div class="el-card-content">
@@ -75,7 +71,9 @@
             {% endfor %}
 
         </div>
-        {%for p in projects%}
+  
+       
+         {%for p in projects%}
         <script>
             projects.push("{{p.getId}}")
         </script>
@@ -97,7 +95,12 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
+        </div>
+        </div>
+        </div>
+         {% endfor %}
+        
+       
 
         <!-- ============================================================== -->
         <!-- End PAge Content -->
@@ -118,17 +121,19 @@
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
-    <footer class="footer text-center">
-        DAMA 3D
-    </footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
 </div>
+</div>
+<footer class="footer text-center">
+    DAMA 3D
+</footer>
+<!-- ============================================================== -->
+<!-- End footer -->
+<!-- ============================================================== -->
+
 <!-- ============================================================== -->
 <!-- End Page wrapper  -->
 <!-- ============================================================== -->
-</div>
+
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
@@ -180,7 +185,10 @@
             document.getElementById("P" + projects[i] + "img" + k).src = "/media/" + tmpImg[k]
         }
     }
-  
+</script>
+
+<!--This page JavaScript -->
+<script src="{% static '\assets\libs\masonry\masonry.pkgd.min.js' %}">
 </script>
 
 </body>

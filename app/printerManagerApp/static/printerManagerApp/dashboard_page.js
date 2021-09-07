@@ -3,7 +3,11 @@ ledStatus = [];
 ids = [];
 conected = [];
 username = "";
+ABORT = false;
 
+function abort() {
+    ABORT = !ABORT   
+}
 LIMITED_USER = "alumnes";
 
 function initPrinter(printerPwStatus, printerId, lightsPwStatus, Username) {
@@ -116,7 +120,7 @@ setInterval(function () {
     
     for (var i = 0; i < printersStatus.length; i++) {
         if (conected[i]) {
-            $.ajax({
+           var xhr = $.ajax({
                 url: '/printer/' + ids[i] + '/getInfo',
                 type: "GET",
                 success: function (data) {
@@ -157,6 +161,9 @@ setInterval(function () {
                     var formatedError = (data.error * 100).toFixed(2)
                 }
             });
+            if (ABORT) {
+                xhr.abort()
+            }
         } else {
             $("#info" + ids[i]).html(
                 " Status: <b>" + "Offline" + "</b> <br><br>" +

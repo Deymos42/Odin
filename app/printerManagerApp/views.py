@@ -64,9 +64,9 @@ def printerOffline(request):
     else:
         return redirect("/accounts/login")
 
-def test(request):
+def support(request):
    
-    return render(request, "printerManagerApp/printerOffline.html")
+    return render(request, "printerManagerApp/support.html")
 
 def printer(request, printer_pk):
     if request.user.is_authenticated:
@@ -254,8 +254,7 @@ def printerPowerOn(request, printer_pk):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.PrinterPowerOn()             
             conected = printer_object.waitConnection()       
-            print("connected=")
-            print(conected)
+
             return HttpResponse(conected, content_type = 'text/html')
 
 def printerPowerOff(request, printer_pk):

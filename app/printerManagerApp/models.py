@@ -120,7 +120,7 @@ class Printer(models.Model):
             return False
         else:            
             self.connect()                       
-            while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 30):
+            while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 40):
                 self.client.connect(baudrate=115200)
                 counter = counter + 1
                 print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
@@ -246,6 +246,7 @@ class Printer(models.Model):
             errorTSD = True
             
         if(errorTSD):
+           print("TSDERROR TIMEOPUT")
            return "TSDerror"
         else:
                    
@@ -253,9 +254,7 @@ class Printer(models.Model):
             post_data = { "csrfmiddlewaretoken": csrftoken, 'login': self.TSDuser, 'password': self.TSDpass}
             headers = {'Referer': URL}
             response = client.post(URL, data=post_data, headers=headers)          
-            #print(response)
             a = client.get( self.TSDurl + "api/v1/printers/" + self.TSDid )
-            #print(a.text)
             client = None        
             data = json.loads(a.text)     
             try:   

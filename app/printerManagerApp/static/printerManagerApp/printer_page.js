@@ -8,6 +8,11 @@ username = "";
 resolved = true
 var allFolders = []
 LIMITED_USER = "alumnes";
+ABORT = false;
+
+function abort() {
+    ABORT = !ABORT   
+}
 
 var opts = {
     angle: 0, // The span of the gauge arc
@@ -54,7 +59,7 @@ function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
 
         //$("#printer_power_status_on").html("Apagar impresora");
         $('#printer_power_status_on').attr('class', 'btn btn-danger');
-        conected = true;
+        conected = "True";
         toastr.success("impresora conectada", 'WoW');
 
 
@@ -91,7 +96,7 @@ function printerPowerOnOff(status) {
                 url: "/printer/" + id + "/printerPowerOff",
                 type: "GET",
                 success: function (data) {
-                   // $("#printer_power_status_on").html("Encender impresora");
+                    // $("#printer_power_status_on").html("Encender impresora");
                     $('#printer_power_status_on').attr('class', 'btn btn-success');
                     $('#printer_power_status_on').attr('id', 'printer_power_status_off');
                     printerStatus = 'printer_status_off'
@@ -106,14 +111,14 @@ function printerPowerOnOff(status) {
                 url: "/printer/" + id + "/printerPowerOn",
                 type: "GET",
                 success: function (data) {
-                    
-                    conected = data;   
-                    if (conected == true) {
+
+                    conected = data;
+                    if (conected == "True") {
                         toastr.success("impresora conectada", 'WoW');
                     } else {
                         toastr.error("conexion fallida", 'WoW');
                     }
-                   
+
                 }
             });
             $('#printer_power_status_off').attr('id', 'printer_power_status_on');
@@ -174,13 +179,13 @@ function secondsToHms(d) {
 setInterval(function () {
     var caca = $('#newFileName').find(":selected").text();
 
-    if (conected == true && resolved == true) {
+    if (conected == "True" && resolved == true) {
         resolved = false
-        $.ajax({
+        var xhr = $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
             success: function (data) {
-                console.log(data)
+                //console.log(data)
                 resolved = true
                 if (data.job.file.name != null) {
                     if (data.progress.printTimeLeft == null) {
@@ -243,8 +248,13 @@ setInterval(function () {
                 } else {
                     $('#inputBed').attr('placeholder', "off");
                 }
-            }
+            },
         });
+
+        if (ABORT == true) {
+          xhr.abort()
+
+        }
 
 
     } else {
@@ -798,9 +808,9 @@ function showCarpetsInMove(fileName) {
     $("#newFileName").attr('value', name)
     select = document.getElementById('newPath');
     var opt = document.createElement('option');
-        opt.value = "/";
-        opt.innerHTML = "/";
-        select.appendChild(opt);
+    opt.value = "/";
+    opt.innerHTML = "/";
+    select.appendChild(opt);
     for (var i = 0; i < allFolders.length; i++) {
         var opt = document.createElement('option');
         opt.value = allFolders[i];
@@ -849,7 +859,7 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
 
 input.addEventListener('change', () => {
-        $("#submitFile").attr('style', '');       
+        $("#submitFile").attr('style', '');
         $('#uploadForm').append("<div class='progress m-t-15'><div id='uploadProgress' class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width:0%;'></div></div>");
         const fd = new FormData()
         const data = input.files[0]
