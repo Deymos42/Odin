@@ -2,6 +2,7 @@ from octorest import OctoRest
 import requests
 import ast
 import json
+import cv2
 
 class Printer:
 
@@ -77,7 +78,7 @@ class Printer:
 
 def main():
 
-   
+   """
     #p2.waitConnection()
     TSDurl = "http://10.42.0.1:3334/"
     TSDuser = "root@example.com"
@@ -111,7 +112,7 @@ def main():
 
 
 
-    """
+    
     URL = "http://127.0.0.1:8000/api-auth/"
         
     client = requests.session()
@@ -158,6 +159,25 @@ def main():
     #p.stuff()   led_status_on
     """
 
+
+
+print("Before URL")
+cap = cv2.VideoCapture('http://192.168.1.77/webcam/?action=stream')
+print("After URL")
+
+while True:
+
+    #print('About to start the Read command')
+    ret, frame = cap.read()
+    #print('About to show frame of Video.')
+    cv2.imshow("Capturing",frame)
+    #print('Running..')
+    print(frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
     
 
 

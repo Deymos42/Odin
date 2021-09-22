@@ -30,8 +30,8 @@ urlpatterns = [
     path('projects', views.projects),
     path('dashboard', views.dashboard),
     path('printerOffline', views.printerOffline),
-     path('support', views.support),
-
+    path('support', views.support),
+    path('printerCam/<int:printer_pk>',views.livefe),
     #-------------------printer_actions------------------------------------------   
  
     path('printer/<int:printer_pk>/toggleLed', views.toggleLed, name='ledOff'),
