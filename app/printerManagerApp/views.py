@@ -20,45 +20,6 @@ import threading
 LIMITED_USER = "alumnes"
 
 
-
-class VideoCamera(object):
-    def __init__(self, url):
-        self.video = cv2.VideoCapture(url)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
-
-    def __del__(self):
-        self.video.release()
-
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
-
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
-
-
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield(b'--frame\r\n'
-              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-
-@gzip.gzip_page
-def livefe(request, printer_pk):      
-    printer_object = Printer.objects.get(IDa=printer_pk)
-    url = printer_object.getUrl()
-    try:
-        cam = VideoCamera( url + "webcam/?action=stream")
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:  # This is bad! replace it with proper handling
-        pass
-
-
-
  # -----------------------------------------------------------------------PAGES---------------------------------------------------------------------------------
 
 def index(request):
@@ -125,7 +86,6 @@ def printer(request, printer_pk):
         printer_object = Printer.objects.get(IDa=printer_pk)
         name = printer_object.getName()
         url = printer_object.getUrl()
-        urlCam = printer_object.getUrlCam()
         allPrinters = Printer.objects.all()
         #verify that raspy is online
         try:
@@ -140,7 +100,7 @@ def printer(request, printer_pk):
             printerPowerStatus = printer_object.getPrinterPowerStatus()   
             apikey = printer_object.getApiKey()
 
-            context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam , 
+            context = {'PrinterName': name, 'id': printer_pk, 'url': url,  
                        'ledStatus': ledStatus, 'apikey': apikey, 'username': request.user.username, 
                        'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
     

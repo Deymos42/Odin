@@ -162,8 +162,11 @@ def main():
 
 
 print("Before URL")
-cap = cv2.VideoCapture('http://192.168.1.77/webcam/?action=stream')
+#cap = cv2.VideoCapture('http://192.168.1.150/webcam/?action=stream')
 print("After URL")
+cap = cv2.VideoCapture('filesrc location=http://192.168.1.150/webcam/?action=stream ! qtdemux ! h264parse ! nvv4l2decoder ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert ! queue ! video/x-raw, format=BGR ! appsink', cv2.CAP_GSTREAMER)
+cap = cv2.VideoCapture(f'v4l2src http://192.168.1.150/webcam/?action=stream ! image/jpeg, width=(int)3840, height=(int)2160 !  nvjpegdec ! video/x-raw, format=I420 ! appsink', cv2.CAP_GSTREAMER)
+cap = cv2.VideoCapture('httpsrc location=http://192.168.1.150/webcam/?action=stream latency=500 ! application/x-rtp, media=video, encoding-name=H264 ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink', cv2.CAP_GSTREAMER)
 
 while True:
 

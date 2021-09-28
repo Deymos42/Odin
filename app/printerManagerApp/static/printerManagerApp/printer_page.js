@@ -475,7 +475,7 @@ class fileSystem {
         this.isLocal = true;
     }
 
-    getLocal(obj) { // get all files and folders of an folder (obj) in json format
+    getLocal(obj) { // get all files and folders of an folder (obj) in local
         let carpets = [];
         let carpetsPaths = [];
         let files = [];
@@ -505,13 +505,16 @@ class fileSystem {
 
 
     recu(objFolder, path) {
-
-        for (var i = 0; i < objFolder.children.length; i++) {
-            if (objFolder.children[i].type == "folder") {
+      var tmp;
+        for (var i = 0; i < objFolder.children.length ; i++) {
+            if (objFolder.children[i].type == "folder") {             
                 if (objFolder.children[i].path == path) {
                     return this.getLocal(objFolder.children[i]); // search content if folder is in 1rt call
                 } else {
-                    return this.recu(objFolder.children[i], path); //search recursive (sub/sub/foler)
+                    tmp = this.recu(objFolder.children[i], path); //search recursive (sub/sub/foler)
+                    if(tmp != true) {
+                        return tmp
+                    }
                 }
             }
         }
@@ -519,15 +522,16 @@ class fileSystem {
     }
 
     getFolder(path) { //return content of a concret folder
-        var ret;
+        var ret;      
         for (var i = 0; i < this.files.length; i++) {
-
-            if (this.files[i].type == "folder") {
-                if (this.files[i].path == path) {
-                    return this.getLocal(this.files[i]); // search content if folder is in local
+            
+            if (this.files[i].type == "folder") {                
+                if (this.files[i].path == path) {                                       
+                    return this.getLocal(this.files[i]) // search content if folder is in local                    
                 } else {
-                    ret = this.recu(this.files[i], path); //search folder inside other folder         
-                    if (ret != true) {
+                     console.log("ELSE")
+                    ret = this.recu(this.files[i], path); //search folder inside other folder                   
+                    if (ret != true) {                        
                         return ret;
                     }
                 }
@@ -629,7 +633,9 @@ function enterFolder(folderId) {
                 }
 
             } else {
-
+               
+                console.log("folderIDpased  " + folderId.slice(0, -1) )
+                
                 var data = FileSystem.getFolder(folderId.slice(0, -1));
 
                 var backPath = FileSystem.getBackPath(folderId.slice(0, -1));
@@ -694,14 +700,15 @@ function enterFolder(folderId) {
 }
 
 
-function passIdToModal(id) {
+function passIdToModal(id) {    
+    $("#nameOfDeleteElement").html("Seguro que quieres eliminar la carpeta ");    
     $("#deleteItemButton").attr('name', id);
-    var paragraph = document.getElementById("nameOfDeleteElement");
+    var paragraph = document.getElementById("nameOfDeleteElement");    
     var text = document.createTextNode(id);
     var interrogation = document.createTextNode(" y todo lo que contiene?");
     paragraph.appendChild(text);
     paragraph.appendChild(interrogation);
-
+    
 }
 
 function print(filepath) {
