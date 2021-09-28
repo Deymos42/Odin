@@ -813,6 +813,7 @@ function showCarpetsInMove(fileName) {
 
     $("#newFileName").attr('class', fileName)
     $("#newFileName").attr('value', name)
+    $("#newPath").empty();   
     select = document.getElementById('newPath');
     var opt = document.createElement('option');
     opt.value = "/";
