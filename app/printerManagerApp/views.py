@@ -11,10 +11,7 @@ from django.contrib import messages
 import json
 import time
 import requests
-from django.views.decorators import gzip
-from django.http import StreamingHttpResponse
-import cv2
-import threading
+
 # Create your views here.
 
 LIMITED_USER = "alumnes"
