@@ -78,11 +78,11 @@ class Printer:
 
 def main():
 
-   """
+   
     #p2.waitConnection()
-    TSDurl = "http://10.42.0.1:3334/"
+    TSDurl = "http://10.42.0.100:3334/"
     TSDuser = "root@example.com"
-    TSDpass = "0203comosiempre"
+    TSDpass = "supersecret"
     URL = TSDurl + "accounts/login/" 
 
     print(URL)
@@ -112,7 +112,7 @@ def main():
 
 
 
-    
+    """
     URL = "http://127.0.0.1:8000/api-auth/"
         
     client = requests.session()
@@ -160,27 +160,6 @@ def main():
     """
 
 
-
-print("Before URL")
-#cap = cv2.VideoCapture('http://192.168.1.150/webcam/?action=stream')
-print("After URL")
-cap = cv2.VideoCapture('filesrc location=http://192.168.1.150/webcam/?action=stream ! qtdemux ! h264parse ! nvv4l2decoder ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert ! queue ! video/x-raw, format=BGR ! appsink', cv2.CAP_GSTREAMER)
-cap = cv2.VideoCapture(f'v4l2src http://192.168.1.150/webcam/?action=stream ! image/jpeg, width=(int)3840, height=(int)2160 !  nvjpegdec ! video/x-raw, format=I420 ! appsink', cv2.CAP_GSTREAMER)
-cap = cv2.VideoCapture('httpsrc location=http://192.168.1.150/webcam/?action=stream latency=500 ! application/x-rtp, media=video, encoding-name=H264 ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink', cv2.CAP_GSTREAMER)
-
-while True:
-
-    #print('About to start the Read command')
-    ret, frame = cap.read()
-    #print('About to show frame of Video.')
-    cv2.imshow("Capturing",frame)
-    #print('Running..')
-    print(frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
     
 
 

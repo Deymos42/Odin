@@ -90,6 +90,7 @@ class Printer(models.Model):
     name = models.CharField(max_length=120)
     IDa = models.CharField(max_length=120)
     TSDid  = models.CharField(max_length=120)
+    urlCam = models.CharField(max_length=120)
 
     client = None
 
@@ -182,8 +183,9 @@ class Printer(models.Model):
     def getApiKey(self):
         return self.apikey
 
- 
-  
+    def getUrlCam(self):
+        return self.urlCam
+   
         
     def toggleLed(self):
         myobj = {'pin': 'r1', 'command': 'update'}

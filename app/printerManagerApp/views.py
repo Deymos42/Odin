@@ -83,6 +83,7 @@ def printer(request, printer_pk):
         printer_object = Printer.objects.get(IDa=printer_pk)
         name = printer_object.getName()
         url = printer_object.getUrl()
+        urlCam = printer_object.getUrlCam()
         allPrinters = Printer.objects.all()
         #verify that raspy is online
         try:
@@ -97,7 +98,7 @@ def printer(request, printer_pk):
             printerPowerStatus = printer_object.getPrinterPowerStatus()   
             apikey = printer_object.getApiKey()
 
-            context = {'PrinterName': name, 'id': printer_pk, 'url': url,  
+            context = {'PrinterName': name, 'id': printer_pk, 'url': url, 'urlCam': urlCam,
                        'ledStatus': ledStatus, 'apikey': apikey, 'username': request.user.username, 
                        'printerPowerStatus':printerPowerStatus, 'my_printer_list': allPrinters } 
     
