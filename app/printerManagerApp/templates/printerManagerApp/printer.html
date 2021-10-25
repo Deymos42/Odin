@@ -3,9 +3,6 @@
 {% include 'printerManagerApp/header.html' %}
 {% include 'printerManagerApp/sidebar.html' %}
 
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-    integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async>
-</script>
 
 
 <style>
@@ -43,6 +40,14 @@
         100% {
             transform: rotate(360deg);
         }
+    }
+
+    .resizing-input input,
+    .resizing-input span {
+        font-size: 12px;
+        font-family: Sans-serif;
+        white-space: pre;
+        padding: 5px;
     }
 </style>
 </head>
@@ -166,13 +171,19 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                       
+                                        <br>
                                         <td>Cama:</td>
                                         <td style="vertical-align: middle; text-align: center;" id="bedTemp">-</td>
                                         <td style="vertical-align: middle; text-align: center;">
                                             <div style="display: flex; justify-content: center; align-content: center;">
-                                                <input onkeypress="pulsarIntroBedTemp(event)"
-                                                    style=" height: 30px; width: 30%; text-align: center;" type="number"
-                                                    id="inputBed" placeholder="-" name="Name" />
+                                                <div class="resizing-input">
+                                                    <input onkeypress="pulsarIntroBedTemp(event)"
+                                                        
+                                                        type="text" id="inputBed" placeholder="-----" name="Name" />
+                                                    <span style="display:none"></span>
+                                                </div>
+
                                             </div>
                                         </td>
                                         <td>
