@@ -137,7 +137,6 @@ def allCamerasView(request):
         return redirect("/accounts/login")
 
 
-
  # --------------------------------------------------------------------------projects------------------------------------------------------------------------------------
 def projects(request):   
     if request.user.is_authenticated:   
@@ -151,9 +150,14 @@ def projectCategory(request, id):
     allPrinters = Printer.objects.all()        
     projects = Project.objects.filter(category=id)
     allImages = Images.objects.filter(project__category = id)
-    
-
-    context = { 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
+    printersStatus = list()
+    for printer in allPrinters:
+        if "Offline" in printer.getPrinterInfo()["state"]:
+            printersStatus.append("Offline")
+        else:
+            printersStatus.append(printer.getPrinterInfo()["state"])
+    print(printersStatus)
+    context = {'printersStatus': printersStatus, 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
    
     return render(request,"printerManagerApp/projects/projectCategory.html",context)
 
@@ -203,11 +207,10 @@ def getPrinterInfo(request, printer_pk):
         printer_object = Printer.objects.get(IDa=printer_pk)        
         info = printer_object.getPrinterInfo() 
 
-        info["error"] = printer_object.getError()     
+        #info["error"] = printer_object.getError()     
         info["toolTemp"] = printer_object.getToolTemp()
         info["bedTemp"] = printer_object.getBedTemp()
         info["id"] = printer_object.getId()
-        #print(info)  
         data = json.dumps(info)    
         return HttpResponse(data, content_type = 'application/json')
     else:
@@ -271,7 +274,8 @@ def getStatus(request, printer_pk):
     if request.is_ajax():
         printer_object = Printer.objects.get(IDa=printer_pk)      
         info = printer_object.getStatus()        
-        data = json.dumps(info)    
+        data = json.dumps(info)  
+        print(type(info))  
         return HttpResponse(data, content_type = 'application/json')
     else:
         raise Http404
@@ -327,6 +331,28 @@ def printFile(request, printer_pk, filename):
             return HttpResponse(jsonObject, content_type = 'text/html')
         else:
             raise Http404
+
+def printProject(request, printer_pk, filename):
+     
+    if request.user.username != LIMITED_USER:
+        if request.is_ajax():
+            printer_object = Printer.objects.get(IDa=printer_pk)
+            info = printer_object.getPrinterInfo()
+            if  "Offline" in info["state"]:              
+                printer_object.PrinterPowerOn()             
+                printer_object.waitConnection()
+                printer_object.print(filename)     
+                jsonObject = "succes"
+                return HttpResponse(jsonObject, content_type = 'text/html') 
+                
+            elif info["state"] == "Operational":
+                printer_object.print(filename)
+                jsonObject = "succes"     
+                return HttpResponse(jsonObject, content_type = 'text/html')
+            else:
+                jsonObject = "No se ha podido imprimir"
+                return HttpResponse(jsonObject, content_type = 'text/html')
+            
 
 def jog(request, printer_pk, x, y, z):
     if request.user.username != LIMITED_USER:

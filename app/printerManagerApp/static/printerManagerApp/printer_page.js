@@ -6,44 +6,51 @@ tabla = null;
 apikey = "?apikey=";
 username = "";
 resolved = true
+var oneTimeCall = true
 var allFolders = []
 LIMITED_USER = "alumnes";
 ABORT = false;
+var currentdate = new Date();
 
 function abort() {
-    ABORT = !ABORT   
+    ABORT = !ABORT
 }
 
-var opts = {
-    angle: 0, // The span of the gauge arc
-    lineWidth: 0.44, // The line thickness
-    radiusScale: 1, // Relative radius
-    pointer: {
-        length: 0.68, // // Relative to gauge radius
-        strokeWidth: 0.055, // The thickness
-        color: '#000000' // Fill color
-    },
-    limitMax: false, // If false, max value increases automatically if value > maxValue
-    limitMin: false, // If true, the min value of the gauge will be fixed
-    colorStart: '#6FADCF', // Colors
-    colorStop: '#8FC0DA', // just experiment with them
-    strokeColor: '#E0E0E0', // to see which ones work best for you
-    generateGradient: true,
-    highDpiSupport: true, // High resolution support
-    percentColors: [
-        [0.0, "#67FE1F"],
-        [0.7, "#F46E05"],
-        [1, "#E71B00"]
-    ],
+function UrlExists(url, cb) {
+    jQuery.ajax({
+        url: url,
+        dataType: 'text',
+        type: 'GET',
+        complete: function (xhr) {
+            if (typeof cb === 'function')
+                cb.apply(this, [xhr.status]);
+        }
+    });
+}
 
-};
 
-var target = document.getElementById('gaugeTest'); // your canvas element
-var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
-gauge.maxValue = 100; // set max gauge value
-gauge.setMinValue(0); // Prefer setter over gauge.minValue = 0
-gauge.animationSpeed = 100; // set animation speed (32 is default value)
-gauge.set(0.5); // set actual value
+
+function timestrToSec(timestr) {
+    var parts = timestr.split(":");
+    return (parts[0] * 3600) +
+        (parts[1] * 60) +
+        (+parts[2]);
+}
+
+function pad(num) {
+    if (num < 10) {
+        return "0" + num;
+    } else {
+        return "" + num;
+    }
+}
+
+function formatTime(seconds) {
+    return [pad(Math.floor(seconds / 3600)),
+        pad(Math.floor(seconds / 60) % 60),
+        pad(seconds % 60),
+    ].join(":");
+}
 
 
 function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
@@ -176,6 +183,7 @@ function secondsToHms(d) {
 
 }
 
+
 setInterval(function () {
     var caca = $('#newFileName').find(":selected").text();
 
@@ -184,36 +192,65 @@ setInterval(function () {
         var xhr = $.ajax({
             url: '/printer/' + id + '/getInfo',
             type: "GET",
-            success: function (data) {
-                //console.log(data)
+            success: function (data) {              
                 resolved = true
                 if (data.job.file.name != null) {
+                    if (oneTimeCall) {
+                        var thumbnailUrl = printerUrl + "plugin/prusaslicerthumbnails/thumbnail/" + data.job.file.name.slice(0, -6) + ".png"
+                        UrlExists(thumbnailUrl, function (status) {
+                            if (status === 200) {
+                                $('#thumbnail').html('<img src="' + thumbnailUrl + '"  width="175"  height="175" style="  display: block;  margin-left: auto;  margin-right: auto;"/>');
+
+                            } else if (status === 404) {
+                                $('#thumbnail').html("No disponible");
+                            } else {
+                                $('#thumbnail').html("No disponible");
+                                toastr.error('Error extraño con la vista previa', 'Error');
+                            }
+                        });
+                        oneTimeCall = false
+                    }
+
+
                     if (data.progress.printTimeLeft == null) {
                         timeLeft = secondsToHms(data.job.estimatedPrintTime) + " aprox"
                         printTime = 0;
                         completation = 0;
-
+                        var h = Math.floor(data.job.estimatedPrintTime / 3600);
+                        var m = Math.floor(data.job.estimatedPrintTime % 3600 / 60);
+                        var s = Math.floor(data.job.estimatedPrintTime % 3600 % 60);
                     } else {
+                        var h = Math.floor(data.progress.printTimeLeft / 3600);
+                        var m = Math.floor(data.progress.printTimeLeft % 3600 / 60);
+                        var s = Math.floor(data.progress.printTimeLeft % 3600 % 60);
                         timeLeft = secondsToHms(data.progress.printTimeLeft);
                         printTime = secondsToHms(data.progress.printTime);
                         completation = data.progress.completion;
 
                     }
+                  
+                    var currentTimeToSum = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds()
+                    var timeLeftToSum = h + ":" + m + ":" + s
+                    var finalH = formatTime(timestrToSec(currentTimeToSum) + timestrToSec(timeLeftToSum));
                     $("#info").html(" Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
                         "<br> Archivo: <b>" + data.job.file.name + "</b><br>" +
                         "<br> Tiempo de impresion:  " + printTime + "</b><br>" +
-                        "<br> Tiempo restante: <b>" + timeLeft + "</b><br>");
+                        "<br> Tiempo restante: <b>" + timeLeft + "</b><br>" +
+                        "<br> Hora final aprox: <b>" + finalH + "</b><br>");
                     $('#barraProgreso').attr('style', 'width:' + completation + '%');
                     if (completation % 10 == 0) {
                         $("#progress").html(completation.toFixed(0) + "%");
                     } else {
                         $("#progress").html(completation.toFixed(2) + "%");
                     }
+                } else {
+                    $('#thumbnail').html("No disponible");
                 }
-                var formatedError = (data.error * 100).toFixed(2)
+
+
                 $('#status').html(data.state);
-                $('#errorNumber').html(formatedError);
-                gauge.set(formatedError);
+
+
 
                 if (data.state == "Printing") {
                     $(".btn.btn-success").prop('disabled', true);
@@ -252,7 +289,7 @@ setInterval(function () {
         });
 
         if (ABORT == true) {
-          xhr.abort()
+            xhr.abort()
 
         }
 
@@ -493,8 +530,7 @@ class fileSystem {
                 carpets.push(a[i].name);
                 carpetsPaths.push(a[i].path); // path witout local 
 
-            } else if (a[i].type == "machinecode") {
-                console.log(a[i].name)
+            } else if (a[i].type == "machinecode") {                
                 files.push(a[i].name);
                 filesPath.push(a[i].path); // path witout local 
                 filesLinks.push(a[i].refs.download.concat(apikey))
@@ -506,14 +542,14 @@ class fileSystem {
 
 
     recu(objFolder, path) {
-      var tmp;
-        for (var i = 0; i < objFolder.children.length ; i++) {
-            if (objFolder.children[i].type == "folder") {             
+        var tmp;
+        for (var i = 0; i < objFolder.children.length; i++) {
+            if (objFolder.children[i].type == "folder") {
                 if (objFolder.children[i].path == path) {
                     return this.getLocal(objFolder.children[i]); // search content if folder is in 1rt call
                 } else {
                     tmp = this.recu(objFolder.children[i], path); //search recursive (sub/sub/foler)
-                    if(tmp != true) {
+                    if (tmp != true) {
                         return tmp
                     }
                 }
@@ -523,16 +559,16 @@ class fileSystem {
     }
 
     getFolder(path) { //return content of a concret folder
-        var ret;      
+        var ret;
         for (var i = 0; i < this.files.length; i++) {
-            
-            if (this.files[i].type == "folder") {                
-                if (this.files[i].path == path) {                                       
+
+            if (this.files[i].type == "folder") {
+                if (this.files[i].path == path) {
                     return this.getLocal(this.files[i]) // search content if folder is in local                    
                 } else {
-                     console.log("ELSE")
+                   
                     ret = this.recu(this.files[i], path); //search folder inside other folder                   
-                    if (ret != true) {                        
+                    if (ret != true) {
                         return ret;
                     }
                 }
@@ -593,7 +629,7 @@ function enterFolder(folderId) {
         url: '/printer/' + id + '/getAllFilesAndFolders',
         type: "GET",
         success: function (data) {
-            console.log(data)
+            
             if (tabla != null) {
                 if (tabla.data().count()) {
                     destroyDataRable();
@@ -633,10 +669,8 @@ function enterFolder(folderId) {
                         "</tr>"
                 }
 
-            } else {
-               
-                console.log("folderIDpased  " + folderId.slice(0, -1) )
-                
+            } else {               
+
                 var data = FileSystem.getFolder(folderId.slice(0, -1));
 
                 var backPath = FileSystem.getBackPath(folderId.slice(0, -1));
@@ -701,16 +735,17 @@ function enterFolder(folderId) {
 }
 
 
-function passIdToModal(id) {    
-    $("#nameOfDeleteElement").html("Seguro que quieres eliminar la carpeta ");    
+function passIdToModal(id) {
+    $("#nameOfDeleteElement").html("Seguro que quieres eliminar la carpeta ");
     $("#deleteItemButton").attr('name', id);
-    var paragraph = document.getElementById("nameOfDeleteElement");    
+    var paragraph = document.getElementById("nameOfDeleteElement");
     var text = document.createTextNode(id);
     var interrogation = document.createTextNode(" y todo lo que contiene?");
     paragraph.appendChild(text);
     paragraph.appendChild(interrogation);
-    
+
 }
+
 
 function print(filepath) {
     if (username != LIMITED_USER) {
@@ -814,7 +849,7 @@ function showCarpetsInMove(fileName) {
 
     $("#newFileName").attr('class', fileName)
     $("#newFileName").attr('value', name)
-    $("#newPath").empty();   
+    $("#newPath").empty();
     select = document.getElementById('newPath');
     var opt = document.createElement('option');
     opt.value = "/";
@@ -912,39 +947,39 @@ input.addEventListener('change', () => {
 
 )
 
-$(document).ready(function() {
-  var $inputs = $('.resizing-input');
+$(document).ready(function () {
+    var $inputs = $('.resizing-input');
 
-  // Resize based on text if text.length > 0
-  // Otherwise resize based on the placeholder
-  function resizeForText(text) {
-    var $this = $(this);
-    if (!text.trim()) {
-      text = $this.attr('placeholder').trim();
+    // Resize based on text if text.length > 0
+    // Otherwise resize based on the placeholder
+    function resizeForText(text) {
+        var $this = $(this);
+        if (!text.trim()) {
+            text = $this.attr('placeholder').trim();
+        }
+        var $span = $this.parent().find('span');
+        $span.text(text);
+        var $inputSize = $span.width();
+        $this.css("width", $inputSize);
     }
-    var $span = $this.parent().find('span');
-    $span.text(text);
-    var $inputSize = $span.width();
-    $this.css("width", $inputSize);
-  }
 
-  $inputs.find('input').keypress(function(e) {
-    if (e.which && e.charCode) {
-      var c = String.fromCharCode(e.keyCode | e.charCode);
-      var $this = $(this);
-      resizeForText.call($this, $this.val() + c);
-    }
-  });
+    $inputs.find('input').keypress(function (e) {
+        if (e.which && e.charCode) {
+            var c = String.fromCharCode(e.keyCode | e.charCode);
+            var $this = $(this);
+            resizeForText.call($this, $this.val() + c);
+        }
+    });
 
-  // Backspace event only fires for keyup
-  $inputs.find('input').keyup(function(e) {
-    if (e.keyCode === 8 || e.keyCode === 46) {
-      resizeForText.call($(this), $(this).val());
-    }
-  });
+    // Backspace event only fires for keyup
+    $inputs.find('input').keyup(function (e) {
+        if (e.keyCode === 8 || e.keyCode === 46) {
+            resizeForText.call($(this), $(this).val());
+        }
+    });
 
-  $inputs.find('input').each(function() {
-    var $this = $(this);
-    resizeForText.call($this, $this.val())
-  });
+    $inputs.find('input').each(function () {
+        var $this = $(this);
+        resizeForText.call($this, $this.val())
+    });
 });

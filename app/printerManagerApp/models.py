@@ -71,38 +71,25 @@ class Project(models.Model):
             return "failed"
 
     def __str__(self):
-        return str(self.uniqueId)
+        return self.name 
 
 class Images(models.Model):
     img = models.ImageField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
+   
 
-
-class TSD_url(models.Model):
-    url = models.CharField(max_length=120)
-    username = models.CharField(max_length=120)
-    password = models.CharField(max_length=120)
 
 class Printer(models.Model):
     url = models.CharField(max_length=120)
     apikey = models.CharField(max_length=120)
     name = models.CharField(max_length=120)
     IDa = models.CharField(max_length=120)
-    TSDid  = models.CharField(max_length=120)
+   
     urlCam = models.CharField(max_length=120)
 
     client = None
 
-    try:
-        TSDurl = TSD_url.objects.get().url     
-        TSDuser = TSD_url.objects.get().username 
-        TSDpass = TSD_url.objects.get().password
-      
-    except:
-       TSDurl = None  
-       TSDuser = None
-       TSDpass = None
     
 
     def connect(self):

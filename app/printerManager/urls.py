@@ -53,6 +53,7 @@ urlpatterns = [
     path('printer/<int:printer_pk>/toggle', views.toggle, name='toggle'),
     path('printer/<int:printer_pk>/cancel', views.cancel, name='cancel'),
     path('printer/<int:printer_pk>/print/<str:filename>', views.printFile, name='print'),
+    path('printer/<int:printer_pk>/printProject/<str:filename>', views.printProject, name='print'),
     path('printer/<int:printer_pk>/createFolder/<str:folderPath>', views.createFolder, name='print'), 
     path('printer/<int:printer_pk>/jog/<str:x>/<str:y>/<str:z>', views.jog, name='jog'), 
     path('printer/<int:printer_pk>/moveFile/<str:actualPath>/<str:newPath>', views.moveFile, name='moveFile'), 

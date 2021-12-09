@@ -15,6 +15,8 @@
     let images = []
     let ProjectIdImgaes = []
     let projects = []
+    let printers = []
+    let printersStatus = []
 </script>
 {% for img in images %}
 <script>
@@ -22,6 +24,19 @@
     ProjectIdImgaes.push("{{img.project}}")
 </script>
 {% endfor %}
+
+{% for printer in my_printer_list %}
+<script>
+    printers.push("{{printer.name}}")
+</script>
+{% endfor %}
+
+{% for status in printersStatus %}
+<script>   
+    printersStatus.push("{{status}}")
+</script>
+{% endfor %}
+
 
 <!-- Page wrapper  -->
 <!-- ============================================================== -->
@@ -54,12 +69,12 @@
 
             {%for p in projects%}
 
-            <div class="col-lg-3 col-md-4" >
+            <div class="col-lg-3 col-md-4">
                 <div class="card" style="">
                     <div class="el-card-item" data-toggle="modal" data-target="#showProject_{{p.getId}}">
-                        
 
-                        <div class="el-card-avatar el-overlay-1 "> <img id="P{{p.getId}}img0" src="" />
+
+                        <div class="el-card-avatar el-overlay-1 "> <img id="P{{p.name}}img0" src="" />
 
                         </div>
                         <div class="el-card-content">
@@ -71,11 +86,11 @@
             {% endfor %}
 
         </div>
-  
-       
-         {%for p in projects%}
+
+
+        {%for p in projects%}
         <script>
-            projects.push("{{p.getId}}")
+            projects.push("{{p.getName}}")
         </script>
         <div class="modal fade" id="showProject_{{p.getId}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,8 +100,8 @@
                         <h3 class="modal-title" id="exampleModalLabel">{{p.getName}}</h3>
                     </div>
                     <div class="modal-body">
-                        {{p.getDescription|safe}}
-                        {#% include 'printerManagerApp/projects/PROJECT_TEST.html' %#}
+                        {#{p.getDescription|safe}#}
+                        {% include 'printerManagerApp/projects/PROJECT_TEST_copy.html' %}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -95,32 +110,32 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-        </div>
-         {% endfor %}
-        
-       
-
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right sidebar -->
-        <!-- ============================================================== -->
-        <!-- .right-sidebar -->
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
+</div>
+</div>
+{% endfor %}
+
+
+
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Right sidebar -->
+<!-- ============================================================== -->
+<!-- .right-sidebar -->
+<!-- ============================================================== -->
+<!-- End Right sidebar -->
+<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Container fluid  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
 </div>
 </div>
 <footer class="footer text-center">
@@ -140,6 +155,7 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
+
 <script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="{% static 'assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
@@ -160,36 +176,10 @@
 <script src="{% static 'assets/libs/magnific-popup/meg.init.js' %}"></script>
 <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
-<script>
-    var container = document.getElementsByClassName("modal fade");
-    var content = container.innerHTML;
-    container.innerHTML = content;
-    let imagesFiltered = []
-    let concretProjectImages = []
-    for (var i = 0; i < images.length; i++) {
-        imagesFiltered.push([images[i], ProjectIdImgaes[i]])
-    }
-    console.log(imagesFiltered)
-    console.log(projects)
-    let tmpImg = []
-    for (var i = 0; i < projects.length; i++) {
-        tmpImg = []
-        for (var j = 0; j < imagesFiltered.length; j++) {
-            if (imagesFiltered[j][1] == projects[i]) {
-                tmpImg.push(imagesFiltered[j][0])
-            }
-        }
-        console.log(".--------------------------------------------")
-        console.log(tmpImg)
-        for (var k = 0; k < tmpImg.length; k++) {
-            document.getElementById("P" + projects[i] + "img" + k).src = "/media/" + tmpImg[k]
-        }
-    }
-</script>
+<script src="{% static '/projectCategory_page.js' %}"></script>
 
 <!--This page JavaScript -->
-<script src="{% static '\assets\libs\masonry\masonry.pkgd.min.js' %}">
-</script>
+<script src="{% static '\assets\libs\masonry\masonry.pkgd.min.js' %}"></script>
 
 </body>
 
