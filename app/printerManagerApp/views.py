@@ -58,7 +58,7 @@ def printerOffline(request):
         printersOffline = list()
         for printer in allPrinters:
             try:
-                requests.get(printer.url, timeout=3)        
+                requests.get(printer.url, timeout=1)        
             except:
                 printersOffline.append(printer.name)
         context = { 'my_printer_list': allPrinters, 'printersOffline': printersOffline} 
@@ -67,9 +67,15 @@ def printerOffline(request):
         return redirect("/accounts/login")
 
 def support(request):
-   
-    return render(request, "printerManagerApp/support.html")
+    if request.user.is_authenticated:
+        allPrinters = Printer.objects.all()       
+        context = { 'my_printer_list': allPrinters} 
+        return render(request, "printerManagerApp/support.html", context)
+    else:
+        return redirect("/accounts/login")
 
+   
+  
 def printer(request, printer_pk):
     if request.user.is_authenticated:
         if request.method == 'POST' and request.FILES['myfile']:
@@ -87,7 +93,7 @@ def printer(request, printer_pk):
         allPrinters = Printer.objects.all()
         #verify that raspy is online
         try:
-            requests.get(url, timeout=5)
+            requests.get(url, timeout=1)
             online = True        
         except:
             print("exepct")
@@ -116,7 +122,7 @@ def dashboard(request):
         allPrinters = Printer.objects.all()        
         for printer in allPrinters:
             try: 
-                requests.get(printer.url, timeout=3) 
+                requests.get(printer.url, timeout=1) 
                 onlinePrinters.append(printer)
             except:
                 offlinePrinters.append(printer)   

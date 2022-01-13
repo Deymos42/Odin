@@ -99,6 +99,7 @@ function init(printerPwStatus, printerId, lightPwStatus, key, Username) {
 function printerPowerOnOff(status) {
     if (username != LIMITED_USER) {
         if (status == "printer_power_status_on") {
+            ABORT = true
             $.ajax({
                 url: "/printer/" + id + "/printerPowerOff",
                 type: "GET",
@@ -146,7 +147,7 @@ function ledOnOff() {
             url: '/printer/' + id + '/toggleLed',
             type: "GET",
             success: function (data) {
-
+               
             }
         });
 
@@ -289,6 +290,7 @@ setInterval(function () {
         });
 
         if (ABORT == true) {
+            console.log("ABORTTT")
             xhr.abort()
 
         }
@@ -301,7 +303,8 @@ setInterval(function () {
         $("#info").html(" progreso: <b>" + "-" + "</b><br>" +
             "<br> Archivo: <b>" + "-" + "</b><br>" +
             "<br> Tiempo de impresion: <b>" + "-" + "</b><br>" +
-            "<br> Tiempo restante: <b>" + "-" + "</b><br>");
+            "<br> Tiempo restante: <b>" + "-" + "</b><br>" +
+            "<br> hora final aprox: <b>" + "-" + "</b><br>");
         $('#input_tool').attr('placeholder', "off");
         $('#input_bed').attr('placeholder', "off");
 
