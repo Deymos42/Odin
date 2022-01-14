@@ -153,17 +153,27 @@ def projects(request):
         return redirect("/accounts/login")
 
 def projectCategory(request, id):
+    onlinePrinters = list()  
+    offlinePrinters = list()  
     allPrinters = Printer.objects.all()        
     projects = Project.objects.filter(category=id)
     allImages = Images.objects.filter(project__category = id)
     printersStatus = list()
+    allPrinters = Printer.objects.all()        
     for printer in allPrinters:
+        try: 
+            requests.get(printer.url, timeout=1) 
+            onlinePrinters.append(printer)
+        except:
+            offlinePrinters.append(printer)   
+
+    for printer in onlinePrinters:
         if "Offline" in printer.getPrinterInfo()["state"]:
             printersStatus.append("Offline")
         else:
             printersStatus.append(printer.getPrinterInfo()["state"])
     #print(printersStatus)
-    context = {'printersStatus': printersStatus, 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
+    context = {'printersStatus': printersStatus, 'my_printer_list': onlinePrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
    
     return render(request,"printerManagerApp/projects/projectCategory.html",context)
 
