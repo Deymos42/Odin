@@ -140,10 +140,13 @@ class Printer(models.Model):
     def getToolTemp(self):
         if self.client == None:
             self.connect()
-        if self.client.tool() == {}:
-            return {'actual': 0, 'offset': 0, 'target': 0.0}
-        else:
-            return self.client.tool()["tool0"] 
+        try:
+            if self.client.tool() == {}:
+                return {'actual': 0, 'offset': 0, 'target': 0.0}
+            else:
+                return self.client.tool()["tool0"] 
+        except:
+            return None
 
     def setBedTemp(self, t):
         if self.client == None:
@@ -153,10 +156,13 @@ class Printer(models.Model):
     def getBedTemp(self):
         if self.client == None:
             self.connect()
-        if self.client.bed() == {}:
-            return {'actual': 0, 'offset': 0, 'target': 0.0}
-        else:
-            return self.client.bed()["bed"] 
+        try:
+            if self.client.bed() == {}:
+                return {'actual': 0, 'offset': 0, 'target': 0.0}
+            else:
+                return self.client.bed()["bed"] 
+        except:
+            return None
 
     def getName(self):
         return self.name

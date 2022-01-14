@@ -3,12 +3,10 @@ ledStatus = [];
 ids = [];
 conected = [];
 username = "";
-ABORT = false;
+ABORT = [];
 var currentdate = new Date();
 
-function abort() {
-    ABORT = !ABORT
-}
+
 LIMITED_USER = "alumnes";
 
 
@@ -49,9 +47,9 @@ function initPrinter(printerPwStatus, printerId, lightsPwStatus, Username) {
 
 
 function updateStatus() {
-
+    
     for (var i = 0; i < printersStatus.length; i++) {
-
+        ABORT.push(false)
         if (printersStatus[i] == "printer_power_status_on") {
 
             // $("#printer_power_status_on" + ids[i]).html("Apagar impresora");
@@ -76,11 +74,18 @@ function updateStatus() {
 function printerPowerOnOff(status, id) {
     if (username != LIMITED_USER) {
         if (status == "printer_power_status_on") {
+            ABORT[id] = true
             $.ajax({
                 url: "/printer/" + id + "/printerPowerOff",
                 type: "GET",
                 success: function () {
-                    conected[id - 1] = false;
+                    var index = 0
+                    for(i = 0; i<ids.length; i++){
+                        if(id == ids[i]){
+                            index = i
+                        }
+                    }      
+                    conected[index] = false;                    
                 }
             });
             // $("#printer_power_status_on" + id).html("Encender impresora");
@@ -89,14 +94,20 @@ function printerPowerOnOff(status, id) {
             $('#printer_power_status_off' + id).attr('onclick', "printerPowerOnOff('printer_power_status_off','" + id + "')");
 
         } else if (status == "printer_power_status_off") {
-
             $.ajax({
                 url: "/printer/" + id + "/printerPowerOn",
                 type: "GET",
                 success: function (data) {
 
                     printersStatus[id - 1] = 'printer_power_status_on'
-                    conected[id - 1] = true;
+                    var index = 0
+                    for(i = 0; i<ids.length; i++){
+                        if(id == ids[i]){
+                            index = i
+                        }
+                    }                  
+                    conected[index] = true;
+                   
                 }
             });
             $('#printer_power_status_off' + id).attr('id', 'printer_power_status_on' + id);
@@ -141,7 +152,7 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
-
+    console.log(conected)
     for (var i = 0; i < printersStatus.length; i++) {
         if (conected[i]) {
             var xhr = $.ajax({
@@ -172,7 +183,7 @@ setInterval(function () {
                             " Status: <b>" + data.state + "</b><br><br>" +
                             " Archivo: <b>" + data.job.file.name + "</b><br><br>" +
                             " Tiempo de impresion:  " + printTime + "</b><br><br>" +
-                            " Tiempo restante:  " + printTime + "</b><br><br>" +
+                            " Tiempo restante:  " + timeLeft + "</b><br><br>" +
                             " Hora final aprox: <b>" + finalH + "</b>");
                         $('#barraProgreso' + data.id).attr('style', 'width:' + completation + '%');
 
@@ -194,9 +205,7 @@ setInterval(function () {
 
                 }
             });
-            if (ABORT) {
-                xhr.abort()
-            }
+         
         } else {
             $("#info" + ids[i]).html(
                 " Status: <b>" + "Offline" + "</b> <br><br>" +                

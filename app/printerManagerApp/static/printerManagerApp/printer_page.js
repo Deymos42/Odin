@@ -115,6 +115,7 @@ function printerPowerOnOff(status) {
 
 
         } else if (status == "printer_power_status_off") {
+            ABORT = false
             $.ajax({
                 url: "/printer/" + id + "/printerPowerOn",
                 type: "GET",

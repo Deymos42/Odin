@@ -32,10 +32,54 @@
 {% endfor %}
 
 {% for status in printersStatus %}
-<script>   
+<script>
     printersStatus.push("{{status}}")
 </script>
 {% endfor %}
+
+<style>
+    .loader {
+        border: 9px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 9px solid #7e7e7e;
+        width: 40px;
+        height: 40px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+        
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .resizing-input input,
+    .resizing-input span {
+        font-size: 12px;
+        font-family: Sans-serif;
+        white-space: pre;
+        padding: 5px;
+    }
+</style>
+
 
 
 <!-- Page wrapper  -->
@@ -90,7 +134,7 @@
 
         {%for p in projects%}
         <script>
-            projects.push("{{p.getName}}")
+            projects.push("{{p.getName}}")  
         </script>
         <div class="modal fade" id="showProject_{{p.getId}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -100,8 +144,8 @@
                         <h3 class="modal-title" id="exampleModalLabel">{{p.getName}}</h3>
                     </div>
                     <div class="modal-body">
-                        {#{p.getDescription|safe}#}
-                        {% include 'printerManagerApp/projects/PROJECT_TEST_copy.html' %}
+                        {{p.getDescription|safe}}
+                        {#% include 'printerManagerApp/projects/PROJECT_TEST.html' %#}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

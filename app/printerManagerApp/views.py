@@ -162,7 +162,7 @@ def projectCategory(request, id):
             printersStatus.append("Offline")
         else:
             printersStatus.append(printer.getPrinterInfo()["state"])
-    print(printersStatus)
+    #print(printersStatus)
     context = {'printersStatus': printersStatus, 'my_printer_list': allPrinters,'username': request.user.username,'projects': projects, 'images': allImages }       
    
     return render(request,"printerManagerApp/projects/projectCategory.html",context)
@@ -265,14 +265,15 @@ def printerPowerOn(request, printer_pk):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.PrinterPowerOn()             
             conected = printer_object.waitConnection()       
-
-            return HttpResponse(conected, content_type = 'text/html')
+            response = json.dumps(conected)
+            return HttpResponse(response, content_type = 'text/html')
 
 def printerPowerOff(request, printer_pk):
     if request.user.username != LIMITED_USER:
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)
-            response = printer_object.printerPowerOFf()         
+            response = printer_object.printerPowerOFf()  
+                   
             return HttpResponse(response, content_type = 'text/html')
 
 
