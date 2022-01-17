@@ -3,7 +3,7 @@ FROM python:3.8-alpine
 ENV PATH="/scripts:${PATH}"
 
 COPY ./requirements.txt /requirements.txt
-COPY ./app/media /vol/web/media
+COPY ./app/media/media /vol/web
 RUN apk add --update --no-cache --virtual .tmp gcc libc-dev linux-headers
 RUN apk add --no-cache jpeg-dev zlib-dev
 RUN pip install -r /requirements.txt
