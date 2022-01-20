@@ -77,6 +77,8 @@ class Images(models.Model):
     img = models.ImageField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.img) 
    
 
 
@@ -111,7 +113,7 @@ class Printer(models.Model):
                 self.client.connect(baudrate=115200)
                 counter = counter + 1
                 print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
-            if counter >= 30:
+            if counter >= 40:
                 return False
             else:
                 return True

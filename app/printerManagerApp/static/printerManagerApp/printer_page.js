@@ -122,7 +122,8 @@ function printerPowerOnOff(status) {
                 success: function (data) {
 
                     conected = data;
-                    if (conected == "True") {
+                   
+                    if (conected == "True" || conected == "true") {
                         toastr.success("impresora conectada", 'WoW');
                     } else {
                         toastr.error("conexion fallida", 'WoW');
@@ -291,7 +292,7 @@ setInterval(function () {
         });
 
         if (ABORT == true) {
-            console.log("ABORTTT")
+         
             xhr.abort()
 
         }
@@ -537,6 +538,7 @@ class fileSystem {
             } else if (a[i].type == "machinecode") {                
                 files.push(a[i].name);
                 filesPath.push(a[i].path); // path witout local 
+                console.log(a[i])
                 filesLinks.push(a[i].refs.download.concat(apikey))
             }
         }

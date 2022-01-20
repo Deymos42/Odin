@@ -274,7 +274,7 @@ def printerPowerOn(request, printer_pk):
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.PrinterPowerOn()             
-            conected = printer_object.waitConnection()       
+            conected = printer_object.waitConnection()                 
             response = json.dumps(conected)
             return HttpResponse(response, content_type = 'text/html')
 

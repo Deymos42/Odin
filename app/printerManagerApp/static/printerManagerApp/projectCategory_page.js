@@ -40,8 +40,14 @@ function printProject(id, k ,path) {
         },
     });
 }
+var totalFiles = 0
+for (var f = 0; f < files.length; f++) {
+    totalFiles = totalFiles + files[f]   
+}
 
-for (var k = 1; k < projects.length + 1; k++) {
+console.log(totalFiles)
+
+for (var k = 1; k < totalFiles + 1; k++) {
 $('#impresoras' + k).append("<thead> <tr><td><b>Impresora:</b></td><td><b>Estado:</b></td><td><b>Imprimir:</b></td></tr></thead>");
 
 var j = 1;
@@ -54,3 +60,5 @@ for (var i = 0; i < printers.length; i++) {
     j = j + 1
 }
 }
+
+
