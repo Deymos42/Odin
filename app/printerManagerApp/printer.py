@@ -42,7 +42,7 @@ class Printer:
     def getExtruderTemp(self):
 
         dic = self.client.tool()
-
+    
         print(self.client.tool()["tool0"])
 
     def test(self):
@@ -66,102 +66,31 @@ class Printer:
         while(self.client.connection_info()["current"]["state"] != "Paused" and counter < 30):
             counter = counter + 1
             print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
-
+        self.client.users
         if counter >= 30:
             print("conection error")
             return False
         else:
             return True
 
+    def disableMotors(self):
+        self.client.system_commands
+        return True
 
 
 
 def main():
 
-   
-    #p2.waitConnection()
-    TSDurl = "http://10.42.0.100:3334/"
-    TSDuser = "root@example.com"
-    TSDpass = "supersecret"
-    URL = TSDurl + "accounts/login/" 
-
-    print(URL)
-
-    client = requests.session()
-    errorTSD = False
-    try:
-        client.get(URL, timeout=3)  # sets cookie      
-    except:
-        errorTSD = True
-        print("error")
-        
-    if(errorTSD):
-        return "TSDerror"
-    else:
-        csrftoken = client.cookies['csrftoken']       
-        post_data = { "csrfmiddlewaretoken": csrftoken, 'login': TSDuser, 'password': TSDpass}
-        print(post_data)
-        headers = {'Referer': URL}
-        response = client.post(URL, data=post_data, headers=headers)          
-        
-        a = client.get( TSDurl + "api/v1/printers/1" )
-        client = None        
-        data = json.loads(a.text)     
-        print(data)
-  
 
 
+    p = Printer("http://10.42.2.13/", "BAAFA611889B4AB1AD64AE5AD675229E")
 
-    """
-    URL = "http://127.0.0.1:8000/api-auth/"
-        
-    client = requests.session()
-    client.get(URL)  # sets cookie
+    p.waitConnection()
     
-    if 'csrftoken' in client.cookies:
-        # Django 1.6 and up
-        csrftoken = client.cookies['csrftoken']
-    else:
-        # older versions
-        csrftoken = client.cookies['csrf']
-    
-    post_data = { "csrfmiddlewaretoken": csrftoken, 'login': "admin", 'password': "admin"}
-    headers = {'Referer': URL}
-    response = client.post(URL, data=post_data, headers=headers)        
-    print("----------------------------")
-    print(response.text)
-
-    a = client.get( "http://localhost:3334/api/v1/printers/3" )
-
-    print("----------------------------")
-    print(a.text)
-
-    client = None        
-    data = json.loads(a.text)        
-
-    p2 = Printer("http://10.1.0.2/", "E2505FCA32E54529B35624B9E8CA60D8")
-
-    #r =requests.post('http://192.168.0.103:7125/machine/services/restart?service=klipper')
-
-    
-
-    #myobj = { 'command': 'getPSUState'}
-
-    #url = "http://192.168.0.103/api/plugin/psucontrol?apikey=5EB85BE5D98A481DA12B37A63DB08F87"
-
-    #x = requests.post(url, json=myobj)
-    #print(x.text)
-    #dic = json.loads(x.text)
-    #print(dic['isPSUOn'])
-    #url = 'http://192.168.0.103/api/files?apikey=749307BF21154B18BBFD75260CFD356Frecursive=true'
-
-    #r = requests.get(url)
-    #p.stuff()   led_status_on
-    """
+    enable: isOperational() && !isPrinting(), click: function() { $root.sendCustomCommand({type:'command',command:'M18'}) }
 
 
     
-
 
 
 if __name__ == "__main__":

@@ -396,6 +396,8 @@ def cancel(request, printer_pk):
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.cancel()
+            data = printer_object.home('xy')   
+            printer_object.jog(0,0,15)  
             return HttpResponse(json.dumps(jsonObject), content_type = 'application/json')
         else:
             raise Http404

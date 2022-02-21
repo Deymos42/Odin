@@ -122,7 +122,7 @@ function printerPowerOnOff(status) {
                 success: function (data) {
 
                     conected = data;
-                   
+
                     if (conected == "True" || conected == "true") {
                         toastr.success("impresora conectada", 'WoW');
                     } else {
@@ -149,7 +149,7 @@ function ledOnOff() {
             url: '/printer/' + id + '/toggleLed',
             type: "GET",
             success: function (data) {
-               
+
             }
         });
 
@@ -190,113 +190,115 @@ function secondsToHms(d) {
 setInterval(function () {
     var caca = $('#newFileName').find(":selected").text();
 
-    if (conected == "True" && resolved == true) {
-        resolved = false
-        var xhr = $.ajax({
-            url: '/printer/' + id + '/getInfo',
-            type: "GET",
-            success: function (data) {              
-                resolved = true
-                if (data.job.file.name != null) {
-                    if (oneTimeCall) {
-                        var thumbnailUrl = printerUrl + "plugin/prusaslicerthumbnails/thumbnail/" + data.job.file.name.slice(0, -6) + ".png"
-                        UrlExists(thumbnailUrl, function (status) {
-                            if (status === 200) {
-                                $('#thumbnail').html('<img src="' + thumbnailUrl + '"  width="175"  height="175" style="  display: block;  margin-left: auto;  margin-right: auto;"/>');
+    if (conected == "True" || conected == "true") {
+        if (resolved == true) {
+            resolved = false
+            var xhr = $.ajax({
+                url: '/printer/' + id + '/getInfo',
+                type: "GET",
+                success: function (data) {
+                    resolved = true
+                    if (data.job.file.name != null) {
+                        if (oneTimeCall) {
+                            var thumbnailUrl = printerUrl + "plugin/prusaslicerthumbnails/thumbnail/" + data.job.file.name.slice(0, -6) + ".png"
+                            UrlExists(thumbnailUrl, function (status) {
+                                if (status === 200) {
+                                    $('#thumbnail').html('<img src="' + thumbnailUrl + '"  width="175"  height="175" style="  display: block;  margin-left: auto;  margin-right: auto;"/>');
 
-                            } else if (status === 404) {
-                                $('#thumbnail').html("No disponible");
-                            } else {
-                                $('#thumbnail').html("No disponible");
-                                toastr.error('Error extraño con la vista previa', 'Error');
-                            }
-                        });
-                        oneTimeCall = false
-                    }
+                                } else if (status === 404) {
+                                    $('#thumbnail').html("No disponible");
+                                } else {
+                                    $('#thumbnail').html("No disponible");
+                                    toastr.error('Error extraño con la vista previa', 'Error');
+                                }
+                            });
+                            oneTimeCall = false
+                        }
 
 
-                    if (data.progress.printTimeLeft == null) {
-                        timeLeft = secondsToHms(data.job.estimatedPrintTime) + " aprox"
-                        printTime = 0;
-                        completation = 0;
-                        var h = Math.floor(data.job.estimatedPrintTime / 3600);
-                        var m = Math.floor(data.job.estimatedPrintTime % 3600 / 60);
-                        var s = Math.floor(data.job.estimatedPrintTime % 3600 % 60);
+                        if (data.progress.printTimeLeft == null) {
+                            timeLeft = secondsToHms(data.job.estimatedPrintTime) + " aprox"
+                            printTime = 0;
+                            completation = 0;
+                            var h = Math.floor(data.job.estimatedPrintTime / 3600);
+                            var m = Math.floor(data.job.estimatedPrintTime % 3600 / 60);
+                            var s = Math.floor(data.job.estimatedPrintTime % 3600 % 60);
+                        } else {
+                            var h = Math.floor(data.progress.printTimeLeft / 3600);
+                            var m = Math.floor(data.progress.printTimeLeft % 3600 / 60);
+                            var s = Math.floor(data.progress.printTimeLeft % 3600 % 60);
+                            timeLeft = secondsToHms(data.progress.printTimeLeft);
+                            printTime = secondsToHms(data.progress.printTime);
+                            completation = data.progress.completion;
+
+                        }
+
+                        var currentTimeToSum = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds()
+                        var timeLeftToSum = h + ":" + m + ":" + s
+                        var finalH = formatTime(timestrToSec(currentTimeToSum) + timestrToSec(timeLeftToSum));
+                        $("#info").html(" Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
+                            "<br> Archivo: <b>" + data.job.file.name + "</b><br>" +
+                            "<br> Tiempo de impresion:  " + printTime + "</b><br>" +
+                            "<br> Tiempo restante: <b>" + timeLeft + "</b><br>" +
+                            "<br> Hora final aprox: <b>" + finalH + "</b><br>");
+                        $('#barraProgreso').attr('style', 'width:' + completation + '%');
+                        if (completation % 10 == 0) {
+                            $("#progress").html(completation.toFixed(0) + "%");
+                        } else {
+                            $("#progress").html(completation.toFixed(2) + "%");
+                        }
                     } else {
-                        var h = Math.floor(data.progress.printTimeLeft / 3600);
-                        var m = Math.floor(data.progress.printTimeLeft % 3600 / 60);
-                        var s = Math.floor(data.progress.printTimeLeft % 3600 % 60);
-                        timeLeft = secondsToHms(data.progress.printTimeLeft);
-                        printTime = secondsToHms(data.progress.printTime);
-                        completation = data.progress.completion;
-
+                        $('#thumbnail').html("No disponible");
                     }
-                  
-                    var currentTimeToSum = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds()
-                    var timeLeftToSum = h + ":" + m + ":" + s
-                    var finalH = formatTime(timestrToSec(currentTimeToSum) + timestrToSec(timeLeftToSum));
-                    $("#info").html(" Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
-                        "<br> Archivo: <b>" + data.job.file.name + "</b><br>" +
-                        "<br> Tiempo de impresion:  " + printTime + "</b><br>" +
-                        "<br> Tiempo restante: <b>" + timeLeft + "</b><br>" +
-                        "<br> Hora final aprox: <b>" + finalH + "</b><br>");
-                    $('#barraProgreso').attr('style', 'width:' + completation + '%');
-                    if (completation % 10 == 0) {
-                        $("#progress").html(completation.toFixed(0) + "%");
+
+
+                    $('#status').html(data.state);
+
+
+
+                    if (data.state == "Printing") {
+                        $(".btn.btn-success").prop('disabled', true);
+
                     } else {
-                        $("#progress").html(completation.toFixed(2) + "%");
+                        $(".btn.btn-success").prop('disabled', false);
                     }
-                } else {
-                    $('#thumbnail').html("No disponible");
-                }
 
+                    if (data.state == "Paused") {
 
-                $('#status').html(data.state);
+                        $("#pause").html("resume");
+                        $('#pause').attr('class', 'btn btn-info');
+                        $('#pause').attr('id', 'resume');
+                    } else {
 
+                        $("#resume").html("pause");
+                        $('#resume').attr('class', 'btn btn-warning');
+                        $('#resume').attr('id', 'pause');
+                    }
 
+                    $("#toolTemp").html(data.toolTemp.actual);
 
-                if (data.state == "Printing") {
-                    $(".btn.btn-success").prop('disabled', true);
+                    if (data.toolTemp.target != 0) {
+                        $('#inputTool').attr('placeholder', data.toolTemp.target);
+                    } else {
+                        $('#inputTool').attr('placeholder', "off");
+                    }
 
-                } else {
-                    $(".btn.btn-success").prop('disabled', false);
-                }
+                    $("#bedTemp").html(data.bedTemp.actual);
+                    if (data.bedTemp.target != 0) {
+                        $('#inputBed').attr('placeholder', data.bedTemp.target);
+                    } else {
+                        $('#inputBed').attr('placeholder', "off");
+                    }
+                },
+            });
 
-                if (data.state == "Paused") {
+            if (ABORT == true) {
 
-                    $("#pause").html("resume");
-                    $('#pause').attr('class', 'btn btn-info');
-                    $('#pause').attr('id', 'resume');
-                } else {
+                xhr.abort()
 
-                    $("#resume").html("pause");
-                    $('#resume').attr('class', 'btn btn-warning');
-                    $('#resume').attr('id', 'pause');
-                }
-
-                $("#toolTemp").html(data.toolTemp.actual);
-
-                if (data.toolTemp.target != 0) {
-                    $('#inputTool').attr('placeholder', data.toolTemp.target);
-                } else {
-                    $('#inputTool').attr('placeholder', "off");
-                }
-
-                $("#bedTemp").html(data.bedTemp.actual);
-                if (data.bedTemp.target != 0) {
-                    $('#inputBed').attr('placeholder', data.bedTemp.target);
-                } else {
-                    $('#inputBed').attr('placeholder', "off");
-                }
-            },
-        });
-
-        if (ABORT == true) {
-         
-            xhr.abort()
+            }
 
         }
-
 
     } else {
         $(".btn.btn-success").prop('disabled', false);
@@ -315,14 +317,21 @@ setInterval(function () {
 }, 2500);
 
 function setBedtemp() {
+    var temp = $('#inputBed').val()
     if (username != LIMITED_USER) {
-        $.ajax({
-            type: 'GET',
-            url: '/printer/' + id + '/setBedTemp/' + $('#inputBed').val(),
-            success: function (json) {
-                $("#inputBed").attr('placeholder', $('#inputBed').val());
-            },
-        });
+        if (temp != "") {
+            $.ajax({
+                type: 'GET',
+                url: '/printer/' + id + '/setBedTemp/' + temp,
+                success: function (json) {
+
+                    toastr.success('Temperatura fijada', 'WoW');
+                    $("#inputBed").attr('placeholder', temp);
+                },
+            });
+        } else {
+            toastr.error('Temperatura no definida', 'Error');
+        }
     } else {
         toastr.error('No tienes permisos', 'Error');
     }
@@ -344,14 +353,21 @@ function coolBed() {
 }
 
 function setToolTemp() {
+    var temp = $('#inputTool').val()
     if (username != LIMITED_USER) {
-        $.ajax({
-            type: 'GET',
-            url: '/printer/' + id + '/setToolTemp/' + $('#inputTool').val(),
-            success: function (json) {
-                $("#inputTool").attr('placeholder', $('#inputTool').val());
-            },
-        });
+        if (temp != "") {
+            $.ajax({
+                type: 'GET',
+                url: '/printer/' + id + '/setToolTemp/' + temp,
+                success: function (json) {
+
+                    toastr.success('Temperatura fijada', 'WoW');
+                    $("#inputTool").attr('placeholder', temp);
+                },
+            });
+        } else {
+            toastr.error('Temperatura no definida', 'Error');
+        }
     } else {
         toastr.error('No tienes permisos', 'Error');
     }
@@ -535,10 +551,10 @@ class fileSystem {
                 carpets.push(a[i].name);
                 carpetsPaths.push(a[i].path); // path witout local 
 
-            } else if (a[i].type == "machinecode") {                
+            } else if (a[i].type == "machinecode") {
                 files.push(a[i].name);
                 filesPath.push(a[i].path); // path witout local 
-                console.log(a[i])
+                //console.log(a[i])
                 filesLinks.push(a[i].refs.download.concat(apikey))
             }
         }
@@ -572,7 +588,7 @@ class fileSystem {
                 if (this.files[i].path == path) {
                     return this.getLocal(this.files[i]) // search content if folder is in local                    
                 } else {
-                   
+
                     ret = this.recu(this.files[i], path); //search folder inside other folder                   
                     if (ret != true) {
                         return ret;
@@ -635,7 +651,7 @@ function enterFolder(folderId) {
         url: '/printer/' + id + '/getAllFilesAndFolders',
         type: "GET",
         success: function (data) {
-            
+
             if (tabla != null) {
                 if (tabla.data().count()) {
                     destroyDataRable();
@@ -675,7 +691,7 @@ function enterFolder(folderId) {
                         "</tr>"
                 }
 
-            } else {               
+            } else {
 
                 var data = FileSystem.getFolder(folderId.slice(0, -1));
 
@@ -840,7 +856,7 @@ function pulsarIntroToolTemp(e) {
 
 function pulsarIntroBedTemp(e) {
     if (e.keyCode === 13 && !e.shiftKey) {
-        setBedTemp();
+        setBedtemp();
     }
 }
 

@@ -20,8 +20,8 @@ for (var i = 0; i < projects.length; i++) {
     }
 
     for (var k = 0; k < tmpImg.length; k++) {
-        console.log("P" + projects[i] + "img" + k)
-        console.log("/media/" + tmpImg[k])        
+       // console.log("P" + projects[i] + "img" + k)
+        //console.log("/media/" + tmpImg[k])        
         document.getElementById("P" + projects[i] + "img" + k).src = "/media/" + tmpImg[k]
     }
 }
@@ -45,7 +45,7 @@ for (var f = 0; f < files.length; f++) {
     totalFiles = totalFiles + files[f]   
 }
 
-console.log(totalFiles)
+//console.log(totalFiles)
 
 for (var k = 1; k < totalFiles + 1; k++) {
 $('#impresoras' + k).append("<thead> <tr><td><b>Impresora:</b></td><td><b>Estado:</b></td><td><b>Imprimir:</b></td></tr></thead>");
