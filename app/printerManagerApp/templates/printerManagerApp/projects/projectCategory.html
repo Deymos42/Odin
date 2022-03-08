@@ -47,7 +47,7 @@
         -webkit-animation: spin 2s linear infinite;
         /* Safari */
         animation: spin 2s linear infinite;
-        
+
     }
 
     /* Safari */
@@ -105,11 +105,12 @@
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== -->
-    <div class="container-fluid">
+  
+    <div id="contenedor" class="container-fluid">
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
-        <div class="row el-element-overlay" data-masonry='{"percentPosition": true }'>
+        <div id="container" class="row el-element-overlay" >
 
             {%for p in projects%}
 
@@ -134,11 +135,11 @@
 
         {%for p in projects%}
         <script>
-            projects.push("{{p.getName}}")  
+            projects.push("{{p.getName}}")
         </script>
         <div class="modal fade" id="showProject_{{p.getId}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg"  role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title" id="exampleModalLabel">{{p.getName}}</h3>
@@ -155,7 +156,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 </div>
 {% endfor %}
@@ -221,10 +222,10 @@
 <script src="{% static 'assets/libs/magnific-popup/meg.init.js' %}"></script>
 <script src="{% static '/assets/libs/toastr/build/toastr.min.js' %}"></script>
 
-<script src="{% static '/projectCategory_page.js' %}"></script>
-
 <!--This page JavaScript -->
 <script src="{% static '\assets\libs\masonry\masonry.pkgd.min.js' %}"></script>
+<script src="{% static '/projectCategory_page.js' %}"></script>
+
 
 </body>
 

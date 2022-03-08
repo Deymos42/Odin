@@ -60,5 +60,8 @@ for (var i = 0; i < printers.length; i++) {
     j = j + 1
 }
 }
+ $(window).bind("load", function () {
+   $('#container').masonry()
+  });
 
 
