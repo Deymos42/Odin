@@ -350,12 +350,7 @@ def printFile(request, printer_pk, filename):
             raise Http404
 
 def printProject(request, printer_pk, filename):
-    print("----------------------------------")
-    print(filename)
-    print("----------------------------------")
-    filename = filename.replace("*", "/")
-    print("----------------------------------")
-    print(filename)
+   
     if request.user.username != LIMITED_USER:
         if request.is_ajax():
             printer_object = Printer.objects.get(IDa=printer_pk)

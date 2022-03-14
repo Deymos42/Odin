@@ -272,6 +272,7 @@ class Printer(models.Model):
 
     def selectFile(self, filePath):
         path = "local/" + filePath.replace("@","/")                   
+        path = "local/" + filePath.replace("*","/")                   
         if(self.client == None):
             self.connect()
         self.client.select(path)       

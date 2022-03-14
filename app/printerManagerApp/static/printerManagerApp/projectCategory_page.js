@@ -20,48 +20,48 @@ for (var i = 0; i < projects.length; i++) {
     }
 
     for (var k = 0; k < tmpImg.length; k++) {
-       // console.log("P" + projects[i] + "img" + k)
+        // console.log("P" + projects[i] + "img" + k)
         //console.log("/media/" + tmpImg[k])        
         document.getElementById("P" + projects[i] + "img" + k).src = "/media/" + tmpImg[k]
     }
 }
 
-function printProject(id, k ,path) {
+function printProject(id, k, path) {
 
-   $("#waitUpload" + k).attr('style', "display: flex; justify-content: center; align-content: center;")
+    $("#waitUpload" + k).attr('style', "display: flex; justify-content: center; align-content: center;")
     $.ajax({
         type: 'GET',
         url: '/printer/' + id + '/printProject/' + path,
         success: function (json) {
             if (json == "succes") {
-               // window.location.replace("http://10.42.1.10:8080/printer/" + id);
-               window.location.href = '/printer/' + id;
+                // window.location.replace("http://10.42.1.10:8080/printer/" + id);
+                window.location.href = '/printer/' + id;
             }
         },
     });
 }
 var totalFiles = 0
 for (var f = 0; f < files.length; f++) {
-    totalFiles = totalFiles + files[f]   
+    totalFiles = totalFiles + files[f]
 }
 
 //console.log(totalFiles)
 
 for (var k = 1; k < totalFiles + 1; k++) {
-$('#impresoras' + k).append("<thead> <tr><td><b>Impresora:</b></td><td><b>Estado:</b></td><td><b>Imprimir:</b></td></tr></thead>");
+    $('#impresoras' + k).append("<thead> <tr><td><b>Impresora:</b></td><td><b>Estado:</b></td><td><b>Imprimir:</b></td></tr></thead>");
 
-var j = 1;
-for (var i = 0; i < printers.length; i++) {  
-    $('#impresoras' + k).append("<tr><td>" + printers[i] + "</td><td>" + printersStatus[i] + "</td>" + "<td>" + "<button style='margin-left: 2%;' id = 'print"+ k + j + "' class='btn btn-success'>  <i class='mdi mdi-printer'></i> </button> " + "</td></tr>");
-    $('#print' + k + j).attr('onclick', 'printProject(' + j + ',' + k + ',"'  + path[k-1] + '")');
-    if (printersStatus[i] == "Printing") {
-        $('#print' + k + j).prop('disabled', true); 
+    var j = 0;
+    for (var i = 0; i < printers.length; i++) {
+        $('#impresoras' + k).append("<tr><td>" + printers[i] + "</td><td>" + printersStatus[i] + "</td>" + "<td>" + "<button style='margin-left: 2%;' id = 'print" + k + printersId[j] + "' class='btn btn-success'>  <i class='mdi mdi-printer'></i> </button> " + "</td></tr>");
+        $('#print' + k + printersId[j]).attr('onclick', 'printProject(' + printersId[j] + ',' + k + ',"' + path[k - 1] + '")');
+        if (printersStatus[i] == "Printing") {
+            $('#print' + k + printersId[j]).prop('disabled', true);
+        }
+        j = j + 1
     }
-    j = j + 1
 }
-}
- $(window).bind("load", function () {
-   $('#container').masonry()
-  });
+$(window).bind("load", function () {
+    $('#container').masonry()
+});
 
 

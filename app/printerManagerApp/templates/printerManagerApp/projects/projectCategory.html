@@ -16,6 +16,7 @@
     let ProjectIdImgaes = []
     let projects = []
     let printers = []
+    let printersId = []
     let printersStatus = []
 </script>
 {% for img in images %}
@@ -28,6 +29,8 @@
 {% for printer in my_printer_list %}
 <script>
     printers.push("{{printer.name}}")
+    printersId.push("{{printer.IDa}}")
+    console.log("{{printer.IDa}}")
 </script>
 {% endfor %}
 
@@ -105,12 +108,12 @@
     <!-- ============================================================== -->
     <!-- Container fluid  -->
     <!-- ============================================================== -->
-  
+
     <div id="contenedor" class="container-fluid">
         <!-- ============================================================== -->
         <!-- Start Page Content -->
         <!-- ============================================================== -->
-        <div id="container" class="row el-element-overlay" >
+        <div id="container" class="row el-element-overlay">
 
             {%for p in projects%}
 
