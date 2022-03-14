@@ -47,8 +47,8 @@ function pad(num) {
 
 function formatTime(seconds) {
     return [pad(Math.floor(seconds / 3600)),
-        pad(Math.floor(seconds / 60) % 60),
-        pad(seconds % 60),
+    pad(Math.floor(seconds / 60) % 60),
+    pad(seconds % 60),
     ].join(":");
 }
 
@@ -232,10 +232,11 @@ setInterval(function () {
                             completation = data.progress.completion;
 
                         }
-
+                        var currentdate = new Date();
                         var currentTimeToSum = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds()
                         var timeLeftToSum = h + ":" + m + ":" + s
                         var finalH = formatTime(timestrToSec(currentTimeToSum) + timestrToSec(timeLeftToSum));
+                        console.log("curr" + currentTimeToSum)
                         $("#info").html(" Progreso: <b>" + completation.toFixed(2) + "%" + "</b><br>" +
                             "<br> Archivo: <b>" + data.job.file.name + "</b><br>" +
                             "<br> Tiempo de impresion:  " + printTime + "</b><br>" +
@@ -925,47 +926,47 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
 
 input.addEventListener('change', () => {
-        $("#submitFile").attr('style', '');
-        $('#uploadForm').append("<div class='progress m-t-15'><div id='uploadProgress' class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width:0%;'></div></div>");
-        const fd = new FormData()
-        const data = input.files[0]
-        const bar = document.getElementById('uploadProgress')
+    $("#submitFile").attr('style', '');
+    $('#uploadForm').append("<div class='progress m-t-15'><div id='uploadProgress' class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width:0%;'></div></div>");
+    const fd = new FormData()
+    const data = input.files[0]
+    const bar = document.getElementById('uploadProgress')
 
-        fd.append('csrfmiddlewaretoken', csrf[0].value)
-        fd.append('file', data)
-        if (data.name.includes(".gcode")) {
-            $.ajax({
-                type: 'POST',
-                enctype: 'multipart/form-data',
-                data: input.files[0],
-                xhr: function () {
-                    const xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener('progress', e => {
+    fd.append('csrfmiddlewaretoken', csrf[0].value)
+    fd.append('file', data)
+    if (data.name.includes(".gcode")) {
+        $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            data: input.files[0],
+            xhr: function () {
+                const xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', e => {
 
-                        if (e.lengthComputable) {
-                            const percent = e.loaded / e.total * 100
+                    if (e.lengthComputable) {
+                        const percent = e.loaded / e.total * 100
 
-                            bar.style["width"] = percent + "%"
-                            //$("uploadProgress").attr('style', 'width:' + percent + '%');
-                        }
-                    })
-                    return xhr
-                },
-                success: function (response) {
+                        bar.style["width"] = percent + "%"
+                        //$("uploadProgress").attr('style', 'width:' + percent + '%');
+                    }
+                })
+                return xhr
+            },
+            success: function (response) {
 
 
-                },
-                error: function (error) {
+            },
+            error: function (error) {
 
-                },
-                cache: false,
-                contentType: false,
-                processData: false,
-            })
-        } else {
-            toastr.error("Archivo no valido para subir", 'WoW');
-        }
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    } else {
+        toastr.error("Archivo no valido para subir", 'WoW');
     }
+}
 
 )
 
