@@ -43,12 +43,12 @@
         <!-- Start Page Content -->
         <!-- ============================================================== -->
         <div class="row el-element-overlay">
-            {%for object in my_printer_list%}
+            {%for object in onlinePrinters%}
             <div class="col-lg-4 col-md-12">
                 <div class="card">
                     <div class="el-card-item">
-                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.IDa}}', '{{username}}')" src="{{object.urlCam}}webcam/?action=stream"
-                                alt="user" />
+                        <div class="el-card-avatar el-overlay-1"> <img onload=" init('{{object.IDa}}', '{{username}}')"
+                                src="{{object.urlCam}}webcam/?action=stream" alt="user" />
                             <div class="el-overlay">
                                 <ul class="list-style-none el-info">
                                     <li class="el-item"><a
@@ -63,15 +63,36 @@
                         </div>
                         <div class="el-card-content">
                             <h4 class="m-b-0">{{ object.name}}</h4>
-                          
+
                             <br>
-                            <button id="{{object.IDa}}" name="ledPowerStatus" style="margin-left: 2%;" onClick=" ledOnOff('{{object.IDa}}')"
-                                class="btn btn-info"><i id="bulb{{object.IDa}}" class=" far fa-lightbulb"></i></button>
+                            <button id="{{object.IDa}}" name="ledPowerStatus" style="margin-left: 2%;"
+                                onClick=" ledOnOff('{{object.IDa}}')" class="btn btn-info"><i id="bulb{{object.IDa}}"
+                                    class=" far fa-lightbulb"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {% endfor %}
+
+            {%for object in offlinePrinters%}
+            <div class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="el-card-item">
+                        <div class="el-card-avatar el-overlay-1">
+                            <h3 style="margin-top: 38%; margin-bottom: 37%;">Offline</h3>
+                            <div class="el-overlay">
+                            </div>
+                        </div>
+                        <div class="el-card-content">
+                            <h4 class="m-b-0">{{ object.name}}</h4>
+
+                            <br>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
             <!-- ============================================================== -->
             <!-- End PAge Content -->
@@ -90,7 +111,7 @@
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-     
+
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -100,9 +121,9 @@
     <!-- ============================================================== -->
 </div>
 
-   <footer class="footer text-center">
-           DAMA 3D
-        </footer>
+<footer class="footer text-center">
+    DAMA 3D
+</footer>
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->

@@ -135,9 +135,18 @@ def dashboard(request):
 
 
 def allCamerasView(request):   
+    onlinePrinters = list()  
+    offlinePrinters = list()
     if request.user.is_authenticated:   
-        allPrinters = Printer.objects.all()        
-        context = {'my_printer_list': allPrinters,'username': request.user.username }              
+        allPrinters = Printer.objects.all()    
+        for printer in allPrinters:
+            try: 
+                requests.get(printer.url, timeout=1) 
+                onlinePrinters.append(printer)
+            except:
+                offlinePrinters.append(printer)   
+
+        context = {'my_printer_list': allPrinters, 'onlinePrinters': onlinePrinters,'offlinePrinters': offlinePrinters,'username': request.user.username }              
         return render(request, "printerManagerApp/cameras.html",context)
     else:
         return redirect("/accounts/login")
