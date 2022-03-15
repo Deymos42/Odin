@@ -27,8 +27,8 @@ function pad(num) {
 
 function formatTime(seconds) {
     return [pad(Math.floor(seconds / 3600)),
-        pad(Math.floor(seconds / 60) % 60),
-        pad(seconds % 60),
+    pad(Math.floor(seconds / 60) % 60),
+    pad(seconds % 60),
     ].join(":");
 }
 
@@ -47,7 +47,7 @@ function initPrinter(printerPwStatus, printerId, lightsPwStatus, Username) {
 
 
 function updateStatus() {
-    
+
     for (var i = 0; i < printersStatus.length; i++) {
         ABORT.push(false)
         if (printersStatus[i] == "printer_power_status_on") {
@@ -80,12 +80,12 @@ function printerPowerOnOff(status, id) {
                 type: "GET",
                 success: function () {
                     var index = 0
-                    for(i = 0; i<ids.length; i++){
-                        if(id == ids[i]){
+                    for (i = 0; i < ids.length; i++) {
+                        if (id == ids[i]) {
                             index = i
                         }
-                    }      
-                    conected[index] = false;                    
+                    }
+                    conected[index] = false;
                 }
             });
             // $("#printer_power_status_on" + id).html("Encender impresora");
@@ -101,13 +101,13 @@ function printerPowerOnOff(status, id) {
 
                     printersStatus[id - 1] = 'printer_power_status_on'
                     var index = 0
-                    for(i = 0; i<ids.length; i++){
-                        if(id == ids[i]){
+                    for (i = 0; i < ids.length; i++) {
+                        if (id == ids[i]) {
                             index = i
                         }
-                    }                  
+                    }
                     conected[index] = true;
-                   
+
                 }
             });
             $('#printer_power_status_off' + id).attr('id', 'printer_power_status_on' + id);
@@ -125,7 +125,7 @@ function ledOnOff(status, id) {
         $.ajax({
             url: '/printer/' + id + '/toggleLed',
             type: "GET",
-            success: function (data) {}
+            success: function (data) { }
         });
         if ($('#led' + id).attr("class") == "btn btn-info float-right") {
             $('#led' + id).attr("class", "btn btn-danger float-right");
@@ -152,7 +152,6 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
-    console.log(conected)
     for (var i = 0; i < printersStatus.length; i++) {
         if (conected[i]) {
             var xhr = $.ajax({
@@ -175,10 +174,11 @@ setInterval(function () {
                             printTime = secondsToHms(data.progress.printTime);
                             completation = data.progress.completion;
                         }
+                        var currentdate = new Date();
+
                         var currentTimeToSum = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds()
                         var timeLeftToSum = h + ":" + m + ":" + s
                         var finalH = formatTime(timestrToSec(currentTimeToSum) + timestrToSec(timeLeftToSum));
-
                         $("#info" + data.id).html(
                             " Status: <b>" + data.state + "</b><br><br>" +
                             " Archivo: <b>" + data.job.file.name + "</b><br><br>" +
@@ -196,7 +196,7 @@ setInterval(function () {
                     } else {
 
                         $("#info" + data.id).html(
-                            " Status: <b>" + data.state + "</b> <br><br>" +                            
+                            " Status: <b>" + data.state + "</b> <br><br>" +
                             " Archivo: <b>" + "-" + "</b> <br><br>" +
                             " Tiempo de impresion: <b>" + "-" + "</b> <br><br>" +
                             " Tiempo restante: <b>" + "-" + "</b> <br><br>" +
@@ -205,10 +205,10 @@ setInterval(function () {
 
                 }
             });
-         
+
         } else {
             $("#info" + ids[i]).html(
-                " Status: <b>" + "Offline" + "</b> <br><br>" +                
+                " Status: <b>" + "Offline" + "</b> <br><br>" +
                 " Archivo: <b>" + "-" + "</b> <br><br>" +
                 " Tiempo de impresion: <b>" + "-" + "</b> <br><br>" +
                 " Tiempo restante: <b>" + "-" + "</b> <br><br>" +
