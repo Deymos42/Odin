@@ -3,6 +3,8 @@ from octorest import OctoRest
 import requests
 import ast
 import json
+import queue
+from threading import Thread
 # Create your models here.
 
 
@@ -103,21 +105,30 @@ class Printer(models.Model):
             print(ex)
 
 
-    def waitConnection(self):
+    def waitConnectionThread(self, queue):
         counter = 0
-        if(self.getPrinterPowerStatus() == "printer_power_status_off"):           
+        if(self.getPrinterPowerStatus() == "printer_power_status_off"): 
+            queue.put(False)          
             return False
         else:            
             self.connect()                       
             while(self.client.connection_info()["current"]["state"] != "Operational" and counter < 40):
                 self.client.connect(baudrate=115200)
                 counter = counter + 1
-                print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
+                #print("conecting..." + self.client.connection_info()["current"]["state"]  + str(counter))
             if counter >= 40:
+                queue.put(False) 
                 return False
             else:
+                queue.put(True) 
                 return True
 
+    def waitConnection(self):
+        q = queue.Queue()
+        new_thread = Thread(target=self.waitConnectionThread, args=[q])
+        new_thread.start()
+        new_thread.join()        
+        return q.get()
 
     def home(self, axes):
         if self.client == None:
