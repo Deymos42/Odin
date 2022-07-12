@@ -157,6 +157,7 @@ setInterval(function () {
             var xhr = $.ajax({
                 url: '/printer/' + ids[i] + '/getInfo',
                 type: "GET",
+                timeout: 1000,
                 success: function (data) {
                     if (data.job.file.name != null) {
                         if (data.progress.printTimeLeft == null) {
@@ -205,6 +206,14 @@ setInterval(function () {
 
                 }
             });
+            for (var i = 0; i < ABORT.length; i++) {
+                if (ABORT[i] == true) {
+
+                    xhr.abort()
+
+                }
+            }
+
 
         } else {
             $("#info" + ids[i]).html(

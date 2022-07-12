@@ -101,7 +101,7 @@ class Printer(models.Model):
         try:
             self.client = OctoRest(url=self.url, apikey=self.apikey)
         except ConnectionError as ex:
-            print("..............Connect error.....................")
+            print("..............Connect_error.....................")
             print(ex)
 
 
@@ -289,8 +289,8 @@ class Printer(models.Model):
         if(self.client == None):
             self.connect()
         path = path.replace("@","/")
-        path = path.replace(" ","_")
-        print(path) 
+        #path = path.replace(" ","_")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + path) 
         self.client.select(path)       
         return "done"
 
@@ -313,13 +313,15 @@ class Printer(models.Model):
     def uploadFile(self, filePath, myfile):  
         if(self.client == None):
             self.connect() 
-        path = filePath.replace("@","/")    
+        path = filePath.replace("@","/")
+           
         if(path != "local"):      
             dataForm = {'path': path}
         else:
             dataForm = {'path': ""}        
-        dataFile = {'file': myfile}               
-        
+        dataFile = {'file': myfile}
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")               
+        print(self.url + "api/files/local" + "?apikey=" + self.apikey + str(dataFile) + str(dataForm))
         return requests.post(self.url + "api/files/local" + "?apikey=" + self.apikey, data = dataForm, files = dataFile)            
         
          
