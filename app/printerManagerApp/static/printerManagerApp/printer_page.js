@@ -200,7 +200,8 @@ setInterval(function () {
                     resolved = true
                     if (data.job.file.name != null) {
                         if (oneTimeCall) {
-                            var thumbnailUrl = printerUrl + "plugin/prusaslicerthumbnails/thumbnail/" + data.job.file.name.slice(0, -6) + ".png"
+                            console.log(data.job.file.path.slice(0, -6))
+                            var thumbnailUrl = printerUrl + "plugin/prusaslicerthumbnails/thumbnail/" + data.job.file.path.slice(0, -6) + ".png"
                             UrlExists(thumbnailUrl, function (status) {
                                 if (status === 200) {
                                     $('#thumbnail').html('<img src="' + thumbnailUrl + '"  width="175"  height="175" style="  display: block;  margin-left: auto;  margin-right: auto;"/>');

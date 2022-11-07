@@ -152,13 +152,16 @@ function secondsToHms(d) {
 }
 
 setInterval(function () {
+    
     for (var i = 0; i < printersStatus.length; i++) {
+        
         if (conected[i]) {
             var xhr = $.ajax({
                 url: '/printer/' + ids[i] + '/getInfo',
                 type: "GET",
                 timeout: 1000,
                 success: function (data) {
+                    console.log(data.state)
                     if (data.job.file.name != null) {
                         if (data.progress.printTimeLeft == null) {
                             timeLeft = secondsToHms(data.job.estimatedPrintTime) + " aprox"
@@ -206,13 +209,12 @@ setInterval(function () {
 
                 }
             });
-            for (var i = 0; i < ABORT.length; i++) {
-                if (ABORT[i] == true) {
+           // for (var i = 0; i < ABORT.length; i++) {
+            //    if (ABORT[i] == true) {
+          //        xhr.abort()
 
-                    xhr.abort()
-
-                }
-            }
+            //    }
+            //}
 
 
         } else {

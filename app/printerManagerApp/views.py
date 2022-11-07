@@ -16,6 +16,8 @@ import requests
 
 LIMITED_USER = "alumnes"
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
  # -----------------------------------------------------------------------PAGES---------------------------------------------------------------------------------
 
@@ -198,28 +200,28 @@ def action_to_do_printer(request, printer_pk, *args, **kwargs):
 
 def homePrinter(request, printer_pk, axes):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             data = printer_object.home(axes)             
             return HttpResponse(data, content_type = 'application/json')
 
 def extrude(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             data = printer_object.extrude()             
             return HttpResponse(data, content_type = 'application/json')
 
 def retract(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             data = printer_object.retract()             
             return HttpResponse(data, content_type = 'application/json')
 
 def preheat(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
 
             data = printer_object.setToolTemp(205)
@@ -228,7 +230,7 @@ def preheat(request, printer_pk):
             return HttpResponse(d, content_type = 'application/json')
 
 def getPrinterInfo(request, printer_pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         printer_object = Printer.objects.get(IDa=printer_pk)        
         info = printer_object.getPrinterInfo() 
 
@@ -243,7 +245,7 @@ def getPrinterInfo(request, printer_pk):
 
 def setToolTemp(request, printer_pk, temp):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():        
+        if is_ajax(request=request):        
             printer_object = Printer.objects.get(IDa=printer_pk)  
             data = printer_object.setToolTemp(temp)       
             d = json.dumps(data)  
@@ -251,27 +253,27 @@ def setToolTemp(request, printer_pk, temp):
 
 def setBedTemp(request, printer_pk, temp):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
          printer_object = Printer.objects.get(IDa=printer_pk)     
          data = printer_object.setBedTemp(temp)       
          d = json.dumps(data)  
          return HttpResponse(d, content_type = 'application/json')
 
 def getPrinterPowerStatus(request, printer_pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         printer_object = Printer.objects.get(IDa=printer_pk)
         response = printer_object.getPrinterPowerStatus()   
         return HttpResponse(response, content_type = 'text/html')
 
 def toggleLed(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.toggleLed()   
             return HttpResponse(response, content_type = 'application/json')
 
 def getLedStatus(request, printer_pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         printer_object = Printer.objects.get(IDa=printer_pk)
         response = printer_object.getLedStatus()   
         data = json.dumps(response)
@@ -280,7 +282,7 @@ def getLedStatus(request, printer_pk):
 
 def printerPowerOn(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.PrinterPowerOn()             
             conected = printer_object.waitConnection()                 
@@ -289,7 +291,7 @@ def printerPowerOn(request, printer_pk):
 
 def printerPowerOff(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             response = printer_object.printerPowerOFf()  
                    
@@ -297,7 +299,7 @@ def printerPowerOff(request, printer_pk):
 
 
 def getStatus(request, printer_pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         printer_object = Printer.objects.get(IDa=printer_pk)      
         info = printer_object.getStatus()        
         data = json.dumps(info)  
@@ -308,7 +310,7 @@ def getStatus(request, printer_pk):
 
 
 def getAllFilesAndFolders(request, printer_pk):
-    if request.is_ajax():
+    if is_ajax(request=request):
         printer_object = Printer.objects.get(IDa=printer_pk)
       
         jsonObject = printer_object.getAllFilesAndFolders()      
@@ -319,7 +321,7 @@ def getAllFilesAndFolders(request, printer_pk):
 
 def selectFile(request, printer_pk, filename):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             data = printer_object.selectFile(filename)     
             return HttpResponse(data, content_type = 'text/html')
@@ -328,7 +330,7 @@ def selectFile(request, printer_pk, filename):
 
 def deleteFile(request, printer_pk, filename):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.deleteFile(filename)        
             data = json.dumps(jsonObject)  
@@ -339,7 +341,7 @@ def deleteFile(request, printer_pk, filename):
 
 def printSelectedFile(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
         
             data = printer_object.printSelectedFile()
@@ -350,7 +352,7 @@ def printSelectedFile(request, printer_pk):
 
 def printFile(request, printer_pk, filename):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.print(filename)      
             
@@ -361,7 +363,7 @@ def printFile(request, printer_pk, filename):
 def printProject(request, printer_pk, filename):
    
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             info = printer_object.getPrinterInfo()
             if  "Offline" in info["state"]:              
@@ -382,7 +384,7 @@ def printProject(request, printer_pk, filename):
 
 def jog(request, printer_pk, x, y, z):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.jog(int(x), int(y), int(z))     
             
@@ -392,7 +394,7 @@ def jog(request, printer_pk, x, y, z):
 
 def toggle(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.toggle()
             
@@ -402,7 +404,7 @@ def toggle(request, printer_pk):
 
 def cancel(request, printer_pk):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)
             jsonObject = printer_object.cancel()
             data = printer_object.home('xy')   
@@ -413,7 +415,7 @@ def cancel(request, printer_pk):
 
 def createFolder(request, printer_pk, folderPath):
     if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)        
             jsonObject = printer_object.createFolder(folderPath)
             
@@ -423,7 +425,7 @@ def createFolder(request, printer_pk, folderPath):
 
 def moveFile(request, printer_pk, actualPath, newPath):
      if request.user.username != LIMITED_USER:
-        if request.is_ajax():
+        if is_ajax(request=request):
             printer_object = Printer.objects.get(IDa=printer_pk)        
                           
             jsonObject = printer_object.moveFile(actualPath, newPath)
